@@ -9,7 +9,7 @@
       </div>
       <div class="results">
         <div class="place" v-for="rs in search.results" :key="rs.id">
-          <h4>{{ rs.place_name }}</h4>
+          <h4 @click="setCenter(rs)" style="cursor: pointer;">{{ rs.place_name }}</h4>
           <h4>{{ rs.x }}</h4>
           <h4>{{ rs.y }}</h4>
           <input type="text" placeholder="메모를 입력하세요" />
@@ -90,7 +90,7 @@ export default {
 
       const ps = new window.kakao.maps.services.Places();
       ps.keywordSearch(keyword, (data, status, pgn) => {
-        console.log(data);
+        console.log(data.lat, data.lng);
         this.search.keyword = keyword;
         this.search.pgn = pgn;
         this.search.results = data;
@@ -105,8 +105,15 @@ export default {
       this.plan.push(obj);
     },
     savePlan() {
-        this.plan2.target.push(this.plan);
-        console.log(this.plan2);
+      this.plan2.push(this.plan);
+      console.log(this.plan2);
+    },
+    setCenter(rs) {
+      // 이동할 위도 경도 위치를 생성합니다
+      let moveLatLon = new window.kakao.maps.LatLng(rs.y, rs.x);
+
+      // 지도 중심을 이동 시킵니다
+      this.map.setCenter(moveLatLon);
     },
   },
 };
@@ -123,7 +130,7 @@ export default {
 }
 
 .result {
-    overflow: scroll;
+  overflow: scroll;
 }
 </style>
   
