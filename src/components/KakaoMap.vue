@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div>
+      <router-link to="/planner">리스트페이지</router-link>
+    </div>
     <button @click="zoom(1)">+</button> <button @click="zoom(-1)">-</button>
     <div class="maparea">
       <div class="searchbox">
@@ -26,7 +29,7 @@
     </div>
     <div class="planner">
       <button @click="savePlan">플랜저장하기</button>
-      <button @click="getPlan">플랜갖고오기</button>
+      <!-- <button @click="getPlan">플랜갖고오기</button> -->
       <div class="plan" v-for="rs in planner.plan" :key="rs.name">
         <h4>{{ rs.name }}</h4>
         <input type="text" v-model="rs.memo" placeholder="메모를 입력하세요." />
@@ -76,6 +79,19 @@ export default {
       // 없다면 카카오 스크립트 추가 후 맵 실행
       this.loadScript();
     }
+    // localhost:8080/planner/{id}
+    axios
+      .get(
+        "https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/api/v1/planner"
+      )
+      .then((response) => {
+        response.data.plan.forEach((a) => {
+          this.planner.plan.push(a);
+        });
+      })
+      .catch(() => {
+        console.log("실패");
+      });
   },
   methods: {
     loadScript() {
@@ -128,30 +144,18 @@ export default {
       obj.y = rs.y;
       this.planner.plan.push(obj);
     },
+    // localhost:8080/api/v1/planner
     savePlan() {
-      /* axios
-        .post("https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/planner/{id}", this.planner)
+      axios
+        .post("https://reqres.in/api/users", this.planner)
         .then((response) => {
           console.log(response.data);
         })
         .catch((err) => {
           console.log(err);
-        }); */
-    },
-    getPlan() {
-      axios
-        .get(
-          "https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/api/v1/planner"
-        )
-        .then((response) => {
-          response.data.plan.forEach((a) => {
-            this.planner.plan.push(a);
-          });
-        })
-        .catch(() => {
-          console.log("실패");
         });
     },
+    getPlan() {},
     setCenter(rs) {
       // 이동할 위도 경도 위치를 생성합니다
       let moveLatLon = new window.kakao.maps.LatLng(rs.y, rs.x);
