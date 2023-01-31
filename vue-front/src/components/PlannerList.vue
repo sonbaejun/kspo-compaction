@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h4>hello!</h4>
     <div>
       <router-link to="/planner/id">플랜짜러가기</router-link>
     </div>
@@ -28,15 +27,18 @@ export default {
       },
     };
   },
-  methods: {},
+  methods: {
+    clickPlan() {
+      console.log(this.modal);
+      this.modal = 1;
+    },
+  },
   mounted() {
     // localhost:8080/planner
     axios
       .get("https://f86a523c-df58-4776-99a7-0b6c7cb67a05.mock.pstmn.io/planner")
       .then((response) => {
-        console.log(response.data);
         response.data.data.forEach((a) => {
-          console.log(a);
           this.planner.data.push(a);
         });
       })
@@ -57,6 +59,7 @@ export default {
   display: flex;
   flex-direction: column;
   margin: 5px;
+  border: 1px black;
 }
 
 .plan h4 {

@@ -1,11 +1,32 @@
 <template>
   <div>
+    <div class="black-bg" v-if="modal == 1">
+      <div class="white-bg">
+        <input v-model="title" placeholder="제목을 입력하세요" />
+        <input v-model="intro" placeholder="설명을 입력하세요" />
+        <input
+          v-model="start_date"
+          value="2022-01-02T13:00+09:00"
+          placeholder="시작날짜를 입력하세요"
+        />
+        <input
+          v-model="end_date"
+          value="2022-01-05T13:00+09:00"
+          placeholder="종료날짜를 입력하세요"
+        />
+        <button @click="doneBtn">확인</button>
+      </div>
+    </div>
     <div>
       <router-link to="/planner">리스트페이지</router-link>
     </div>
     <button @click="zoom(1)">+</button> <button @click="zoom(-1)">-</button>
+    <button class="searchView" @click="searchView">검색창 여닫이</button>
+    <button @click="savePlan">플랜저장하기</button>
+    <button @click="modal = 1">여행정보수정</button>
+
     <div class="maparea">
-      <div class="searchbox">
+      <div class="searchbox" v-if="searchbox == 1">
         <div>
           <input
             type="text"
@@ -14,7 +35,7 @@
           />
         </div>
         <div class="results">
-          <div class="place" v-for="rs in search.results" :key="rs.id">
+          <div class="place" v-for="rs in search.results" :key="rs.place_name">
             <h4 @click="setCenter(rs)" style="cursor: pointer">
               {{ rs.place_name }}
             </h4>
@@ -28,12 +49,21 @@
       <div id="map"></div>
     </div>
     <div class="planner">
-      <button @click="savePlan">플랜저장하기</button>
+      <div class="dateResult" v-for="rs in dateResult" :key="rs.date">
+        <h4 @click="showDate(rs)">{{ rs.date }}</h4>
+        <div v-if="rs.view == 1"></div>
+      </div>
       <!-- <button @click="getPlan">플랜갖고오기</button> -->
-      <div class="plan" v-for="rs in planner.planList" :key="rs.name">
-        <h4>{{ rs.name }}</h4>
-        <input type="text" v-model="rs.memo" placeholder="메모를 입력하세요." />
-        <input type="text" v-model="rs.date" placeholder="YYYY-MM-DD HH:MM" />
+      <div class="plan" v-for="(rs, idx) in planner.planList" :key="idx">
+        <div v-if="checkDay(rs)">
+          <h4>{{ rs.name }}</h4>
+          <input
+            type="text"
+            v-model="rs.memo"
+            placeholder="메모를 입력하세요."
+          />
+          <input type="text" v-model="rs.date" placeholder="YYYY-MM-DD HH:MM" />
+        </div>
       </div>
     </div>
   </div>
@@ -46,6 +76,15 @@ export default {
   name: "KakaoMap",
   data() {
     return {
+      modal: 1,
+      searchbox: 1,
+      title: "",
+      intro: "",
+      start_date: "",
+      end_date: "",
+      curDate: "",
+      dayCnt: 0,
+      dateResult: [],
       mapOption: {
         center: {
           lat: 33.450701,
@@ -59,10 +98,10 @@ export default {
         results: [],
       },
       planner: {
-        title: "test",
-        intro: "intro",
-        start_date: "2022-01-02T13:00+09:00",
-        end_date: "2022-02-02T01:00+09:00",
+        title: "",
+        intro: "",
+        start_date: "",
+        end_date: "",
         planList: [],
       },
       map: null,
@@ -134,18 +173,21 @@ export default {
       });
     },
     addPlan(rs) {
-      var obj = {};
+      let obj = {};
       obj.name = rs.place_name;
       obj.memo = "";
-      obj.date = "2023-01-01 01:30";
+      obj.date = this.curDate;
       obj.x = rs.x;
       obj.y = rs.y;
       this.planner.planList.push(obj);
     },
     // localhost:8080/api/v1/planner/post
     savePlan() {
-      console.log(JSON.stringify(this.planner));
-      console.log();
+      this.planner.title = this.title;
+      this.planner.intro = this.intro;
+      this.planner.start_date = this.start_date;
+      this.planner.end_date = this.end_date;
+      console.log(this.planner);
       axios({
         method: "post", // [요청 타입]
         url: "http://localhost:8080/api/v1/planner/post", // [요청 주소]
@@ -167,15 +209,46 @@ export default {
           console.log("ERROR : " + JSON.stringify(error));
           console.log("");
         });
+      this.$router.push({ path: "/planner" });
     },
-  },
-  getPlan() {},
-  setCenter(rs) {
-    // 이동할 위도 경도 위치를 생성합니다
-    let moveLatLon = new window.kakao.maps.LatLng(rs.y, rs.x);
+    doneBtn() {
+      this.modal = 0;
+      let curDate1 = new Date(this.start_date.substring(0, 10));
+      while (curDate1 <= new Date(this.end_date.substring(0, 10))) {
+        this.dateResult.push({
+          date: curDate1.toISOString().split("T")[0] + "T00:00+09:00",
+          view: 0,
+        });
+        curDate1.setDate(curDate1.getDate() + 1);
+      }
+      this.curDate = this.dateResult[0].date;
+    },
+    searchView() {
+      if (this.searchbox == 1) {
+        this.searchbox = 0;
+      } else {
+        this.searchbox = 1;
+      }
+    },
+    getPlan() {},
+    setCenter(rs) {
+      // 이동할 위도 경도 위치를 생성합니다
+      let moveLatLon = new window.kakao.maps.LatLng(rs.y, rs.x);
 
-    // 지도 중심을 이동 시킵니다
-    this.map.setCenter(moveLatLon);
+      // 지도 중심을 이동 시킵니다
+      this.map.setCenter(moveLatLon);
+    },
+    showDate(rs) {
+      rs.view = 1;
+      this.curDate = rs.date;
+    },
+    checkDay(rs) {
+      if (rs.date == this.curDate) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
 };
 </script>
@@ -233,5 +306,39 @@ export default {
 
 .planner button {
   margin: 3px;
+}
+
+.black-bg {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 60000;
+  position: fixed;
+  padding: 20px;
+}
+.white-bg {
+  width: 70%;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+
+  flex-direction: column;
+}
+
+.white-bg input {
+  width: 80%;
+  margin: 5px;
+  vertical-align: middle;
+}
+
+.white-bg button {
+  width: 81%;
+  margin: 5px;
+  vertical-align: middle;
+}
+
+.dateResult h4 {
+  cursor: pointer;
 }
 </style>
