@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <router-link to="/planner/id">플랜짜러가기</router-link>
+      <router-link to="/api/v1/planner/post">플랜짜러가기</router-link>
     </div>
     <div>
       <router-link to="/">메인화면으로</router-link>
@@ -46,8 +46,8 @@ export default {
           this.planner.data.push(a);
         });
       })
-      .catch(() => {
-        console.log("실패");
+      .catch((err) => {
+        console.log(err);
       });
   },
 };

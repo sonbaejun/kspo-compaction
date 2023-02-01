@@ -4,6 +4,8 @@ import Home from '@/components/Home'
 import KakaoMap from '@/components/KakaoMap'
 import PlannerList from '@/components/PlannerList'
 import PlanView from '@/components/PlanView'
+import EditPlan from '@/components/EditPlan'
+
 
 
 Vue.use(Router)
@@ -17,20 +19,26 @@ export default new Router({
       component: Home
     },
     {
-      path: '/planner/id',
+      path: '/api/v1/planner/post',
       name: 'KakaoMap',
       component: KakaoMap
     },
     {
-      path: '/planner',
+      path: '/api/v1/planner',
       name: 'PlannerList',
       component: PlannerList,
       props: true,
     },
     {
-      path: '/planner/view',
+      path: '/api/v1/planner/:id',
       name: 'PlanView',
       component: PlanView,
+      props: true,
+    },
+    {
+      path: '/api/v1/planner/update/:id',
+      name: 'EditPlan',
+      component: EditPlan,
       props: true,
     }
   ]

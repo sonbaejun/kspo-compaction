@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button class="editBtn">수정</button>
-    <button class="deleteBtn">삭제</button>
+    <button class="editBtn" @click="goEdit">수정</button>
+    <button class="deleteBtn" @click="deletePlan">삭제</button>
 
     <div class="planInfo">
       <h4>{{ planner.title }}</h4>
@@ -25,18 +25,15 @@
             placeholder="메모를 입력하세요."
             readonly
           />
-          <input type="text" v-model="rs.date" placeholder="YYYY-MM-DD HH:MM" readonly/>
+          <input
+            type="text"
+            v-model="rs.date"
+            placeholder="YYYY-MM-DD HH:MM"
+            readonly
+          />
         </div>
       </div>
     </div>
-
-<!--     <div class="plan" v-for="rs in planner.planList" :key="rs.name">
-      <h4>{{ rs.name }}</h4>
-      <h5>{{ rs.memo }}</h5>
-      <h5>{{ rs.date }}</h5>
-      <h5>{{ rs.x }}</h5>
-      <h5>{{ rs.y }}</h5>
-    </div> -->
   </div>
 </template>
 
@@ -59,6 +56,7 @@ export default {
     };
   },
   methods: {
+    /* 날짜 일수 만큼 Day 생성하는 함수 */
     setDate() {
       let curDate1 = new Date(this.planner.start_date.substring(0, 10));
       while (curDate1 <= new Date(this.planner.end_date.substring(0, 10))) {
@@ -70,16 +68,49 @@ export default {
       }
       this.curDate = this.dateResult[0].date;
     },
+    /* 날짜 별 조회 설정 함수 */
     showDate(rs) {
       rs.view = 1;
       this.curDate = rs.date;
     },
+    /* 현재 선태한 날짜와 플랜의 날짜가 일치하는지를 반환하는 함수 */
     checkDay(rs) {
       if (rs.date == this.curDate) {
         return true;
       } else {
         return false;
       }
+    },
+    /* 플랜삭제를 처리하는 함수 */
+    deletePlan() {
+      if (confirm("정말 삭제하시겠어요 ?")) {
+        axios({
+          method: "post", // [요청 타입]
+          url: `http://localhost:8080/api/v1/planner/delete/${this.id}`, // [요청 주소]
+          data: ('뭐라도 보내야 보내지는듯?'), // [요청 데이터]
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          }, // [요청 헤더]
+          timeout: 5000, // [타임 아웃 시간]
+
+          //responseType: "json" // [응답 데이터 : stream , json]
+        })
+          .then(function (response) {
+            console.log("");
+            console.log("RESPONSE : " + JSON.stringify(response.data));
+            console.log("");
+          })
+          .catch(function (error) {
+            console.log("");
+            console.log("ERROR : " + JSON.stringify(error));
+            console.log("");
+          });
+      }
+      this.$router.push({ path: "/api/v1/planner" });
+    },
+    /* 수정 컴포넌트로 이동하는 함수 */
+    goEdit() {
+        this.$router.push({ name: "EditPlan", params: { id:this.id, plan: this.planner } });
     },
   },
   mounted() {
@@ -104,10 +135,6 @@ export default {
         console.log(err);
       });
     this.id = this.$route.params.id;
-    console.log(this.$route.params.id);
-    console.log(this.id);
-    console.log(`test 해보${this.id}겠어요`);
-    
   },
 };
 </script>
@@ -118,7 +145,7 @@ export default {
 }
 
 .planner {
-    margin: 10px;
+  margin: 10px;
 }
 
 .planner h4 {
@@ -144,10 +171,10 @@ export default {
 }
 
 .planInfo h4 {
-    margin: 0;
+  margin: 0;
 }
 
 .planInfo {
-    margin: 10px;
+  margin: 10px;
 }
 </style>

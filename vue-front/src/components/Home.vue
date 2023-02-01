@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link to="/planner">PLANNER</router-link>
+    <router-link to="/api/v1/planner">PLANNER</router-link>
   </div>
 </template>
     

@@ -22,9 +22,7 @@
     </div>
     <button @click="zoom(1)">+</button> <button @click="zoom(-1)">-</button>
     <button class="searchView" @click="searchView">검색창 여닫이</button>
-    <button @click="savePlan">플랜저장하기</button>
-    <!-- <button @click="modal = 1">여행정보수정</button> -->
-
+    <button @click="savePlan">플랜수정하기</button>
     <div class="maparea">
       <div class="searchbox" v-if="searchbox == 1">
         <div>
@@ -69,19 +67,18 @@
   </div>
 </template>
 
-  <script>
+<script>
 import axios from "axios";
 
 export default {
-  name: "KakaoMap",
   data() {
     return {
-      modal: 1,
+      modal: 0,
       searchbox: 1,
-      title: "",
-      intro: "",
-      start_date: "",
-      end_date: "",
+      title: this.$route.params.plan.title,
+      intro: this.$route.params.plan.intro,
+      start_date: this.$route.params.plan.start_date,
+      end_date: this.$route.params.plan.end_date,
       curDate: "",
       dayCnt: 0,
       dateResult: [],
@@ -109,7 +106,6 @@ export default {
       plan2: [],
     };
   },
-  watch: {},
   mounted() {
     if (window.kakao && window.kakao.maps) {
       // 카카오 객체가 있고, 카카오 맵 그릴 준비가 되어 있다면 맵 실행
@@ -118,17 +114,12 @@ export default {
       // 없다면 카카오 스크립트 추가 후 맵 실행
       this.loadScript();
     }
-   /*  // localhost:8080/planner/{id}
-    axios
-      .get("http://localhost:8080/api/v1/planner")
-      .then((response) => {
-        response.data.plan.forEach((a) => {
-          this.planner.planList.push(a);
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      }); */
+    this.planner.title = this.$route.params.plan.title;
+    this.planner.intro = this.$route.params.plan.intro;
+    this.planner.start_date = this.$route.params.plan.start_date;
+    this.planner.end_date = this.$route.params.plan.end_date;
+    this.planner.id = this.$route.params.plan.id;
+    this.modal = 1;
   },
   methods: {
     loadScript() {
@@ -147,6 +138,7 @@ export default {
         center: new window.kakao.maps.LatLng(33.450701, 126.570667),
         level: 3,
       };
+
       this.map = new window.kakao.maps.Map(container, options);
     },
     // 지도 크기 조정(level값)
@@ -188,8 +180,8 @@ export default {
       this.planner.end_date = this.end_date;
       console.log(this.planner);
       axios({
-        method: "post", // [요청 타입]
-        url: "http://localhost:8080/api/v1/planner/post", // [요청 주소]
+        method: "put", // [요청 타입]
+        url: `localhost:8080/api/v1/planner/update/${this.planner.id}`, // [요청 주소]
         data: JSON.stringify(this.planner), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -212,11 +204,15 @@ export default {
     },
     doneBtn() {
       if (this.start_date != "" && this.end_date != "") {
+        this.$route.params.plan.planList.forEach((a) => {
+            console.log(a);
+            this.planner.planList.push(a);
+        });
         this.modal = 0;
         let curDate1 = new Date(this.start_date.substring(0, 10));
         while (curDate1 <= new Date(this.end_date.substring(0, 10))) {
           this.dateResult.push({
-            date: curDate1.toISOString().split("T")[0] + "T00:00+09:00",
+            date: curDate1.toISOString().split("T")[0] + "T01:00+09:00",
             view: 0,
           });
           curDate1.setDate(curDate1.getDate() + 1);
@@ -256,8 +252,7 @@ export default {
 };
 </script>
 
-    <!-- Add "scoped" attribute to limit CSS to this component only -->
-    <style scoped>
+<style>
 #map {
   flex: 1 1 auto;
   height: 500px;
