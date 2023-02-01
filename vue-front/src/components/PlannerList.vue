@@ -15,7 +15,7 @@
     </div>
   </div>
 </template>
-  
+
   <script>
 import axios from "axios";
 
@@ -40,9 +40,9 @@ export default {
   mounted() {
     // localhost:8080/planner
     axios
-      .get("https://f86a523c-df58-4776-99a7-0b6c7cb67a05.mock.pstmn.io/planner")
+      .get("http://localhost:8080/api/v1/planner")
       .then((response) => {
-        response.data.data.forEach((a) => {
+        response.data.forEach((a) => {
           this.planner.data.push(a);
         });
       })
@@ -52,7 +52,7 @@ export default {
   },
 };
 </script>
-  
+
   <style>
 .plan {
   top: 0;

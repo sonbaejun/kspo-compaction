@@ -118,7 +118,7 @@ export default {
       // 없다면 카카오 스크립트 추가 후 맵 실행
       this.loadScript();
     }
-   /*  // localhost:8080/planner/{id}
+    /*  // localhost:8080/planner/{id}
     axios
       .get("http://localhost:8080/api/v1/planner")
       .then((response) => {
@@ -208,7 +208,9 @@ export default {
           console.log("ERROR : " + JSON.stringify(error));
           console.log("");
         });
-      this.$router.push({ path: "/api/v1/planner" });
+      setTimeout(() => {
+        this.$router.push({ path: "/api/v1/planner" });
+      }, 100);
     },
     doneBtn() {
       if (this.start_date != "" && this.end_date != "") {

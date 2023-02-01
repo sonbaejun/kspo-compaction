@@ -66,8 +66,8 @@
     </div>
   </div>
 </template>
-
-<script>
+  
+  <script>
 import axios from "axios";
 
 export default {
@@ -118,7 +118,7 @@ export default {
     this.planner.intro = this.$route.params.plan.intro;
     this.planner.start_date = this.$route.params.plan.start_date;
     this.planner.end_date = this.$route.params.plan.end_date;
-    this.planner.id = this.$route.params.plan.id;
+    this.id = this.$route.params.id;
     this.modal = 1;
   },
   methods: {
@@ -182,7 +182,7 @@ export default {
       /* localhost:8080/api/v1/planner/update/${this.planner.id} */
       axios({
         method: "put", // [요청 타입]
-        url: `https://reqres.in/api/users/${this.planner.id}`, // [요청 주소]
+        url: `http://localhost:8080/api/v1/planner/update/${this.id}`, // [요청 주소]
         data: JSON.stringify(this.planner), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -239,7 +239,7 @@ export default {
       this.curDate = rs.date;
     },
     checkDay(rs) {
-      if (rs.date == this.curDate) {
+      if (rs.date.substring(0, 10) == this.curDate.substring(0, 10)) {
         return true;
       } else {
         return false;
@@ -248,8 +248,8 @@ export default {
   },
 };
 </script>
-
-<style>
+  
+  <style>
 #map {
   flex: 1 1 auto;
   height: 500px;
@@ -337,3 +337,4 @@ export default {
   cursor: pointer;
 }
 </style>
+  

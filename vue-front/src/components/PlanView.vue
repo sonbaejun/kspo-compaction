@@ -75,7 +75,7 @@ export default {
     },
     /* 현재 선태한 날짜와 플랜의 날짜가 일치하는지를 반환하는 함수 */
     checkDay(rs) {
-      if (rs.date == this.curDate) {
+      if (rs.date.substring(0, 10) == this.curDate.substring(0, 10)) {
         return true;
       } else {
         return false;
@@ -87,7 +87,7 @@ export default {
       if (confirm("정말 삭제하시겠어요 ?")) {
         axios({
           method: "delete", // [요청 타입]
-          url: `https://reqres.in/api/users/${this.id}`, // [요청 주소]
+          url: `http://localhost:8080/api/v1/planner/delete/${this.id}`, // [요청 주소]
           headers: {
             "Content-Type": "application/json; charset=utf-8",
           }, // [요청 헤더]
@@ -102,30 +102,35 @@ export default {
             console.log("ERROR : " + JSON.stringify(error));
           });
       }
-      this.$router.push({ path: "/api/v1/planner" });
+      setTimeout(() => {
+        this.$router.push({ path: "/api/v1/planner" });
+      }, 100);
     },
     /* 수정 컴포넌트로 이동하는 함수 */
     goEdit() {
-        this.$router.push({ name: "EditPlan", params: { id:this.id, plan: this.planner } });
+      this.$router.push({
+        name: "EditPlan",
+        params: { id: this.id, plan: this.planner },
+      });
     },
   },
   mounted() {
     /* localhost:8080/api/v1/planner/{id} */
+    this.id = this.$route.params.id;
     axios
-      .get(
-        `https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/api/v1/planner`
-      )
+      .get(`http://localhost:8080/api/v1/planner/${this.id}`)
       .then((response) => {
-        console.log(response.data);
-        this.planner.id = response.data.id;
+        console.log(response);
         this.planner.title = response.data.title;
         this.planner.intro = response.data.intro;
         this.planner.start_date = response.data.start_date;
         this.planner.end_date = response.data.end_date;
+
         response.data.planList.forEach((a) => {
           this.planner.planList.push(a);
         });
         this.setDate();
+        console.log(this.planner.planList);
       })
       .catch((err) => {
         console.log(err);
