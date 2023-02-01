@@ -23,7 +23,7 @@
     <button @click="zoom(1)">+</button> <button @click="zoom(-1)">-</button>
     <button class="searchView" @click="searchView">검색창 여닫이</button>
     <button @click="savePlan">플랜저장하기</button>
-    <button @click="modal = 1">여행정보수정</button>
+    <!-- <button @click="modal = 1">여행정보수정</button> -->
 
     <div class="maparea">
       <div class="searchbox" v-if="searchbox == 1">
@@ -49,8 +49,8 @@
       <div id="map"></div>
     </div>
     <div class="planner">
-      <div class="dateResult" v-for="rs in dateResult" :key="rs.date">
-        <h4 @click="showDate(rs)">{{ rs.date }}</h4>
+      <div class="dateResult" v-for="(rs, i) in dateResult" :key="rs.date">
+        <h4 @click="showDate(rs)">Day{{ i+1 }}</h4>
         <div v-if="rs.view == 1"></div>
       </div>
       <!-- <button @click="getPlan">플랜갖고오기</button> -->

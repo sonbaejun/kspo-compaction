@@ -7,10 +7,11 @@
       <router-link to="/">메인화면으로</router-link>
     </div>
     <div class="plan" v-for="rs in planner.data" :key="rs.name">
-      <h4>{{ rs.title }}</h4>
+      <h4 @click="goPlan(rs)">{{ rs.title }}</h4>
       <h5>{{ rs.intro }}</h5>
       <h5>{{ rs.start_date }}</h5>
       <h5>{{ rs.end_date }}</h5>
+      <h5>{{ rs.id }}</h5>
     </div>
   </div>
 </template>
@@ -31,6 +32,9 @@ export default {
     clickPlan() {
       console.log(this.modal);
       this.modal = 1;
+    },
+    goPlan(rs) {
+      this.$router.push({ name: "PlanView", params: { id: rs.id } });
     },
   },
   mounted() {
@@ -64,6 +68,7 @@ export default {
 
 .plan h4 {
   margin: 0;
+  cursor: pointer;
 }
 .plan h5 {
   margin: 0;
