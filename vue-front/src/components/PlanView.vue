@@ -82,12 +82,12 @@ export default {
       }
     },
     /* 플랜삭제를 처리하는 함수 */
+    /* http://localhost:8080/api/v1/planner/delete/${this.id} */
     deletePlan() {
       if (confirm("정말 삭제하시겠어요 ?")) {
         axios({
-          method: "post", // [요청 타입]
-          url: `http://localhost:8080/api/v1/planner/delete/${this.id}`, // [요청 주소]
-          data: ('뭐라도 보내야 보내지는듯?'), // [요청 데이터]
+          method: "delete", // [요청 타입]
+          url: `https://reqres.in/api/users/${this.id}`, // [요청 주소]
           headers: {
             "Content-Type": "application/json; charset=utf-8",
           }, // [요청 헤더]
@@ -96,14 +96,10 @@ export default {
           //responseType: "json" // [응답 데이터 : stream , json]
         })
           .then(function (response) {
-            console.log("");
             console.log("RESPONSE : " + JSON.stringify(response.data));
-            console.log("");
           })
           .catch(function (error) {
-            console.log("");
             console.log("ERROR : " + JSON.stringify(error));
-            console.log("");
           });
       }
       this.$router.push({ path: "/api/v1/planner" });

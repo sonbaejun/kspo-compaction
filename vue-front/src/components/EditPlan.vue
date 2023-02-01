@@ -179,9 +179,10 @@ export default {
       this.planner.start_date = this.start_date;
       this.planner.end_date = this.end_date;
       console.log(this.planner);
+      /* localhost:8080/api/v1/planner/update/${this.planner.id} */
       axios({
         method: "put", // [요청 타입]
-        url: `localhost:8080/api/v1/planner/update/${this.planner.id}`, // [요청 주소]
+        url: `https://reqres.in/api/users/${this.planner.id}`, // [요청 주소]
         data: JSON.stringify(this.planner), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -191,22 +192,18 @@ export default {
         //responseType: "json" // [응답 데이터 : stream , json]
       })
         .then(function (response) {
-          console.log("");
-          console.log("RESPONSE : " + JSON.stringify(response.data));
-          console.log("");
+          console.log(response.data);
         })
         .catch(function (error) {
-          console.log("");
           console.log("ERROR : " + JSON.stringify(error));
-          console.log("");
         });
       this.$router.push({ path: "/api/v1/planner" });
     },
     doneBtn() {
       if (this.start_date != "" && this.end_date != "") {
         this.$route.params.plan.planList.forEach((a) => {
-            console.log(a);
-            this.planner.planList.push(a);
+          console.log(a);
+          this.planner.planList.push(a);
         });
         this.modal = 0;
         let curDate1 = new Date(this.start_date.substring(0, 10));
