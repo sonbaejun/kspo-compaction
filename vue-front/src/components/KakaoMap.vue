@@ -56,6 +56,7 @@
       <!-- <button @click="getPlan">플랜갖고오기</button> -->
       <div class="plan" v-for="(rs, idx) in planner.planList" :key="idx">
         <div v-if="checkDay(rs)">
+          <button @click="deletePlan(idx)">X</button>
           <h4>{{ rs.name }}</h4>
           <input
             type="text"
@@ -248,11 +249,15 @@ export default {
       this.curDate = rs.date;
     },
     checkDay(rs) {
-      if (rs.date == this.curDate) {
+      if (rs.date.substring(0, 10) == this.curDate.substring(0, 10)) {
         return true;
       } else {
         return false;
       }
+    },
+    deletePlan(idx) {
+      this.planner.planList.splice(idx, 1);
+      console.log(this.planner);
     },
   },
 };
