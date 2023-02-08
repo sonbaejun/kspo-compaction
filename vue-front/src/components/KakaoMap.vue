@@ -6,12 +6,12 @@
         <input v-model="intro" placeholder="설명을 입력하세요" />
         <input
           v-model="start_date"
-          value="2022-01-02T13:00+09:00"
+          value="2022-01-02"
           placeholder="시작날짜를 입력하세요"
         />
         <input
           v-model="end_date"
-          value="2022-01-05T13:00+09:00"
+          value="2022-01-05"
           placeholder="종료날짜를 입력하세요"
         />
         <button @click="doneBtn">확인</button>
@@ -219,7 +219,7 @@ export default {
         let curDate1 = new Date(this.start_date.substring(0, 10));
         while (curDate1 <= new Date(this.end_date.substring(0, 10))) {
           this.dateResult.push({
-            date: curDate1.toISOString().split("T")[0] + "T00:00+09:00",
+            date: curDate1.toISOString().split("T")[0] + "T00:00",
             view: 0,
           });
           curDate1.setDate(curDate1.getDate() + 1);
