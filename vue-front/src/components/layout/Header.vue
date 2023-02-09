@@ -1,12 +1,12 @@
 <template>
-  <nav>
-    <v-toolbar dense style="height: 55px">
+  <nav @scroll="getScroll">
+    <v-toolbar dense style="height: 55px; top: 0px">
       <img
         src="../../assets/image 4.png"
         style="
           margin-left: 10px;
           margin-right: 2px;
-          margin-top: 2px;
+          margin-top: 5px;
           border-radius: 10px;
           cursor: pointer;
           height: 45px;
@@ -14,7 +14,10 @@
         "
         @click="goHome"
       />
-      <v-toolbar-title class="headerTitle" style="color: #1bc6ec"
+      <v-toolbar-title
+        class="headerTitle"
+        style="color: #1bc6ec; margin-top: 3px; cursor: pointer;"
+        @click="goHome"
         >ClickTour</v-toolbar-title
       >
 
@@ -46,10 +49,17 @@
 
 <script>
 export default {
-  //https://picsum.photos/id/11/500/300
+  mounted() {
+    document.addEventListener("scroll", this.getScroll);
+  },
   methods: {
     goHome() {
       this.$router.push({ path: "/" });
+    },
+    getScroll() {
+      window.addEventListener("scroll", function () {
+        console.log(window.scrollY);
+      });
     },
   },
 };

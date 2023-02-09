@@ -1,5 +1,4 @@
 <template>
-  <h4>해윙</h4>
 </template>
 
 <script>
