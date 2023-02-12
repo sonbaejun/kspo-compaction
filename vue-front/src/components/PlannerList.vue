@@ -1,18 +1,71 @@
 <template>
   <div>
-    <div>
-      <router-link to="/api/v1/planner/post">플랜짜러가기</router-link>
+    <div style="text-align: center">
+      <v-btn
+        depressed
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          width: 50%;
+          border-radius: 40px;
+          height: 60px;
+          align: center;
+          margin-top: 30px;
+        "
+        @click="goWritePlan"
+        >Make Plan!</v-btn
+      >
     </div>
-    <div>
-      <router-link to="/">메인화면으로</router-link>
-    </div>
-    <div class="plan" v-for="rs in planner.data" :key="rs.name">
-      <h4 @click="goPlan(rs)">{{ rs.title }}</h4>
-      <h5>{{ rs.intro }}</h5>
-      <h5>{{ rs.start_date }}</h5>
-      <h5>{{ rs.end_date }}</h5>
-      <h5>{{ rs.id }}</h5>
-    </div>
+    <v-container class="bg-surface-variant">
+      <v-row no-gutters>
+        <v-col v-for="rs in planner.data" :key="rs.name" cols="12" sm="4">
+          <v-card class="ma-2 pa-2" max-width="344" style="height: 400px">
+            <v-img
+              @click="goPlan(rs)"
+              style="cursor: pointer"
+              src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+              height="200px"
+              cover
+            ></v-img>
+
+            <v-card-title> {{ rs.title }} </v-card-title>
+            <v-card-subtitle> {{ rs.intro }} </v-card-subtitle>
+            <v-card-subtitle>
+              {{ rs.start_date.substring(0, 10) + " to" }}
+              {{ rs.end_date.substring(0, 10) }}
+            </v-card-subtitle>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <!-- <div style="background-color: #d9d9d9">
+      <v-col v-for="n in 1" :key="n" cols="12" sm="4">
+        <div
+          class="plan"
+          v-for="rs in planner.data"
+          :key="rs.name"
+          style="margin: 15px"
+        >
+          <v-card style="" class="ma-2 pa-2" max-width="344">
+            <v-img
+              @click="goPlan(rs)"
+              style="cursor: pointer"
+              src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+              height="200px"
+              cover
+            ></v-img>
+            <v-card-title> {{ rs.title }} </v-card-title>
+            <v-card-subtitle style="padding: 0">
+              {{ rs.intro }}
+            </v-card-subtitle>
+            <v-card-subtitle style="padding: 0">
+              {{ rs.start_date.substring(0, 10) }}
+            </v-card-subtitle>
+          </v-card>
+        </div>
+      </v-col>
+    </div> -->
   </div>
 </template>
 
@@ -36,16 +89,20 @@ export default {
     goPlan(rs) {
       this.$router.push({ name: "PlanView", params: { id: rs.id } });
     },
+    goWritePlan() {
+      this.$router.push("/api/v1/planner/post").catch(() => {});
+    },
   },
   mounted() {
-    // https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/api/v1/planner
+    //https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/planner
     //http://localhost:8080/api/v1/planner
     axios
-      .get("http://localhost:8080/api/v1/planner")
+      .get(
+        "https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/planner"
+      )
       .then((response) => {
-        console.log(response.data.data);
         /* 내가 테스트할땐 data.data로 해야 돌아감 */
-        response.data.forEach((a) => {
+        response.data.data.forEach((a) => {
           this.planner.data.push(a);
         });
       })

@@ -16,7 +16,7 @@
       />
       <v-toolbar-title
         class="headerTitle"
-        style="color: #1bc6ec; margin-top: 3px; cursor: pointer;"
+        style="color: #1bc6ec; margin-top: 3px; cursor: pointer"
         @click="goHome"
         >ClickTour</v-toolbar-title
       >
@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     goHome() {
-      this.$router.push({ path: "/" });
+      this.$router.push("/").catch(() => {});
     },
     getScroll() {
       window.addEventListener("scroll", function () {
