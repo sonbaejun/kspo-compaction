@@ -1,24 +1,36 @@
 <template>
   <div>
     <div class="black-bg" v-if="modal == 1">
-      <div class="white-bg">
-        <input v-model="title" placeholder="제목을 입력하세요" />
-        <input v-model="intro" placeholder="설명을 입력하세요" />
-        <input
-          v-model="start_date"
-          value="2022-01-02"
-          placeholder="시작날짜를 입력하세요"
-        />
-        <input
-          v-model="end_date"
-          value="2022-01-05"
-          placeholder="종료날짜를 입력하세요"
-        />
-        <button @click="doneBtn">확인</button>
+      <div class="white-bg" style="margin: 130px; width: 50%">
+        <div>
+          <v-text-field
+            label="Title"
+            hide-details="auto"
+            v-model="title"
+          ></v-text-field>
+          <v-text-field label="Intro" v-model="intro"></v-text-field>
+          <v-text-field
+            label="Start"
+            v-model="start_date"
+            style="margin-top: 0px; padding-top: 0px"
+          ></v-text-field>
+          <v-text-field
+            label="End"
+            v-model="end_date"
+            style="margin-top: 0px; padding-top: 0px"
+          ></v-text-field>
+        </div>
+        <v-btn
+          variant="flat"
+          style="background-color: #1bc6ec; width: 98%"
+          @click="doneBtn"
+        >
+          Done
+        </v-btn>
       </div>
     </div>
     <div>
-      <router-link to="/api/v1/planner">리스트페이지</router-link>
+      <router-link to="/planList">리스트페이지</router-link>
     </div>
     <button @click="zoom(1)">+</button> <button @click="zoom(-1)">-</button>
     <button class="searchView" @click="searchView">검색창 여닫이</button>
@@ -210,7 +222,7 @@ export default {
           console.log("");
         });
       setTimeout(() => {
-        this.$router.push({ path: "/api/v1/planner" });
+        this.$router.push({ path: "/planList" });
       }, 100);
     },
     doneBtn() {

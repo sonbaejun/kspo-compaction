@@ -22,7 +22,7 @@
 export default {
   methods: {
     goPlannerList() {
-      this.$router.push({ path: "/api/v1/planner" });
+      this.$router.push({ path: "/planList" });
     },
   },
 };

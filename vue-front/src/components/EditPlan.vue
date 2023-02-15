@@ -18,7 +18,7 @@
       </div>
     </div>
     <div>
-      <router-link to="/api/v1/planner">리스트페이지</router-link>
+      <router-link to="/planList">리스트페이지</router-link>
     </div>
     <button @click="zoom(1)">+</button> <button @click="zoom(-1)">-</button>
     <button class="searchView" @click="searchView">검색창 여닫이</button>
@@ -199,7 +199,7 @@ export default {
           console.log("ERROR : " + JSON.stringify(error));
         });
       setTimeout(() => {
-        this.$router.push({ path: "/api/v1/planner" });
+        this.$router.push({ path: "/planList" });
       }, 100);
     },
     doneBtn() {

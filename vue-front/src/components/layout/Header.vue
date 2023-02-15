@@ -40,6 +40,7 @@
             color: aliceblue;
             font-size: 12px;
           "
+          @click="goLogin"
           >Login</v-btn
         >
       </div>
@@ -60,6 +61,9 @@ export default {
       window.addEventListener("scroll", function () {
         console.log(window.scrollY);
       });
+    },
+    goLogin() {
+      this.$router.push("/login").catch(() => {});
     },
   },
 };

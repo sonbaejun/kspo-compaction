@@ -18,7 +18,7 @@
     </div>
     <v-container class="bg-surface-variant">
       <v-row no-gutters>
-        <v-col v-for="rs in planner.data" :key="rs.name" cols="12" sm="4">
+        <v-col v-for="rs in planner.data" :key="rs.name" cols="12" sm="3">
           <v-card class="ma-2 pa-2" max-width="344" style="height: 400px">
             <v-img
               @click="goPlan(rs)"
@@ -28,8 +28,8 @@
               cover
             ></v-img>
 
-            <v-card-title> {{ rs.title }} </v-card-title>
-            <v-card-subtitle> {{ rs.intro }} </v-card-subtitle>
+            <v-card-title style="height: 20%; margin-bottom: 15px;"> {{ rs.title }} </v-card-title>
+            <v-card-subtitle style="height: 20%;"> {{ rs.intro }} </v-card-subtitle>
             <v-card-subtitle>
               {{ rs.start_date.substring(0, 10) + " to" }}
               {{ rs.end_date.substring(0, 10) }}
@@ -90,7 +90,7 @@ export default {
       this.$router.push({ name: "PlanView", params: { id: rs.id } });
     },
     goWritePlan() {
-      this.$router.push("/api/v1/planner/post").catch(() => {});
+      this.$router.push("/planWrite").catch(() => {});
     },
   },
   mounted() {

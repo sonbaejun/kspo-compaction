@@ -103,7 +103,7 @@ export default {
           });
       }
       setTimeout(() => {
-        this.$router.push({ path: "/api/v1/planner" });
+        this.$router.push({ path: "/planList" });
       }, 100);
     },
     /* 수정 컴포넌트로 이동하는 함수 */
