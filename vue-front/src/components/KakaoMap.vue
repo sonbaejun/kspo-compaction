@@ -22,7 +22,14 @@
         </div>
         <v-btn
           variant="flat"
-          style="background-color: #1bc6ec; width: 98%"
+          style="
+            background-color: #1bc6ec;
+            width: 98%;
+            color: white;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 700;
+          "
           @click="doneBtn"
         >
           Done
@@ -214,14 +221,10 @@ export default {
         //responseType: "json" // [응답 데이터 : stream , json]
       })
         .then(function (response) {
-          console.log("");
           console.log("RESPONSE : " + JSON.stringify(response.data));
-          console.log("");
         })
         .catch(function (error) {
-          console.log("");
           console.log("ERROR : " + JSON.stringify(error));
-          console.log("");
         });
       setTimeout(() => {
         this.$router.push({ path: "/planList" });

@@ -16,7 +16,14 @@
       />
       <v-toolbar-title
         class="headerTitle"
-        style="color: #1bc6ec; margin-top: 3px; cursor: pointer"
+        style="
+          color: #1bc6ec;
+          margin-top: 3px;
+          cursor: pointer;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+        "
         @click="goHome"
         >ClickTour</v-toolbar-title
       >
@@ -39,6 +46,9 @@
             background-color: #1bc6ec;
             color: aliceblue;
             font-size: 12px;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 700;
           "
           @click="goLogin"
           >Login</v-btn

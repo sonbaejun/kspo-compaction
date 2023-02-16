@@ -11,6 +11,9 @@
           height: 60px;
           align: center;
           margin-top: 30px;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
         "
         @click="goWritePlan"
         >Make Plan!</v-btn
@@ -28,8 +31,12 @@
               cover
             ></v-img>
 
-            <v-card-title style="height: 20%; margin-bottom: 15px;"> {{ rs.title }} </v-card-title>
-            <v-card-subtitle style="height: 20%;"> {{ rs.intro }} </v-card-subtitle>
+            <v-card-title style="height: 20%; margin-bottom: 15px">
+              {{ rs.title }}
+            </v-card-title>
+            <v-card-subtitle style="height: 20%">
+              {{ rs.intro }}
+            </v-card-subtitle>
             <v-card-subtitle>
               {{ rs.start_date.substring(0, 10) + " to" }}
               {{ rs.end_date.substring(0, 10) }}
