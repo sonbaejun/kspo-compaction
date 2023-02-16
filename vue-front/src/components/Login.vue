@@ -156,6 +156,10 @@ export default {
         loginId: "",
         loginPassword: "",
       },
+      testUser: {
+        email: "",
+        password: "",
+      },
       userRegister: {
         loginId: "",
         loginPassword: "",
@@ -172,15 +176,17 @@ export default {
     };
   },
   methods: {
-    Login() {
+    async Login() {
       console.log(this.User);
-      axios({
+      this.testUser.email = this.User.loginId;
+      this.testUser.password = this.User.loginPassword;
+      console.log(this.testUser);
+      await axios({
         method: "post", // [요청 타입]
-        url: "/api/login", // [요청 주소]
-        data: JSON.stringify(this.User), // [요청 데이터]
+        url: "https://reqres.in/api/login", // [요청 주소]
+        data: JSON.stringify(this.testUser), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
-          "Access-Control-Allow-Origin": "*",
         }, // [요청 헤더]
         timeout: 5000, // [타임 아웃 시간]
 
