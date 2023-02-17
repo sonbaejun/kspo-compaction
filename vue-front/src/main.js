@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router/index.js'
+import Vuex from 'vuex'
+
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
@@ -17,12 +19,16 @@ export default new Vuetify({
   }
 })
 
+import { store } from "./store/store";
+
 Vue.use(Vuetify)
+Vue.use(Vuex)
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store: store,
   components: { App },
   template: '<App/>',
   vuetify: new Vuetify(),

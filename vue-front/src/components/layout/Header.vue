@@ -29,7 +29,32 @@
       >
 
       <v-spacer></v-spacer>
-      <div style="margin-top: 3px">
+      <div style="margin-top: 3px" v-if="$store.state.isLogin == true">
+        <v-btn
+          color="warning"
+          fab
+          dark
+          style="height: 37px; width: 37px; margin-top: 3px"
+        ></v-btn>
+        <v-btn
+          class="loginBtn"
+          style="
+            height: 37px;
+            width: 37px;
+            margin-right: 15px;
+            border-radius: 8px;
+            background-color: #1bc6ec;
+            color: aliceblue;
+            font-size: 12px;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 700;
+          "
+          @click="goLogin"
+          >Logout</v-btn
+        >
+      </div>
+      <div style="margin-top: 3px" v-else>
         <v-btn
           color="warning"
           fab
@@ -60,6 +85,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      loginBtn: "Login",
+    };
+  },
   mounted() {
     document.addEventListener("scroll", this.getScroll);
   },
@@ -73,7 +103,13 @@ export default {
       });
     },
     goLogin() {
-      this.$router.push("/login").catch(() => {});
+      if (this.$store.state.isLogin) {
+        this.$store.commit("setIsLogin", false);
+        localStorage.removeItem("access_token");
+        this.$router.push("/login").catch(() => {});
+      } else {
+        this.$router.push("/login").catch(() => {});
+      }
     },
   },
 };

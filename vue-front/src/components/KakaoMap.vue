@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h4>{{ $store.state.token }}</h4>
+
     <div class="black-bg" v-if="modal == 1">
       <div class="white-bg" style="margin: 130px; width: 50%">
         <div>
@@ -103,6 +105,7 @@ export default {
       start_date: "",
       end_date: "",
       curDate: "",
+      token: "",
       dayCnt: 0,
       dateResult: [],
       mapOption: {
@@ -207,23 +210,27 @@ export default {
       this.planner.start_date = this.start_date;
       this.planner.end_date = this.end_date;
       console.log(this.planner);
+      this.token = localStorage.getItem("access_token");
+      console.log(this.token);
       //https://reqres.in/api/users
       //http://localhost:8080/api/v1/planner/post
       axios({
         method: "post", // [요청 타입]
-        url: "http://localhost:8080/api/v1/planner/post", // [요청 주소]
+        url: "https://reqres.in/api/users", // [요청 주소]
         data: JSON.stringify(this.planner), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
+          "X-AUTH-TOKEN": this.token,
         }, // [요청 헤더]
         timeout: 5000, // [타임 아웃 시간]
 
         //responseType: "json" // [응답 데이터 : stream , json]
       })
-        .then(function (response) {
+        .then((response) => {
           console.log("RESPONSE : " + JSON.stringify(response.data));
+          console.log(this.planner.title);
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log("ERROR : " + JSON.stringify(error));
         });
       setTimeout(() => {

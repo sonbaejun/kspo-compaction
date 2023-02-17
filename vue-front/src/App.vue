@@ -13,8 +13,6 @@
 <script>
 import Footer from "./components/layout/Footer.vue";
 import Header from "./components/layout/Header.vue";
-/* import KakaoMap from "./components/KakaoMap";
-import PlannerList from "./components/PlannerList"; */
 
 export default {
   name: "App",

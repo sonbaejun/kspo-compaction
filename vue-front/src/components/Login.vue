@@ -34,7 +34,6 @@
           type="password"
         ></v-text-field>
         <v-btn
-          type="submit"
           block
           class="mt-2"
           style="
@@ -173,15 +172,21 @@ export default {
         picture: "",
       },
       dialog: false,
+      isLogin: false,
+      token: "",
     };
   },
   methods: {
-    async Login() {
+    //https://reqres.in/api/login
+    //http://localhost:8080/api/v1/users/login
+    Login() {
+      // localStorage.removeItem("access_token");
+      console.log();
       console.log(this.User);
       this.testUser.email = this.User.loginId;
       this.testUser.password = this.User.loginPassword;
       console.log(this.testUser);
-      await axios({
+      axios({
         method: "post", // [요청 타입]
         url: "https://reqres.in/api/login", // [요청 주소]
         data: JSON.stringify(this.testUser), // [요청 데이터]
@@ -192,13 +197,22 @@ export default {
 
         //responseType: "json" // [응답 데이터 : stream , json]
       })
-        .then(function (response) {
+        .then((response) => {
           console.log("RESPONSE : " + JSON.stringify(response.data));
+          this.token = response.data.token;
+          this.$store.dispatch('setToken', this.token);
+          this.$store.commit('setIsLogin', true);
+          console.log(this.$store.state.isLogin);
+          localStorage.setItem("access_token", this.token);
+          this.$router.push("/").catch(() => {});
         })
-        .catch(function (error) {
+        .catch((error) => {
+          alert("아이디 또는 비밀번호가 잘못되었습니다");
           console.log("ERROR : " + JSON.stringify(error));
         });
     },
+    //https://reqres.in/api/users
+    //http://localhost:8080/api/v1/users/register
     userRegist() {
       console.log(this.userRegister);
       axios({
@@ -220,6 +234,7 @@ export default {
         });
       this.dialog = false;
     },
+    goHome() {},
   },
 };
 </script>
