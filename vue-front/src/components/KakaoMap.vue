@@ -215,6 +215,7 @@ export default {
         data: JSON.stringify(this.planner), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
+          "X-AUTH-TOKEN": localStorage.getItem("access_token"),
         }, // [요청 헤더]
         timeout: 5000, // [타임 아웃 시간]
 
