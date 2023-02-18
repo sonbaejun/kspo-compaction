@@ -171,6 +171,9 @@ export default {
         intro: "",
         picture: "",
       },
+      userInfo: {
+        nickname: "",
+      },
       dialog: false,
       isLogin: false,
       token: "",
@@ -180,15 +183,15 @@ export default {
     //https://reqres.in/api/login
     //http://localhost:8080/api/v1/users/login
     Login() {
-      // localStorage.removeItem("access_token");
-      console.log();
       console.log(this.User);
       this.testUser.email = this.User.loginId;
       this.testUser.password = this.User.loginPassword;
       console.log(this.testUser);
       axios({
         method: "post", // [요청 타입]
+        //서버 사용시 http://localhost:8080/api/v1/users/login
         url: "https://reqres.in/api/login", // [요청 주소]
+        //서버 사용시 JSON.stringify(this.User)
         data: JSON.stringify(this.testUser), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -199,12 +202,27 @@ export default {
       })
         .then((response) => {
           console.log("RESPONSE : " + JSON.stringify(response.data));
-          this.token = response.data.token;
-          this.$store.dispatch('setToken', this.token);
-          this.$store.commit('setIsLogin', true);
-          console.log(this.$store.state.isLogin);
-          localStorage.setItem("access_token", this.token);
-          this.$router.push("/").catch(() => {});
+          this.$store.dispatch("setToken", response.data.token);
+          localStorage.setItem("access_token", response.data.token);
+          /* token을 이용해 유저정보 get */
+          // https://reqres.in/api/users/2
+          axios
+          // 서버 사용 시 http://localhost:8080/api/v1/users/userInfo
+            .get("https://reqres.in/api/users/2", {
+              headers: {
+                access_token: `${localStorage.getItem("access_token")}`,
+              },
+            })
+            .then((response) => {
+              // 서버 사용 시 this.userInfo.nickname = response.data.nickname;
+              this.userInfo.nickname = response.data.data.first_name;
+              this.$store.dispatch("setuserInfo", this.userInfo);
+              localStorage.setItem("userInfo", JSON.stringify(this.userInfo));
+              this.$router.push("/").catch(() => {});
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((error) => {
           alert("아이디 또는 비밀번호가 잘못되었습니다");
@@ -212,9 +230,8 @@ export default {
         });
     },
     //https://reqres.in/api/users
-    //http://localhost:8080/api/v1/users/register
+    //서버 사용 시 http://localhost:8080/api/v1/users/register
     userRegist() {
-      console.log(this.userRegister);
       axios({
         method: "post", // [요청 타입]
         url: "https://reqres.in/api/users", // [요청 주소]
@@ -230,6 +247,7 @@ export default {
           console.log("RESPONSE : " + JSON.stringify(response.data));
         })
         .catch(function (error) {
+          alert("아이디 또는 닉네임이 중복입니다.");
           console.log("ERROR : " + JSON.stringify(error));
         });
       this.dialog = false;

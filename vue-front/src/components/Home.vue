@@ -36,7 +36,6 @@
     >
       CREW
     </v-btn>
-    <h4>{{ $store.state.token }}</h4>
   </div>
 </template>
     

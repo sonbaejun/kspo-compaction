@@ -29,13 +29,25 @@
       >
 
       <v-spacer></v-spacer>
-      <div style="margin-top: 3px" v-if="$store.state.isLogin == true">
-        <v-btn
+      <h4
+        style="
+          color: #1bc6ec;
+          margin-top: 3px;
+          margin-right: 5px;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+        "
+      >
+        {{ $store.state.userInfo.nickname }}
+      </h4>
+      <div style="margin-top: 3px" v-if="$store.state.token != null">
+        <!-- <v-btn
           color="warning"
           fab
           dark
           style="height: 37px; width: 37px; margin-top: 3px"
-        ></v-btn>
+        ></v-btn> -->
         <v-btn
           class="loginBtn"
           style="
@@ -103,9 +115,11 @@ export default {
       });
     },
     goLogin() {
-      if (this.$store.state.isLogin) {
-        this.$store.commit("setIsLogin", false);
+      if (this.$store.state.token != null) {
+        localStorage.removeItem("userInfo");
         localStorage.removeItem("access_token");
+        this.$store.commit("inituserInfo");
+        this.$store.commit("initToken");
         this.$router.push("/login").catch(() => {});
       } else {
         this.$router.push("/login").catch(() => {});

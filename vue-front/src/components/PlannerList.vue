@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h4>{{ token }}</h4>
-
     <div style="text-align: center">
       <v-btn
         depressed
@@ -88,7 +86,6 @@ export default {
       planner: {
         data: [],
       },
-      token: "",
     };
   },
   methods: {
@@ -104,19 +101,16 @@ export default {
     },
   },
   mounted() {
-    this.token = localStorage.getItem("access_token");
-    let config = {
+/*     let config = {
       headers: {
         "X-AUTH-TOKEN": this.token,
       },
-    };
+    }; */
     //https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/planner
     //http://localhost:8080/api/v1/planner
     axios
       .get(
-        "https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/planner",
-        config
-      )
+        "https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/planner")
       .then((response) => {
         /* 내가 테스트할땐 data.data로 해야 돌아감 */
         response.data.data.forEach((a) => {

@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h4>{{ $store.state.token }}</h4>
-
     <div class="black-bg" v-if="modal == 1">
       <div class="white-bg" style="margin: 130px; width: 50%">
         <div>
@@ -105,7 +103,6 @@ export default {
       start_date: "",
       end_date: "",
       curDate: "",
-      token: "",
       dayCnt: 0,
       dateResult: [],
       mapOption: {
@@ -210,8 +207,6 @@ export default {
       this.planner.start_date = this.start_date;
       this.planner.end_date = this.end_date;
       console.log(this.planner);
-      this.token = localStorage.getItem("access_token");
-      console.log(this.token);
       //https://reqres.in/api/users
       //http://localhost:8080/api/v1/planner/post
       axios({
@@ -220,15 +215,13 @@ export default {
         data: JSON.stringify(this.planner), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
-          "X-AUTH-TOKEN": this.token,
         }, // [요청 헤더]
         timeout: 5000, // [타임 아웃 시간]
 
         //responseType: "json" // [응답 데이터 : stream , json]
       })
         .then((response) => {
-          console.log("RESPONSE : " + JSON.stringify(response.data));
-          console.log(this.planner.title);
+          console.log("RESPONSE : " + JSON.stringify(response.data));          
         })
         .catch((error) => {
           console.log("ERROR : " + JSON.stringify(error));
