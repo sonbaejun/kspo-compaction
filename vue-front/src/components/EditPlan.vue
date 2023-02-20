@@ -1,29 +1,74 @@
 <template>
   <div>
     <div class="black-bg" v-if="modal == 1">
-      <div class="white-bg">
-        <input v-model="title" placeholder="제목을 입력하세요" />
-        <input v-model="intro" placeholder="설명을 입력하세요" />
-        <input
-          v-model="start_date"
-          value="2022-01-02T13:00+09:00"
-          placeholder="시작날짜를 입력하세요"
-        />
-        <input
-          v-model="end_date"
-          value="2022-01-05T13:00+09:00"
-          placeholder="종료날짜를 입력하세요"
-        />
-        <button @click="doneBtn">확인</button>
+      <div class="white-bg" style="margin: 130px; width: 50%">
+        <div>
+          <v-text-field
+            label="Title"
+            hide-details="auto"
+            v-model="title"
+          ></v-text-field>
+          <v-text-field label="Intro" v-model="intro"></v-text-field>
+          <v-text-field
+            label="Start"
+            v-model="start_date"
+            style="margin-top: 0px; padding-top: 0px"
+          ></v-text-field>
+          <v-text-field
+            label="End"
+            v-model="end_date"
+            style="margin-top: 0px; padding-top: 0px"
+          ></v-text-field>
+        </div>
+        <v-btn
+          variant="flat"
+          style="
+            background-color: #1bc6ec;
+            width: 98%;
+            color: white;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 700;
+            border-radius: 4px;
+          "
+          @click="doneBtn"
+        >
+          Done
+        </v-btn>
       </div>
     </div>
-    <div>
-      <router-link to="/planList">리스트페이지</router-link>
+    <div style="margin-top: 15px; margin-left: 33px">
+      <v-btn
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          width: 8%;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        class="searchView"
+        @click="searchView"
+        >검색창 여닫이</v-btn
+      >
+      <v-btn
+        @click="savePlan"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          width: 8%;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >플랜저장하기</v-btn
+      >
     </div>
-    <button @click="zoom(1)">+</button> <button @click="zoom(-1)">-</button>
-    <button class="searchView" @click="searchView">검색창 여닫이</button>
-    <button @click="savePlan">플랜수정하기</button>
-    <div class="maparea">
+    <div class="maparea" style="margin-left: 35px; margin-top: 10px;">
       <div class="searchbox" v-if="searchbox == 1">
         <div>
           <input
@@ -46,7 +91,7 @@
       </div>
       <div id="map"></div>
     </div>
-    <div class="planner">
+    <div class="planner" style="margin-left: 35px;">
       <div class="dateResult" v-for="(rs, i) in dateResult" :key="rs.date">
         <h4 @click="showDate(rs)">Day{{ i + 1 }}</h4>
         <div v-if="rs.view == 1"></div>

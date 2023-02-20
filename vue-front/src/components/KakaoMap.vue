@@ -29,6 +29,7 @@
             font-family: 'Inter';
             font-style: normal;
             font-weight: 700;
+            border-radius: 4px;
           "
           @click="doneBtn"
         >
@@ -36,15 +37,40 @@
         </v-btn>
       </div>
     </div>
-    <div>
-      <router-link to="/planList">리스트페이지</router-link>
+    <div style="margin-top: 15px; margin-left: 33px;">
+      <v-btn
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          width: 8%;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        class="searchView"
+        @click="searchView"
+        >검색창 여닫이</v-btn
+      >
+      <v-btn
+        @click="savePlan"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          width: 8%;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >플랜저장하기</v-btn
+      >
     </div>
-    <button @click="zoom(1)">+</button> <button @click="zoom(-1)">-</button>
-    <button class="searchView" @click="searchView">검색창 여닫이</button>
-    <button @click="savePlan">플랜저장하기</button>
     <!-- <button @click="modal = 1">여행정보수정</button> -->
 
-    <div class="maparea">
+    <div class="maparea" style="margin-left: 35px; margin-top: 10px;">
       <div class="searchbox" v-if="searchbox == 1">
         <div>
           <input
@@ -67,7 +93,7 @@
       </div>
       <div id="map"></div>
     </div>
-    <div class="planner">
+    <div class="planner" style="margin-left: 35px;">
       <div class="dateResult" v-for="(rs, i) in dateResult" :key="rs.date">
         <h4 @click="showDate(rs)">Day{{ i + 1 }}</h4>
         <div v-if="rs.view == 1"></div>
@@ -222,7 +248,7 @@ export default {
         //responseType: "json" // [응답 데이터 : stream , json]
       })
         .then((response) => {
-          console.log("RESPONSE : " + JSON.stringify(response.data));          
+          console.log("RESPONSE : " + JSON.stringify(response.data));
         })
         .catch((error) => {
           console.log("ERROR : " + JSON.stringify(error));
