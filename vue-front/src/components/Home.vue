@@ -36,7 +36,6 @@
     >
       CREW
     </v-btn>
-    <h4>{{ $store.state.userInfo.nickname }}</h4>
   </div>
 </template>
     

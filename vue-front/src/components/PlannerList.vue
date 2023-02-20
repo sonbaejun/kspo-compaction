@@ -31,13 +31,13 @@
               cover
             ></v-img>
 
-            <v-card-title style="height: 20%; margin-bottom: 15px">
+            <v-card-title style="height: 20%; white-space:nowrap; padding: 0;">
               {{ rs.title }}
             </v-card-title>
-            <v-card-subtitle style="height: 20%">
+            <v-card-subtitle style="height: 20%; padding: 0;">
               {{ rs.intro }}
             </v-card-subtitle>
-            <v-card-subtitle>
+            <v-card-subtitle style="white-space:nowrap; padding: 0;">
               {{ rs.start_date.substring(0, 10) + " to" }}
               {{ rs.end_date.substring(0, 10) }}
             </v-card-subtitle>

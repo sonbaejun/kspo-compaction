@@ -207,10 +207,10 @@ export default {
           /* token을 이용해 유저정보 get */
           // https://reqres.in/api/users/2
           axios
-            // 서버 사용 시 http://localhost:8080/api/v1/users/userInfo
+            // 서버 사용 시 http://localhost:8080/api/v1/users/info
             .get("https://reqres.in/api/users/2", {
               headers: {
-                access_token: `${localStorage.getItem("access_token")}`,
+                "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
               },
             })
             .then((response) => {

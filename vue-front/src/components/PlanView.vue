@@ -9,6 +9,8 @@
       <h4>{{ planner.start_date }}</h4>
       <h4>{{ planner.end_date }}</h4>
       <h4>{{ planner.id }}</h4>
+      <h4>{{ planner.concept }}</h4>
+      <h4>{{ planner.placeList[0].place }}</h4>
     </div>
 
     <div class="planner">
@@ -51,6 +53,8 @@ export default {
         intro: "",
         start_date: "",
         end_date: "",
+        concept: "",
+        placeList: [],
         planList: [],
       },
     };
@@ -90,6 +94,7 @@ export default {
           url: `http://localhost:8080/api/v1/planner/delete/${this.id}`, // [요청 주소]
           headers: {
             "Content-Type": "application/json; charset=utf-8",
+            "X-AUTH-TOKEN": localStorage.getItem("access_token"),
           }, // [요청 헤더]
           timeout: 5000, // [타임 아웃 시간]
 
@@ -119,19 +124,27 @@ export default {
     /* https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/api/v1/planner */
     this.id = this.$route.params.id;
     axios
-      .get(`http://localhost:8080/api/v1/planner/${this.id}`)
+      .get(`https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/api/v1/planner`, {
+        headers: {
+          access_token: `${localStorage.getItem("access_token")}`,
+        },
+      })
       .then((response) => {
         console.log(response);
         this.planner.title = response.data.title;
         this.planner.intro = response.data.intro;
         this.planner.start_date = response.data.start_date;
         this.planner.end_date = response.data.end_date;
-
+        this.planner.concept = response.data.concept;
+        response.data.placeList.forEach((a) => {
+          this.planner.placeList.push(a);
+        });
         response.data.planList.forEach((a) => {
           this.planner.planList.push(a);
         });
         this.setDate();
         console.log(this.planner.planList);
+        console.log(this.planner);
       })
       .catch((err) => {
         console.log(err);

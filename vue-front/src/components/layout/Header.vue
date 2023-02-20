@@ -1,6 +1,6 @@
 <template>
   <nav @scroll="getScroll">
-    <v-toolbar dense style="height: 55px; top: 0px">
+    <v-toolbar dense style="height: 55px; top: 0px; margin-bottom: 35px;">
       <img
         src="../../assets/image 4.png"
         style="
