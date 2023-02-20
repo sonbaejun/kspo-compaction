@@ -16,9 +16,21 @@ import Header from "./components/layout/Header.vue";
 
 export default {
   name: "App",
+  data() {
+    return {
+      
+    };
+  },
   components: {
     Header,
     Footer,
+  },
+  created() {
+    let userInfo = localStorage.getItem("userInfo");
+    console.log(userInfo);
+    if (this.userInfo != null) {
+      this.$store.commit("setuserInfo", this.userInfo);
+    }
   },
 };
 </script>

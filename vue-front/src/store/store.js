@@ -5,12 +5,13 @@ import axios from "axios";
 Vue.use(Vuex);
 
 // store 생성
-export const store = new Vuex.Store({
+// (JSON.parse(localStorage.getItem("userInfo")) == null) ? null : JSON.parse(localStorage.getItem("userInfo")).nickname
+export const store = new Vuex.Store({    
     state: {
         token: localStorage.getItem("access_token"),
         isLogin: false,
         userInfo: {
-            nickname: JSON.parse(localStorage.getItem("userInfo")).nickname,
+            nickname: (JSON.parse(localStorage.getItem("userInfo")) == null) ? null : JSON.parse(localStorage.getItem("userInfo")).nickname,
         },
         counter: 0,
     },
