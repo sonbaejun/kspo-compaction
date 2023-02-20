@@ -117,6 +117,7 @@
 
   <script>
 import axios from "axios";
+import { store } from '../store/store';
 
 export default {
   name: "KakaoMap",
@@ -232,6 +233,7 @@ export default {
       this.planner.intro = this.intro;
       this.planner.start_date = this.start_date;
       this.planner.end_date = this.end_date;
+      this.planner.nickname = this.$store.state.userInfo.nickname;
       console.log(this.planner);
       //https://reqres.in/api/users
       //http://localhost:8080/api/v1/planner/post

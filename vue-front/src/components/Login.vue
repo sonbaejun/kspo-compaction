@@ -207,7 +207,7 @@ export default {
           /* token을 이용해 유저정보 get */
           // https://reqres.in/api/users/2
           axios
-          // 서버 사용 시 http://localhost:8080/api/v1/users/userInfo
+            // 서버 사용 시 http://localhost:8080/api/v1/users/userInfo
             .get("https://reqres.in/api/users/2", {
               headers: {
                 access_token: `${localStorage.getItem("access_token")}`,
@@ -222,11 +222,22 @@ export default {
             })
             .catch((err) => {
               console.log(err);
+              if (err.stateCode == 403) {
+                alert("회원님의 닉네임이 존재하지 않습니다");
+              } else {
+                console.log("닉네임 조회 실패");
+              }
             });
         })
         .catch((error) => {
-          alert("아이디 또는 비밀번호가 잘못되었습니다");
-          console.log("ERROR : " + JSON.stringify(error));
+          // console.log(error.response.status);
+          if (error.stateCode == 403) {
+            alert("아이디를 확인해주세요");
+          } else if (error.stateCode == 400) {
+            alert("비밀번호가 일치하지 않습니다");
+          } else {
+            alert("로그인에 실패하였습니다");
+          }
         });
     },
     //https://reqres.in/api/users
@@ -247,8 +258,11 @@ export default {
           console.log("RESPONSE : " + JSON.stringify(response.data));
         })
         .catch(function (error) {
-          alert("아이디 또는 닉네임이 중복입니다.");
-          console.log("ERROR : " + JSON.stringify(error));
+          if ((error.stateCode = 403)) {
+            alert("아이디 또는 닉네임이 중복됩니다");
+          } else {
+            console.log("ERROR : " + JSON.stringify(error));
+          }
         });
       this.dialog = false;
     },
