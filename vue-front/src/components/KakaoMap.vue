@@ -1,5 +1,49 @@
 <template>
   <div>
+    <v-row
+      justify="center"
+      class="black-bg"
+      v-if="startDatePicker == 1"
+      style="z-index: 1000000; height: 100px; background-color: transparent"
+    >
+      <v-date-picker v-model="start_date">
+        <v-btn
+          @click="startDatePicker = 0"
+          style="
+            background-color: #1bc6ec;
+            width: 98%;
+            color: white;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 700;
+            border-radius: 4px;
+          "
+          >done</v-btn
+        >
+      </v-date-picker>
+    </v-row>
+    <v-row
+      justify="center"
+      class="black-bg"
+      v-if="endDatePicker == 1"
+      style="z-index: 1000000; height: 100px; background-color: transparent"
+    >
+      <v-date-picker v-model="end_date">
+        <v-btn
+          @click="endDatePicker = 0"
+          style="
+            background-color: #1bc6ec;
+            width: 98%;
+            color: white;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 700;
+            border-radius: 4px;
+          "
+          >done</v-btn
+        >
+      </v-date-picker>
+    </v-row>
     <div class="black-bg" v-if="modal == 1">
       <div class="white-bg" style="margin: 130px; width: 50%">
         <div>
@@ -13,11 +57,14 @@
             label="Start"
             v-model="start_date"
             style="margin-top: 0px; padding-top: 0px"
+            @click="startDatePicker = 1"
+            readonly
           ></v-text-field>
           <v-text-field
             label="End"
             v-model="end_date"
             style="margin-top: 0px; padding-top: 0px"
+            @click="endDatePicker = 1"
           ></v-text-field>
         </div>
         <v-btn
@@ -37,7 +84,7 @@
         </v-btn>
       </div>
     </div>
-    <div style="margin-top: 15px; margin-left: 33px;">
+    <div style="margin-top: 15px; margin-left: 33px">
       <v-btn
         variant="flat"
         style="
@@ -61,7 +108,7 @@
           width: 8%;
           color: white;
           font-family: 'Inter';
-          font-style: normal;
+          font-sty le: normal;
           font-weight: 700;
           border-radius: 8px;
         "
@@ -70,7 +117,7 @@
     </div>
     <!-- <button @click="modal = 1">여행정보수정</button> -->
 
-    <div class="maparea" style="margin-left: 35px; margin-top: 10px;">
+    <div class="maparea" style="margin-left: 35px; margin-top: 10px">
       <div class="searchbox" v-if="searchbox == 1">
         <div>
           <input
@@ -93,7 +140,7 @@
       </div>
       <div id="map"></div>
     </div>
-    <div class="planner" style="margin-left: 35px;">
+    <div class="planner" style="margin-left: 35px">
       <div class="dateResult" v-for="(rs, i) in dateResult" :key="rs.date">
         <h4 @click="showDate(rs)">Day{{ i + 1 }}</h4>
         <div v-if="rs.view == 1"></div>
@@ -117,7 +164,7 @@
 
   <script>
 import axios from "axios";
-import { store } from '../store/store';
+import { store } from "../store/store";
 
 export default {
   name: "KakaoMap",
@@ -131,6 +178,8 @@ export default {
       end_date: "",
       curDate: "",
       dayCnt: 0,
+      startDatePicker: 0,
+      endDatePicker: 0,
       dateResult: [],
       mapOption: {
         center: {
