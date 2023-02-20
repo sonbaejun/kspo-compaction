@@ -6,6 +6,7 @@ import PlannerList from '@/components/PlannerList'
 import PlanView from '@/components/PlanView'
 import EditPlan from '@/components/EditPlan'
 import Login from '@/components/Login'
+import Recommend from '@/components/Recommend'
 
 
 
@@ -46,6 +47,12 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login,
+      props: true,
+    },
+    {
+      path: '/recommend',
+      name: 'Recommend',
+      component: Recommend,
       props: true,
     }
   ]

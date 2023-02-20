@@ -33,6 +33,7 @@
         font-style: normal;
         font-weight: 700;
       "
+      @click="goRecommend"
     >
       CREW
     </v-btn>
@@ -40,12 +41,15 @@
 </template>
     
     <script>
-import { store } from '../store/store';
+import { store } from "../store/store";
 
 export default {
   methods: {
     goPlannerList() {
       this.$router.push({ path: "/planList" });
+    },
+    goRecommend() {      
+      this.$router.push({ path: "/recommend" });
     },
   },
 };
