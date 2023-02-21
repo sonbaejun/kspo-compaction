@@ -113,13 +113,13 @@ export default {
         "https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/planner",
         {
           headers: {
-            access_token: `${localStorage.getItem("access_token")}`,
+            "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
           },
         }
       )
       .then((response) => {
         /* 내가 테스트할땐 data.data로 해야 돌아감 */
-        response.data.data.forEach((a) => {
+        response.data.forEach((a) => {
           this.planner.data.push(a);
         });
       })

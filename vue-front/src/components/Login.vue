@@ -190,9 +190,9 @@ export default {
       axios({
         method: "post", // [요청 타입]
         //서버 사용시 http://localhost:8080/api/v1/users/login
-        url: "https://reqres.in/api/login", // [요청 주소]
+        url: "http://localhost:8080/api/v1/users/login", // [요청 주소]
         //서버 사용시 JSON.stringify(this.User)
-        data: JSON.stringify(this.testUser), // [요청 데이터]
+        data: JSON.stringify(this.User), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
         }, // [요청 헤더]
@@ -202,8 +202,8 @@ export default {
       })
         .then((response) => {
           console.log("RESPONSE : " + JSON.stringify(response.data));
-          this.$store.dispatch("setToken", response.data.token);
-          localStorage.setItem("access_token", response.data.token);
+          this.$store.dispatch("setToken", response.data.jwtToken);
+          localStorage.setItem("access_token", response.data.jwtToken);
           /* token을 이용해 유저정보 get */
           // https://reqres.in/api/users/2
           axios
@@ -215,7 +215,7 @@ export default {
             })
             .then((response) => {
               // 서버 사용 시 this.userInfo.nickname = response.data.nickname;
-              this.userInfo.nickname = response.data.data.first_name;
+              this.userInfo.nickname = response.data.data.nickname;
               this.$store.dispatch("setuserInfo", this.userInfo);
               localStorage.setItem("userInfo", JSON.stringify(this.userInfo));
               this.$router.push("/").catch(() => {});
@@ -245,7 +245,7 @@ export default {
     userRegist() {
       axios({
         method: "post", // [요청 타입]
-        url: "https://reqres.in/api/users", // [요청 주소]
+        url: "http://localhost:8080/api/v1/users/register", // [요청 주소]
         data: JSON.stringify(this.userRegister), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",

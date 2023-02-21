@@ -78,7 +78,7 @@
       justify="center"
       class="black-bg"
       v-if="startDatePicker == 1"
-      style="z-index: 10000; height: 100px; background-color: transparent"
+      style="z-index: 1000000; height: 100px; background-color: transparent"
     >
       <v-date-picker v-model="planner.start_date" style="z-index: 1">
         <v-btn
@@ -145,7 +145,11 @@
             label="Concept"
             v-model="planner.concept"
             style="margin-top: 0px; padding-top: 0px"
-            @click="showDialog = true"
+            @click="
+              showDialog = true;
+              endDatePicker = 0;
+              startDatePicker = 0;
+            "
             readonly
           ></v-text-field>
           <v-text-field

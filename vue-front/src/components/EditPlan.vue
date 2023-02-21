@@ -40,7 +40,7 @@
             <v-card-text style="height: 300px; width: 600px">
               <v-select
                 label="Select"
-                v-model="planList.placeList"
+                v-model="planner.placeList"
                 :items="[
                   '서울',
                   '대전',
@@ -151,7 +151,11 @@
             label="Concept"
             v-model="planner.concept"
             style="margin-top: 0px; padding-top: 0px"
-            @click="showDialog = true"
+            @click="
+              showDialog = true;
+              endDatePicker = 0;
+              startDatePicker = 0;
+            "
             readonly
           ></v-text-field>
           <v-text-field
@@ -370,14 +374,9 @@ export default {
       this.planner.intro = this.intro;
       this.planner.start_date = this.start_date;
       this.planner.end_date = this.end_date;
-      this.place.forEach((a) => {
-        let obj = {
-          place: a,
-        };
-        this.planner.placeList.push(obj);
-      });
       console.log(this.planner);
-      /* localhost:8080/api/v1/planner/update/${this.planner.id} */
+      // http://localhost:8080/api/v1/planner/update/${this.id}
+      // https://reqres.in/api/users/2
       axios({
         method: "put", // [요청 타입]
         url: `http://localhost:8080/api/v1/planner/update/${this.id}`, // [요청 주소]

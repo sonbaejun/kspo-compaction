@@ -10,7 +10,7 @@
       <h4>{{ planner.end_date }}</h4>
       <h4>{{ planner.id }}</h4>
       <h4>{{ planner.concept }}</h4>
-      <h4>{{ planner.placeList[0].place }}</h4>
+      <h4>{{ planner.placeList[0] }}</h4>
     </div>
 
     <div class="planner">
@@ -124,11 +124,14 @@ export default {
     /* https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/api/v1/planner */
     this.id = this.$route.params.id;
     axios
-      .get(`https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/api/v1/planner`, {
-        headers: {
-          access_token: `${localStorage.getItem("access_token")}`,
-        },
-      })
+      .get(
+        `http://localhost:8080/api/v1/planner/${this.id}`,
+        {
+          headers: {
+            "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(response);
         this.planner.title = response.data.title;
