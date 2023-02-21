@@ -136,8 +136,8 @@ export default {
         console.log(response);
         this.planner.title = response.data.title;
         this.planner.intro = response.data.intro;
-        this.planner.start_date = response.data.start_date;
-        this.planner.end_date = response.data.end_date;
+        this.planner.start_date = response.data.start_date.substring(0,10);
+        this.planner.end_date = response.data.end_date.substring(0,10);
         this.planner.concept = response.data.concept;
         response.data.placeList.forEach((a) => {
           this.planner.placeList.push(a);

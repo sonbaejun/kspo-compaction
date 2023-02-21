@@ -7,7 +7,7 @@
             <v-card-title>여행테마 선택</v-card-title>
             <v-divider></v-divider>
             <v-card-text style="height: 300px">
-              <v-radio-group v-model="planner.concept" column>
+              <v-radio-group v-model="concept" column>
                 <v-radio label="식도락" value="식도락"></v-radio>
                 <v-radio label="액티비티" value="액티비티"></v-radio>
                 <v-radio label="관광명소" value="관광명소"></v-radio>
@@ -40,7 +40,7 @@
             <v-card-text style="height: 300px; width: 600px">
               <v-select
                 label="Select"
-                v-model="planner.placeList"
+                v-model="place"
                 :items="[
                   '서울',
                   '대전',
@@ -149,7 +149,7 @@
           ></v-text-field>
           <v-text-field
             label="Concept"
-            v-model="planner.concept"
+            v-model="concept"
             style="margin-top: 0px; padding-top: 0px"
             @click="
               showDialog = true;
@@ -160,7 +160,7 @@
           ></v-text-field>
           <v-text-field
             label="Place"
-            v-model="planner.placeList"
+            v-model="place"
             style="margin-top: 0px; padding-top: 0px"
             @click="showSelected = true"
             readonly
@@ -269,6 +269,8 @@ export default {
       intro: this.$route.params.plan.intro,
       start_date: this.$route.params.plan.start_date,
       end_date: this.$route.params.plan.end_date,
+      concept: this.$route.params.plan.concept,
+      place: [],
       curDate: "",
       dayCnt: 0,
       startDatePicker: 0,
@@ -310,11 +312,17 @@ export default {
       // 없다면 카카오 스크립트 추가 후 맵 실행
       this.loadScript();
     }
+    console.log(this.$route.params.plan.concept);
     this.planner.title = this.$route.params.plan.title;
     this.planner.intro = this.$route.params.plan.intro;
     this.planner.start_date = this.$route.params.plan.start_date;
     this.planner.end_date = this.$route.params.plan.end_date;
     this.id = this.$route.params.id;
+    this.concept = this.$route.params.plan.concept;
+    this.$route.params.plan.placeList.forEach((a) => {
+      console.log(a);
+      this.place.push(a.place);
+    });
     this.modal = 1;
   },
   methods: {
@@ -374,6 +382,13 @@ export default {
       this.planner.intro = this.intro;
       this.planner.start_date = this.start_date;
       this.planner.end_date = this.end_date;
+      this.planner.concept = this.concept;
+      this.place.forEach((a) => {
+        let obj = {
+          place: a,
+        };
+        this.planner.placeList.push(obj);
+      });
       console.log(this.planner);
       // http://localhost:8080/api/v1/planner/update/${this.id}
       // https://reqres.in/api/users/2

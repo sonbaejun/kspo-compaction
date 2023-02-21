@@ -208,14 +208,14 @@ export default {
           // https://reqres.in/api/users/2
           axios
             // 서버 사용 시 http://localhost:8080/api/v1/users/info
-            .get("https://reqres.in/api/users/2", {
+            .get("http://localhost:8080/api/v1/users/info", {
               headers: {
                 "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
               },
             })
             .then((response) => {
               // 서버 사용 시 this.userInfo.nickname = response.data.nickname;
-              this.userInfo.nickname = response.data.data.nickname;
+              this.userInfo.nickname = response.data.nickname;
               this.$store.dispatch("setuserInfo", this.userInfo);
               localStorage.setItem("userInfo", JSON.stringify(this.userInfo));
               this.$router.push("/").catch(() => {});

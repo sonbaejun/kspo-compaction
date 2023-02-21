@@ -40,7 +40,7 @@
             <v-card-text style="height: 300px; width: 600px">
               <v-select
                 label="Select"
-                v-model="planner.placeList"
+                v-model="place"
                 :items="[
                   '서울',
                   '대전',
@@ -160,7 +160,7 @@
           ></v-text-field>
           <v-text-field
             label="Place"
-            v-model="planner.placeList"
+            v-model="place"
             style="margin-top: 0px; padding-top: 0px"
             @click="showSelected = true"
             readonly
@@ -266,7 +266,7 @@
   </div>
 </template>
 
-  <script>
+<script>
 import axios from "axios";
 import { store } from "../store/store";
 
@@ -393,6 +393,12 @@ export default {
       this.planner.start_date = this.start_date;
       this.planner.end_date = this.end_date;
       this.planner.nickname = this.$store.state.userInfo.nickname;
+      this.place.forEach((a) => {
+        let obj = {
+          place: a,
+        };
+        this.planner.placeList.push(obj);
+      });
       console.log(this.planner);
       //https://reqres.in/api/users
       //http://localhost:8080/api/v1/planner/post
