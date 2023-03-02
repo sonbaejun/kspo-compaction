@@ -1,6 +1,6 @@
 <template>
   <v-app ref="app">
-    <Header></Header>
+    <Header style="margin-bottom: 100px;"></Header>
     <v-main>
       <router-view></router-view>
     </v-main>
