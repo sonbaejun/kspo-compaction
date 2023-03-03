@@ -1,40 +1,92 @@
 <template>
   <div>
-    <button class="editBtn" @click="goEdit">수정</button>
-    <button class="deleteBtn" @click="deletePlan">삭제</button>
-
-    <div class="planInfo">
-      <h4>{{ planner.title }}</h4>
-      <h4>{{ planner.intro }}</h4>
-      <h4>{{ planner.start_date }}</h4>
-      <h4>{{ planner.end_date }}</h4>
-      <h4>{{ planner.id }}</h4>
-      <h4>{{ planner.concept }}</h4>
-      <h4>{{ planner.placeList[0] }}</h4>
+    <div style="margin-left: 30px">
+      <v-btn
+        class="editBtn"
+        @click="goEdit"
+        style="background-color: #1bc6ec; color: aliceblue; border-radius: 6px"
+        >수정</v-btn
+      >
+      <v-btn
+        class="deleteBtn"
+        @click="deletePlan"
+        style="background-color: red; color: aliceblue; border-radius: 6px"
+        >삭제</v-btn
+      >
     </div>
-
-    <div class="planner">
-      <div class="dateResult" v-for="(rs, i) in dateResult" :key="rs.date">
-        <h4 @click="showDate(rs)">Day{{ i + 1 }}</h4>
-        <div v-if="rs.view == 1"></div>
-      </div>
-      <div class="plan" v-for="(rs, idx) in planner.planList" :key="idx">
-        <div v-if="checkDay(rs)">
-          <h4>{{ rs.name }}</h4>
-          <input
-            type="text"
-            v-model="rs.memo"
-            placeholder="메모를 입력하세요."
-            readonly
-          />
-          <input
-            type="text"
-            v-model="rs.date"
-            placeholder="YYYY-MM-DD HH:MM"
-            readonly
-          />
-        </div>
-      </div>
+    <div>
+      <v-card
+        elevation="8"
+        style="width: 40%; margin-left: 30px; margin-top: 20px; border-radius: 10px; background-color: #36CFFF; color: white; border: 2px solid #1bc6ec;"
+      >
+        <v-card-title>{{ planner.title }}</v-card-title>
+        <v-card-subtitle style="color: white;">{{ planner.intro }}</v-card-subtitle>
+        <v-card-text style="color: white; padding: 0px; margin-left: 16px;">{{ planner.start_date + " to " + planner.end_date }}</v-card-text>
+        <v-card-text style="color: white; padding: 0px; margin: 2px 0px 0px 16px;">{{ planner.concept + " 여행" }}</v-card-text>
+        <v-card-text style="color: white; padding: 0px; margin: 2px 0px 0px 16px;">{{ place }}</v-card-text>
+      </v-card>
+    </div>
+    <div
+      style="
+        width: 40%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-left: 30px;
+        margin-top: 18px;
+      "
+    >
+      <v-card
+        class="mx-auto"
+        style="height: 500px; width: 25.9%; margin-left: 0; margin-right: 0; overflow-y: auto;"
+        tile
+      >
+        <v-list dense style="padding: 0;">
+          <v-subheader style="background-color: #1bc6ec; color: aliceblue"
+            >DAY</v-subheader
+          >
+          <v-list-item-group v-model="selectedItem" color="primary">
+            <v-list-item v-for="(rs, i) in dateResult" :key="i">
+              <v-list-item-content @click="showDate(rs)">
+                <v-list-item-title>Day{{ i + 1 }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-card>
+      <v-card
+        class="mx-auto"
+        style="height: 500px; width: 73.9%; overflow-y: auto"
+        tile
+      >
+        <v-list dense style="padding: 0">
+          <v-subheader
+            style="
+              background-color: #1bc6ec;
+              color: aliceblue;
+              position: sticky;
+            "
+            >PLAN</v-subheader
+          >
+          <div v-for="(rs, i) in planner.planList" :key="i">
+            <v-list-item v-if="checkDay(rs)">
+              <v-list-item-content>
+                <v-card elevation="5" outlined style="margin: 2px 0"
+                  ><v-list-item-title style="margin: 5px">{{
+                    rs.name
+                  }}</v-list-item-title>
+                  <v-list-item-title style="margin: 5px">{{
+                    rs.memo
+                  }}</v-list-item-title>
+                  <v-list-item-title style="margin: 5px">{{
+                    rs.date.substring(11, 16)
+                  }}</v-list-item-title>
+                </v-card>
+              </v-list-item-content>
+            </v-list-item>
+          </div>
+        </v-list>
+      </v-card>
     </div>
   </div>
 </template>
@@ -47,6 +99,13 @@ export default {
     return {
       id: "",
       dateResult: [],
+      selectedItem: 0,
+      place: "",
+      items: [
+        { text: "Real-Time" },
+        { text: "Audience" },
+        { text: "Conversions" },
+      ],
       curDate: "",
       planner: {
         title: "",
@@ -136,10 +195,11 @@ export default {
         console.log(response);
         this.planner.title = response.data.title;
         this.planner.intro = response.data.intro;
-        this.planner.start_date = response.data.start_date.substring(0,10);
-        this.planner.end_date = response.data.end_date.substring(0,10);
+        this.planner.start_date = response.data.start_date.substring(0, 10);
+        this.planner.end_date = response.data.end_date.substring(0, 10);
         this.planner.concept = response.data.concept;
         response.data.placeList.forEach((a) => {
+          this.place += `${a.place} `;
           this.planner.placeList.push(a);
         });
         response.data.planList.forEach((a) => {
@@ -194,5 +254,9 @@ export default {
 
 .planInfo {
   margin: 10px;
+}
+
+.mx-auto {
+  margin: 0 0;
 }
 </style>
