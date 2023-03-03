@@ -1,5 +1,5 @@
 <template>
-  <nav @scroll="getScroll">
+  <nav>
     <v-toolbar
       dense
       style="
@@ -112,17 +112,9 @@ export default {
       loginBtn: "Login",
     };
   },
-  mounted() {
-    document.addEventListener("scroll", this.getScroll);
-  },
   methods: {
     goHome() {
       this.$router.push("/").catch(() => {});
-    },
-    getScroll() {
-      window.addEventListener("scroll", function () {
-        console.log(window.scrollY);
-      });
     },
     goLogin() {
       if (this.$store.state.token != null) {
