@@ -213,54 +213,175 @@
       >
     </div>
     <!-- <button @click="modal = 1">여행정보수정</button> -->
-
-    <div class="maparea" style="margin-left: 35px; margin-top: 10px">
-      <div class="searchbox" v-if="searchbox == 1">
-        <div>
-          <input
-            type="text"
-            placeholder="장소를 검색해주세요."
-            @keyup.enter="searchPlaces"
-          />
-        </div>
-        <div class="results">
-          <div class="place" v-for="rs in search.results" :key="rs.place_name">
-            <h4 @click="setCenter(rs)" style="cursor: pointer">
-              {{ rs.place_name }}
-            </h4>
-            <div class="addr">
-              <h5>{{ rs.address_name }}</h5>
+    <div
+      style="
+        width: 90%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-top: 18px;
+        margin-left: 35px;
+      "
+    >
+      <div class="maparea">
+        <div class="searchbox" v-if="searchbox == 1">
+          <div style="background-color: ; position: relative">
+            <!--             <input
+              type="text"
+              placeholder="장소를 검색해주세요."
+              @keyup.enter="searchPlaces"
+            /> -->
+            <!--           <v-text-field
+              class=""
+              label="SEARCH"
+              @keyup.enter="searchPlaces"
+              style="width: 100%"
+            ></v-text-field> -->
+            <v-text-field
+              filled
+              label="search"
+              style="height: 57px; background-color: #1bc6ec"
+              @keyup.enter="searchPlaces"
+            ></v-text-field>
+          </div>
+          <div class="results">
+            <div
+              class="place"
+              v-for="rs in search.results"
+              :key="rs.place_name"
+            >
+              <h4 @click="setCenter(rs)" style="cursor: pointer">
+                {{ rs.place_name }}
+              </h4>
+              <div class="addr">
+                <h5>{{ rs.address_name }}</h5>
+              </div>
+              <button @click="addPlan(rs)">+</button>
             </div>
-            <button @click="addPlan(rs)">+</button>
           </div>
         </div>
+        <div id="map"></div>
       </div>
-      <div id="map"></div>
-    </div>
-    <div class="planner" style="margin-left: 35px">
-      <div class="dateResult" v-for="(rs, i) in dateResult" :key="rs.date">
-        <h4 @click="showDate(rs)">Day{{ i + 1 }}</h4>
-        <div v-if="rs.view == 1"></div>
-      </div>
-      <!-- <button @click="getPlan">플랜갖고오기</button> -->
-      <div class="plan" v-for="(rs, idx) in planner.planList" :key="idx">
-        <div v-if="checkDay(rs)">
-          <button @click="deletePlan(idx)">X</button>
-          <h4>{{ rs.name }}</h4>
-          <input
-            type="text"
-            v-model="rs.memo"
-            placeholder="메모를 입력하세요."
-          />
-          <input type="text" v-model="rs.date" placeholder="YYYY-MM-DD HH:MM" />
-          <!--           <div>
-            <v-checkbox v-model="landscape" label="Landscape"></v-checkbox>
-            <v-time-picker
-              v-model="picker"
-              :landscape="landscape"
-            ></v-time-picker>
-          </div> -->
-        </div>
+      <div
+        style="
+          width: 35%;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          margin-left: 1px;
+        "
+      >
+        <v-card
+          class="mx-auto"
+          style="
+            height: 500px;
+            width: 35.9%;
+            margin-left: 0;
+            margin-right: 0;
+            overflow-y: auto;
+          "
+          tile
+        >
+          <v-list dense style="padding: 0">
+            <v-subheader style="background-color: #1bc6ec; color: aliceblue"
+              >DAY</v-subheader
+            >
+            <v-list-item-group v-model="selectedItem" color="primary">
+              <v-list-item v-for="(rs, i) in dateResult" :key="i">
+                <v-list-item-content @click="showDate(rs)">
+                  <v-list-item-title>Day{{ i + 1 }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
+        <v-card
+          class="mx-auto"
+          style="height: 500px; width: 63.9%; overflow-y: auto"
+          tile
+        >
+          <v-list dense style="padding: 0">
+            <v-subheader
+              style="
+                background-color: #1bc6ec;
+                color: aliceblue;
+                position: sticky;
+              "
+              >PLAN</v-subheader
+            >
+            <div v-for="(rs, i) in planner.planList" :key="i">
+              <v-list-item v-if="checkDay(rs)">
+                <v-list-item-content>
+                  <v-card elevation="5" outlined style="margin: 2px 0">
+                    <div
+                      style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                      "
+                    >
+                      <v-list-item-title
+                        style="margin: 7px 0px 15px 9px; width: 80%"
+                        >{{ rs.name }}</v-list-item-title
+                      >
+                      <v-btn
+                        style="width: 15%; min-width: none; padding: 0%"
+                        @click="deletePlan(i)"
+                        >-</v-btn
+                      >
+                    </div>
+                    <v-menu
+                      ref="menu"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          solo
+                          v-bind:value="getOrderDate(i)"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                          @click="timepicker = i"
+                          style="font-size: small; height: 45px"
+                        ></v-text-field>
+                      </template>
+                      <div v-if="timepicker == i">
+                        <v-time-picker
+                          v-model="timepickerTime"
+                          full-width
+                        ></v-time-picker>
+                        <v-btn
+                          @click="doneTimePicker(rs)"
+                          style="
+                            background-color: #1bc6ec;
+                            width: 100%;
+                            color: white;
+                            font-family: 'Inter';
+                            font-style: normal;
+                            font-weight: 700;
+                            border-radius: 4px;
+                          "
+                          >done</v-btn
+                        >
+                      </div>
+                    </v-menu>
+                    <v-text-field
+                      label="메모"
+                      solo
+                      v-model="rs.memo"
+                      style="font-size: small; height: 45px"
+                    ></v-text-field>
+                  </v-card>
+                </v-list-item-content>
+              </v-list-item>
+            </div>
+          </v-list>
+        </v-card>
       </div>
     </div>
   </div>
@@ -284,8 +405,12 @@ export default {
       dayCnt: 0,
       startDatePicker: 0,
       endDatePicker: 0,
+      time: null,
+      timepicker: null,
+      timepickerTime: "00:00",
       showDialog: false,
       showSelected: false,
+      selectedItem: 0,
       dateResult: [],
       place: [],
       mapOption: {
@@ -355,15 +480,6 @@ export default {
       };
       this.map = new window.kakao.maps.Map(container, options);
     },
-    // 지도 크기 조정(level값)
-    zoom(div) {
-      let level = this.map.getLevel();
-      if (div == 1) {
-        this.map.setLevel(level - 1);
-      } else if (div == -1) {
-        this.map.setLevel(level + 1);
-      }
-    },
     searchPlaces(e) {
       const keyword = e.target.value.trim();
       if (keyword.length === 0) {
@@ -404,7 +520,7 @@ export default {
       //http://localhost:8080/api/v1/planner/post
       axios({
         method: "post", // [요청 타입]
-        url: "http://localhost:8080/api/v1/planner/post", // [요청 주소]
+        url: "https://reqres.in/api/users", // [요청 주소]
         data: JSON.stringify(this.planner), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -429,7 +545,7 @@ export default {
       this.endDatePicker = 0;
       let date1 = new Date(this.start_date);
       let date2 = new Date(this.end_date);
-      let dateDiff = date1 < date2;
+      let dateDiff = date1 <= date2;
       if (
         this.start_date != "" &&
         this.end_date != "" &&
@@ -458,7 +574,6 @@ export default {
         this.searchbox = 1;
       }
     },
-    getPlan() {},
     setCenter(rs) {
       // 이동할 위도 경도 위치를 생성합니다
       let moveLatLon = new window.kakao.maps.LatLng(rs.y, rs.x);
@@ -480,6 +595,15 @@ export default {
     deletePlan(idx) {
       this.planner.planList.splice(idx, 1);
       console.log(this.planner);
+    },
+    doneTimePicker(rs) {
+      let date = rs.date.substring(0, 11);
+      rs.date = `${date}${this.timepickerTime}`;
+      this.timepicker = null;
+      this.timepickerTime = "00:00";
+    },
+    getOrderDate(idx) {
+      return this.planner.planList[idx].date.substring(11, 16);
     },
   },
 };
@@ -509,10 +633,15 @@ export default {
   height: 500px;
   z-index: 10000;
   background-color: #ffffffaa;
+  color: rgb(21, 20, 20);
   overflow-y: auto;
-  width: 250px;
+  width: 200px;
   display: flex;
   flex-direction: column;
+}
+
+.v-text-field::lable {
+  color: aliceblue;
 }
 
 .place {
