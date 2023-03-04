@@ -279,8 +279,6 @@ export default {
   align-items: center;
   margin-top: 130px;
   margin-right: 47px;
-
-  /* Inside auto layout */
   flex: none;
   order: 0;
   flex-grow: 0;

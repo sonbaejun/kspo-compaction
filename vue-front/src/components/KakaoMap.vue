@@ -212,7 +212,6 @@
         >플랜저장하기</v-btn
       >
     </div>
-    <!-- <button @click="modal = 1">여행정보수정</button> -->
     <div
       style="
         width: 90%;
@@ -226,17 +225,6 @@
       <div class="maparea">
         <div class="searchbox" v-if="searchbox == 1">
           <div style="background-color: ; position: relative">
-            <!--             <input
-              type="text"
-              placeholder="장소를 검색해주세요."
-              @keyup.enter="searchPlaces"
-            /> -->
-            <!--           <v-text-field
-              class=""
-              label="SEARCH"
-              @keyup.enter="searchPlaces"
-              style="width: 100%"
-            ></v-text-field> -->
             <v-text-field
               filled
               label="search"
@@ -449,17 +437,6 @@ export default {
       // 없다면 카카오 스크립트 추가 후 맵 실행
       this.loadScript();
     }
-    /*  // localhost:8080/planner/{id}
-    axios
-      .get("http://localhost:8080/api/v1/planner")
-      .then((response) => {
-        response.data.plan.forEach((a) => {
-          this.planner.planList.push(a);
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      }); */
   },
   methods: {
     loadScript() {
@@ -520,7 +497,7 @@ export default {
       //http://localhost:8080/api/v1/planner/post
       axios({
         method: "post", // [요청 타입]
-        url: "https://reqres.in/api/users", // [요청 주소]
+        url: "http://localhost:8080/api/v1/planner/post", // [요청 주소]
         data: JSON.stringify(this.planner), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -609,8 +586,7 @@ export default {
 };
 </script>
 
-    <!-- Add "scoped" attribute to limit CSS to this component only -->
-    <style scoped>
+<style scoped>
 #map {
   flex: 1 1 auto;
   height: 500px;

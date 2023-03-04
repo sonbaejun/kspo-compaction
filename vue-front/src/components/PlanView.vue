@@ -38,7 +38,7 @@
     >
       <v-card
         class="mx-auto"
-        style="height: 500px; width: 25.9%; margin-left: 0; margin-right: 0; overflow-y: auto;"
+        style="height: 500px; width: 35.9%; margin-left: 0; margin-right: 0; overflow-y: auto;"
         tile
       >
         <v-list dense style="padding: 0;">
@@ -56,7 +56,7 @@
       </v-card>
       <v-card
         class="mx-auto"
-        style="height: 500px; width: 73.9%; overflow-y: auto"
+        style="height: 500px; width: 63.9%; overflow-y: auto"
         tile
       >
         <v-list dense style="padding: 0">

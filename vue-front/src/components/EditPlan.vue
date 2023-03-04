@@ -512,7 +512,7 @@ export default {
       // https://reqres.in/api/users/2
       axios({
         method: "put", // [요청 타입]
-        url: `https://reqres.in/api/users/2`, // [요청 주소]
+        url: `http://localhost:8080/api/v1/planner/update/${this.id}`, // [요청 주소]
         data: JSON.stringify(this.planner), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
