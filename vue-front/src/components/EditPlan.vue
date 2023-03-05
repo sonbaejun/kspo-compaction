@@ -249,6 +249,40 @@
           </div>
         </div>
         <div id="map"></div>
+        <ul id="category">
+          <li id="PK6" data-order="0">
+            <span class="category_bg park"></span>
+            주차장
+          </li>
+          <li id="MT1" data-order="0">
+            <span class="category_bg mart"></span>
+            대형마트
+          </li>
+          <li id="SW8" data-order="0">
+            <span class="category_bg subway"></span>
+            지하철역
+          </li>
+          <li id="CT1" data-order="0">
+            <span class="category_bg ct"></span>
+            문화시설
+          </li>
+          <li id="AT4" data-order="0">
+            <span class="category_bg attractions"></span>
+            관광명소
+          </li>
+          <li id="AD5" data-order="0">
+            <span class="category_bg accommodation"></span>
+            숙박
+          </li>
+          <li id="FD6" data-order="0">
+            <span class="category_bg food"></span>
+            음식점
+          </li>
+          <li id="CE7" data-order="0">
+            <span class="category_bg cafe"></span>
+            카페
+          </li>
+        </ul>
       </div>
       <div
         style="
@@ -262,7 +296,7 @@
         <v-card
           class="mx-auto"
           style="
-            height: 500px;
+            height: 600px;
             width: 35.9%;
             margin-left: 0;
             margin-right: 0;
@@ -285,7 +319,7 @@
         </v-card>
         <v-card
           class="mx-auto"
-          style="height: 500px; width: 63.9%; overflow-y: auto"
+          style="height: 600px; width: 63.9%; overflow-y: auto"
           tile
         >
           <v-list dense style="padding: 0">
@@ -396,10 +430,12 @@ export default {
       endDatePicker: 0,
       time: null,
       timepicker: null,
+      map: null,
       timepickerTime: "00:00",
       selectedItem: 0,
       showDialog: false,
       showSelected: false,
+      markers: null,
       dateResult: [],
       mapOption: {
         center: {
@@ -422,7 +458,6 @@ export default {
         placeList: [],
         planList: [],
       },
-      map: null,
       plan: [],
       plan2: [],
     };
@@ -467,8 +502,82 @@ export default {
         center: new window.kakao.maps.LatLng(33.450701, 126.570667),
         level: 3,
       };
+      let positions = [
+        {
+          title: "카카오",
+          latlng: new window.kakao.maps.LatLng(33.450705, 126.570677),
+        },
+        {
+          title: "생태연못",
+          latlng: new window.kakao.maps.LatLng(33.450936, 126.569477),
+        },
+        {
+          title: "텃밭",
+          latlng: new window.kakao.maps.LatLng(33.450879, 126.56994),
+        },
+        {
+          title: "근린공원",
+          latlng: new window.kakao.maps.LatLng(33.451393, 126.570738),
+        },
+      ];
 
       this.map = new window.kakao.maps.Map(container, options);
+      let markerPosition = new window.kakao.maps.LatLng(33.450701, 126.570667);
+      let marker = new window.kakao.maps.Marker({
+        position: markerPosition,
+      });
+      let iwContent =
+        '<div style="padding:5px;">Hello World! <br><a href="https://map.kakao.com/link/map/Hello World!,33.450701,126.570667" style="color:blue" target="_blank">큰지도보기</a> <a href="https://map.kakao.com/link/to/Hello World!,33.450701,126.570667" style="color:blue" target="_blank">길찾기</a></div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+      let iwPosition = new window.kakao.maps.LatLng(33.450701, 126.570667); //인포윈도우 표시 위치입니다
+      let infowindow = new window.kakao.maps.InfoWindow({
+        position: iwPosition,
+        content: iwContent,
+      });
+      infowindow.open(this.map, marker);
+
+      let ps2 = new window.kakao.maps.services.Places();
+      ps2.categorySearch("FD6", placesSearchCB, { useMapBounds: true });
+      function placesSearchCB(data, status, pagination) {
+        if (1) {
+          for (let i = 0; i < data.length; i++) {
+            displayMarker(data[i]);
+          }
+        }
+      }
+      function displayMarker(place) {
+        // 마커를 생성하고 지도에 표시합니다
+        console.log(place);
+        let markerPosition = new window.kakao.maps.LatLng(place.y, place.x);
+        let marker = new window.kakao.maps.Marker({
+          position: markerPosition,
+        });
+        let obj = {
+          title: place.place_name,
+          latlng: markerPosition,
+        };
+        positions.push(obj);
+        // marker.setMap(this.map);
+      }
+      var imageSrc =
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+      setTimeout(() => {
+        for (let i = 0; i < positions.length; i++) {
+          // 마커 이미지의 이미지 크기 입니다
+          var imageSize = new window.kakao.maps.Size(24, 35);
+
+          // 마커 이미지를 생성합니다
+          var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+
+          // 마커를 생성합니다
+          let marker = new window.kakao.maps.Marker({
+            map: this.map, // 마커를 표시할 지도
+            position: positions[i].latlng, // 마커를 표시할 위치
+            title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+            image: markerImage, // 마커 이미지
+          });
+        }
+      },100);
     },
     searchPlaces(e) {
       const keyword = e.target.value.trim();
@@ -482,6 +591,7 @@ export default {
         this.search.pgn = pgn;
         this.search.results = data;
       });
+      /* 키워드 검색 / 카테고리 검색 구분선 */
     },
     addPlan(rs) {
       let obj = {};
@@ -608,7 +718,7 @@ export default {
   <style>
 #map {
   flex: 1 1 auto;
-  height: 500px;
+  height: 600px;
 }
 .maparea {
   width: 80%;
@@ -625,7 +735,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  height: 500px;
+  height: 600px;
   z-index: 10000;
   background-color: #ffffffaa;
   color: rgb(21, 20, 20);
