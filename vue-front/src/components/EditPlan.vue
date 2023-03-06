@@ -211,6 +211,19 @@
         "
         >플랜저장하기</v-btn
       >
+      <v-btn
+        @click="changeCartegory('AT4')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >플랜저장하기</v-btn
+      >
     </div>
     <div
       style="
@@ -424,6 +437,7 @@ export default {
       concept: this.$route.params.plan.concept,
       place: [],
       placeStr: [],
+      positions: [],
       curDate: "",
       dayCnt: 0,
       startDatePicker: 0,
@@ -435,7 +449,8 @@ export default {
       selectedItem: 0,
       showDialog: false,
       showSelected: false,
-      markers: null,
+      markers: [],
+      curCartegory: "FD6",
       dateResult: [],
       mapOption: {
         center: {
@@ -502,27 +517,10 @@ export default {
         center: new window.kakao.maps.LatLng(33.450701, 126.570667),
         level: 3,
       };
-      let positions = [
-        {
-          title: "카카오",
-          latlng: new window.kakao.maps.LatLng(33.450705, 126.570677),
-        },
-        {
-          title: "생태연못",
-          latlng: new window.kakao.maps.LatLng(33.450936, 126.569477),
-        },
-        {
-          title: "텃밭",
-          latlng: new window.kakao.maps.LatLng(33.450879, 126.56994),
-        },
-        {
-          title: "근린공원",
-          latlng: new window.kakao.maps.LatLng(33.451393, 126.570738),
-        },
-      ];
+      // let positions = [];
 
       this.map = new window.kakao.maps.Map(container, options);
-      let markerPosition = new window.kakao.maps.LatLng(33.450701, 126.570667);
+      /*      let markerPosition = new window.kakao.maps.LatLng(33.450701, 126.570667);
       let marker = new window.kakao.maps.Marker({
         position: markerPosition,
       });
@@ -533,18 +531,9 @@ export default {
         position: iwPosition,
         content: iwContent,
       });
-      infowindow.open(this.map, marker);
+      infowindow.open(this.map, marker); */
 
-      let ps2 = new window.kakao.maps.services.Places();
-      ps2.categorySearch("FD6", placesSearchCB, { useMapBounds: true });
-      function placesSearchCB(data, status, pagination) {
-        if (1) {
-          for (let i = 0; i < data.length; i++) {
-            displayMarker(data[i]);
-          }
-        }
-      }
-      function displayMarker(place) {
+      /* function displayMarker(place) {
         // 마커를 생성하고 지도에 표시합니다
         console.log(place);
         let markerPosition = new window.kakao.maps.LatLng(place.y, place.x);
@@ -555,31 +544,36 @@ export default {
           title: place.place_name,
           latlng: markerPosition,
         };
-        positions.push(obj);
+        this.positions.push(obj);
         // marker.setMap(this.map);
-      }
-      var imageSrc =
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-
-      setTimeout(() => {
-        for (let i = 0; i < positions.length; i++) {
+      } */
+      kakao.maps.event.addListener(this.map, "idle", this.searchCartegory);
+      this.searchCartegory();
+      /* setTimeout(() => {
+        for (let i = 0; i < this.positions.length; i++) {
           // 마커 이미지의 이미지 크기 입니다
           var imageSize = new window.kakao.maps.Size(24, 35);
+          var imageSrc =
+            "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
 
           // 마커 이미지를 생성합니다
-          var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+          var markerImage = new window.kakao.maps.MarkerImage(
+            imageSrc,
+            imageSize
+          );
 
           // 마커를 생성합니다
           let marker = new window.kakao.maps.Marker({
             map: this.map, // 마커를 표시할 지도
-            position: positions[i].latlng, // 마커를 표시할 위치
-            title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+            position: this.positions[i].latlng, // 마커를 표시할 위치
+            title: this.positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
             image: markerImage, // 마커 이미지
           });
         }
-      },100);
+      }, 100); */
     },
     searchPlaces(e) {
+      console.log(1);
       const keyword = e.target.value.trim();
       if (keyword.length === 0) {
         return;
@@ -710,6 +704,65 @@ export default {
     },
     getOrderDate(idx) {
       return this.planner.planList[idx].date.substring(11, 16);
+    },
+    searchCartegory() {
+      this.removeMarkers();
+      this.positions.length = 0;
+      this.markers.length = 0;
+      let ps2 = new window.kakao.maps.services.Places(this.map);
+      ps2.categorySearch(this.curCartegory, this.placesSearchCB, {
+        useMapBounds: true,
+      });
+    },
+    placesSearchCB(data, status, pagination) {
+      for (let i = 0; i < data.length; i++) {
+        this.displayMarker(data[i]);
+      }
+      setTimeout(() => {
+        console.log(this.positions.length);
+        for (let i = 0; i < this.positions.length; i++) {
+          // 마커 이미지의 이미지 크기 입니다
+          var imageSize = new window.kakao.maps.Size(24, 35);
+          var imageSrc =
+            "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+          // 마커 이미지를 생성합니다
+          var markerImage = new window.kakao.maps.MarkerImage(
+            imageSrc,
+            imageSize
+          );
+
+          // 마커를 생성합니다
+          let marker = new window.kakao.maps.Marker({
+            map: this.map, // 마커를 표시할 지도
+            position: this.positions[i].latlng, // 마커를 표시할 위치
+            title: this.positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+            image: markerImage, // 마커 이미지
+          });
+          this.markers.push(marker);
+        }
+        console.log(this.markers);
+      }, 100);
+    },
+    displayMarker(place) {
+      let markerPosition = new window.kakao.maps.LatLng(place.y, place.x);
+      let obj = {
+        title: place.place_name,
+        latlng: markerPosition,
+      };
+      this.positions.push(obj);
+    },
+    removeMarkers() {
+      for (let i = 0; i < this.markers.length; i++) {
+        this.markers[i].setMap(null);
+      }
+    },
+    changeCartegory(car) {
+      this.removeMarkers();
+      this.markers.length = 0;
+      console.log(this.markers);
+      this.curCartegory = car;
+      this.searchCartegory();
     },
   },
 };
