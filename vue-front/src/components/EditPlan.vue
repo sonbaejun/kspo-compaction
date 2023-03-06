@@ -222,7 +222,98 @@
           font-weight: 700;
           border-radius: 8px;
         "
-        >플랜저장하기</v-btn
+        >관광명소</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('PK6')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >주차장</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('MT1')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >대형마트</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('SW8')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >지하철역</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('CT1')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >문화시설</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('AD5')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >숙박</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('FD6')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >음식점</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('CE7')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >카페</v-btn
       >
     </div>
     <div
@@ -262,40 +353,6 @@
           </div>
         </div>
         <div id="map"></div>
-        <ul id="category">
-          <li id="PK6" data-order="0">
-            <span class="category_bg park"></span>
-            주차장
-          </li>
-          <li id="MT1" data-order="0">
-            <span class="category_bg mart"></span>
-            대형마트
-          </li>
-          <li id="SW8" data-order="0">
-            <span class="category_bg subway"></span>
-            지하철역
-          </li>
-          <li id="CT1" data-order="0">
-            <span class="category_bg ct"></span>
-            문화시설
-          </li>
-          <li id="AT4" data-order="0">
-            <span class="category_bg attractions"></span>
-            관광명소
-          </li>
-          <li id="AD5" data-order="0">
-            <span class="category_bg accommodation"></span>
-            숙박
-          </li>
-          <li id="FD6" data-order="0">
-            <span class="category_bg food"></span>
-            음식점
-          </li>
-          <li id="CE7" data-order="0">
-            <span class="category_bg cafe"></span>
-            카페
-          </li>
-        </ul>
       </div>
       <div
         style="
@@ -450,7 +507,7 @@ export default {
       showDialog: false,
       showSelected: false,
       markers: [],
-      curCartegory: "FD6",
+      curCartegory: "AT4",
       dateResult: [],
       mapOption: {
         center: {
@@ -520,60 +577,10 @@ export default {
       // let positions = [];
 
       this.map = new window.kakao.maps.Map(container, options);
-      /*      let markerPosition = new window.kakao.maps.LatLng(33.450701, 126.570667);
-      let marker = new window.kakao.maps.Marker({
-        position: markerPosition,
-      });
-      let iwContent =
-        '<div style="padding:5px;">Hello World! <br><a href="https://map.kakao.com/link/map/Hello World!,33.450701,126.570667" style="color:blue" target="_blank">큰지도보기</a> <a href="https://map.kakao.com/link/to/Hello World!,33.450701,126.570667" style="color:blue" target="_blank">길찾기</a></div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-      let iwPosition = new window.kakao.maps.LatLng(33.450701, 126.570667); //인포윈도우 표시 위치입니다
-      let infowindow = new window.kakao.maps.InfoWindow({
-        position: iwPosition,
-        content: iwContent,
-      });
-      infowindow.open(this.map, marker); */
-
-      /* function displayMarker(place) {
-        // 마커를 생성하고 지도에 표시합니다
-        console.log(place);
-        let markerPosition = new window.kakao.maps.LatLng(place.y, place.x);
-        let marker = new window.kakao.maps.Marker({
-          position: markerPosition,
-        });
-        let obj = {
-          title: place.place_name,
-          latlng: markerPosition,
-        };
-        this.positions.push(obj);
-        // marker.setMap(this.map);
-      } */
       kakao.maps.event.addListener(this.map, "idle", this.searchCartegory);
       this.searchCartegory();
-      /* setTimeout(() => {
-        for (let i = 0; i < this.positions.length; i++) {
-          // 마커 이미지의 이미지 크기 입니다
-          var imageSize = new window.kakao.maps.Size(24, 35);
-          var imageSrc =
-            "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-
-          // 마커 이미지를 생성합니다
-          var markerImage = new window.kakao.maps.MarkerImage(
-            imageSrc,
-            imageSize
-          );
-
-          // 마커를 생성합니다
-          let marker = new window.kakao.maps.Marker({
-            map: this.map, // 마커를 표시할 지도
-            position: this.positions[i].latlng, // 마커를 표시할 위치
-            title: this.positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-            image: markerImage, // 마커 이미지
-          });
-        }
-      }, 100); */
     },
     searchPlaces(e) {
-      console.log(1);
       const keyword = e.target.value.trim();
       if (keyword.length === 0) {
         return;
@@ -585,7 +592,6 @@ export default {
         this.search.pgn = pgn;
         this.search.results = data;
       });
-      /* 키워드 검색 / 카테고리 검색 구분선 */
     },
     addPlan(rs) {
       let obj = {};
@@ -715,11 +721,11 @@ export default {
       });
     },
     placesSearchCB(data, status, pagination) {
+      console.log(data[0]);
       for (let i = 0; i < data.length; i++) {
         this.displayMarker(data[i]);
       }
       setTimeout(() => {
-        console.log(this.positions.length);
         for (let i = 0; i < this.positions.length; i++) {
           // 마커 이미지의 이미지 크기 입니다
           var imageSize = new window.kakao.maps.Size(24, 35);
@@ -732,6 +738,14 @@ export default {
             imageSize
           );
 
+          var iwContent = '<div style="padding:5px;">hello world</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+          // 인포윈도우를 생성합니다
+          var infowindow = new kakao.maps.InfoWindow({
+            content: iwContent,
+            removable: iwRemoveable,
+          });
           // 마커를 생성합니다
           let marker = new window.kakao.maps.Marker({
             map: this.map, // 마커를 표시할 지도
@@ -739,9 +753,18 @@ export default {
             title: this.positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
             image: markerImage, // 마커 이미지
           });
+          
+          /* 마커에 클릭이벤트 등록 */
+          kakao.maps.event.addListener(marker, "click", () => {
+            console.log(
+              `위치: ${this.positions[i].x} + ${this.positions[i].y} + ${this.positions[i].latlng} + ${this.positions[i].address}, 제목: ${this.positions[i].title}`
+            );
+            console.log(this.positions.length);
+            infowindow.open(this.map, marker);
+          });
+
           this.markers.push(marker);
         }
-        console.log(this.markers);
       }, 100);
     },
     displayMarker(place) {
@@ -749,6 +772,9 @@ export default {
       let obj = {
         title: place.place_name,
         latlng: markerPosition,
+        address: place.address_name,
+        x: place.x,
+        y: place.y,
       };
       this.positions.push(obj);
     },
@@ -760,7 +786,6 @@ export default {
     changeCartegory(car) {
       this.removeMarkers();
       this.markers.length = 0;
-      console.log(this.markers);
       this.curCartegory = car;
       this.searchCartegory();
     },
