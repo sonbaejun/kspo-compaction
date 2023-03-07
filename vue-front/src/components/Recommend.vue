@@ -40,7 +40,7 @@
             <v-card-text style="height: 300px; width: 600px">
               <v-select
                 label="Select"
-                v-model="planner.placeList"
+                v-model="place"
                 :items="[
                   '서울',
                   '대전',
@@ -154,7 +154,7 @@
           ></v-text-field>
           <v-text-field
             label="Place"
-            v-model="planner.placeList"
+            v-model="place"
             style="margin-top: 0px; padding-top: 0px"
             @click="showSelected = true"
             readonly
@@ -207,7 +207,14 @@ export default {
       this.endDatePicker = 0;
       let date1 = new Date(this.planner.start_date);
       let date2 = new Date(this.planner.end_date);
-      let dateDiff = date1 < date2;
+      let dateDiff = date1 <= date2;
+      this.place.forEach((a) => {
+        let obj = {
+          place: a,
+        };
+        this.planner.placeList.push(obj);
+      });
+      console.log(this.planner);
       if (
         this.planner.start_date != "" &&
         this.planner.end_date != "" &&
