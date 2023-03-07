@@ -119,7 +119,7 @@
       </v-date-picker>
     </v-row>
     <div class="black-bg" v-if="modal == 1">
-      <div class="white-bg" style="margin: 130px; width: 50%">
+      <div class="white-bg" style="margin: 50px 150px; width: 50%">
         <div>
           <v-text-field
             label="Title"
@@ -165,6 +165,10 @@
             @click="showSelected = true"
             readonly
           ></v-text-field>
+          <v-radio-group v-model="planner.visibility" row>
+            <v-radio label="공개" value="VTP200Y"></v-radio>
+            <v-radio label="비공개" value="VTP403N"></v-radio>
+          </v-radio-group>
         </div>
         <v-btn
           variant="flat"
@@ -529,6 +533,7 @@ export default {
         concept: "",
         placeList: [],
         planList: [],
+        visibility: "VTP200Y"
       },
       plan: [],
       plan2: [],
@@ -753,7 +758,7 @@ export default {
             title: this.positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
             image: markerImage, // 마커 이미지
           });
-          
+
           /* 마커에 클릭이벤트 등록 */
           kakao.maps.event.addListener(marker, "click", () => {
             console.log(

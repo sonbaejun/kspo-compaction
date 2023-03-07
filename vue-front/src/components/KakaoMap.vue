@@ -119,7 +119,7 @@
       </v-date-picker>
     </v-row>
     <div class="black-bg" v-if="modal == 1">
-      <div class="white-bg" style="margin: 130px; width: 50%">
+      <div class="white-bg" style="margin: 50px 150px; width: 50%">
         <div>
           <v-text-field
             label="Title"
@@ -165,6 +165,10 @@
             @click="showSelected = true"
             readonly
           ></v-text-field>
+          <v-radio-group v-model="planner.visibility" row>
+            <v-radio label="공개" value="VTP200Y"></v-radio>
+            <v-radio label="비공개" value="VTP403N"></v-radio>
+          </v-radio-group>
         </div>
         <v-btn
           variant="flat"
@@ -262,7 +266,7 @@
         <v-card
           class="mx-auto"
           style="
-            height: 500px;
+            height: 600px;
             width: 35.9%;
             margin-left: 0;
             margin-right: 0;
@@ -285,7 +289,7 @@
         </v-card>
         <v-card
           class="mx-auto"
-          style="height: 500px; width: 63.9%; overflow-y: auto"
+          style="height: 600px; width: 63.9%; overflow-y: auto"
           tile
         >
           <v-list dense style="padding: 0">
@@ -422,6 +426,7 @@ export default {
         concept: "",
         placeList: [],
         planList: [],
+        visibility: "VTP200Y"
       },
       map: null,
       plan: [],
@@ -589,7 +594,7 @@ export default {
 <style scoped>
 #map {
   flex: 1 1 auto;
-  height: 500px;
+  height: 600px;
 }
 .maparea {
   width: 80%;
@@ -606,7 +611,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  height: 500px;
+  height: 600px;
   z-index: 10000;
   background-color: #ffffffaa;
   color: rgb(21, 20, 20);
