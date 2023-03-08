@@ -165,10 +165,15 @@
             @click="showSelected = true"
             readonly
           ></v-text-field>
-          <v-radio-group v-model="planner.visibility" row>
-            <v-radio label="공개" value="VTP200Y"></v-radio>
-            <v-radio label="비공개" value="VTP403N"></v-radio>
-          </v-radio-group>
+          <div>
+            <v-radio-group v-model="planner.visibility" row>
+              <v-radio label="공개" value="VTP200Y"></v-radio>
+              <v-radio label="비공개" value="VTP403N"></v-radio>
+              <h6 style="margin-top: 5px" v-if="checkVisibility()">
+                ※공개를 선택할 경우 타인이 플래너를 조회할 수 있습니다.
+              </h6>
+            </v-radio-group>
+          </div>
         </div>
         <v-btn
           variant="flat"
@@ -426,7 +431,7 @@ export default {
         concept: "",
         placeList: [],
         planList: [],
-        visibility: "VTP200Y"
+        visibility: "VTP200Y",
       },
       map: null,
       plan: [],
@@ -441,6 +446,17 @@ export default {
     } else {
       // 없다면 카카오 스크립트 추가 후 맵 실행
       this.loadScript();
+    }
+    console.log(this.$route.params.plan);
+    if (this.$route.params.plan != undefined) {
+      this.title = this.$route.params.plan.title;
+      this.intro = this.$route.params.plan.intro;
+      this.start_date = this.$route.params.plan.start_date;
+      this.end_date = this.$route.params.plan.end_date;
+      this.planner.concept = this.$route.params.plan.concept;
+      this.$route.params.plan.placeList.forEach((a) => {
+        this.place.push(a.place);
+      });
     }
   },
   methods: {
@@ -535,6 +551,12 @@ export default {
         this.intro != "" &&
         dateDiff
       ) {
+        if (this.$route.params.plan != undefined) {
+          this.$route.params.plan.planList.forEach((a) => {
+            console.log(a);
+            this.planner.planList.push(a);
+          });
+        }
         this.modal = 0;
         let curDate1 = new Date(this.start_date.substring(0, 10));
         while (curDate1 <= new Date(this.end_date.substring(0, 10))) {
@@ -586,6 +608,13 @@ export default {
     },
     getOrderDate(idx) {
       return this.planner.planList[idx].date.substring(11, 16);
+    },
+    checkVisibility() {
+      if (this.planner.visibility == "VTP200Y") {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };

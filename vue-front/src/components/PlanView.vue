@@ -2,28 +2,55 @@
   <div>
     <div style="margin-left: 30px">
       <v-btn
+        v-if="checkUser == 1"
         class="editBtn"
         @click="goEdit"
         style="background-color: #1bc6ec; color: aliceblue; border-radius: 6px"
         >수정</v-btn
       >
       <v-btn
+        v-if="checkUser == 1"
         class="deleteBtn"
         @click="deletePlan"
         style="background-color: red; color: aliceblue; border-radius: 6px"
         >삭제</v-btn
       >
+      <v-btn
+        v-else-if="checkUser == 0"
+        class="editBtn"
+        @click="goKakaoMap"
+        style="background-color: #1bc6ec; color: aliceblue; border-radius: 6px"
+        >복사하기</v-btn
+      >
     </div>
     <div>
       <v-card
         elevation="8"
-        style="width: 40%; margin-left: 30px; margin-top: 20px; border-radius: 10px; background-color: #36CFFF; color: white; border: 2px solid #1bc6ec;"
+        style="
+          width: 40%;
+          margin-left: 30px;
+          margin-top: 20px;
+          border-radius: 10px;
+          background-color: #36cfff;
+          color: white;
+          border: 2px solid #1bc6ec;
+        "
       >
         <v-card-title>{{ planner.title }}</v-card-title>
-        <v-card-subtitle style="color: white;">{{ planner.intro }}</v-card-subtitle>
-        <v-card-text style="color: white; padding: 0px; margin-left: 16px;">{{ planner.start_date + " to " + planner.end_date }}</v-card-text>
-        <v-card-text style="color: white; padding: 0px; margin: 2px 0px 0px 16px;">{{ planner.concept + " 여행" }}</v-card-text>
-        <v-card-text style="color: white; padding: 0px; margin: 2px 0px 0px 16px;">{{ place }}</v-card-text>
+        <v-card-subtitle style="color: white">{{
+          planner.intro
+        }}</v-card-subtitle>
+        <v-card-text style="color: white; padding: 0px; margin-left: 16px">{{
+          planner.start_date + " to " + planner.end_date
+        }}</v-card-text>
+        <v-card-text
+          style="color: white; padding: 0px; margin: 2px 0px 0px 16px"
+          >{{ planner.concept + " 여행" }}</v-card-text
+        >
+        <v-card-text
+          style="color: white; padding: 0px; margin: 2px 0px 0px 16px"
+          >{{ place }}</v-card-text
+        >
       </v-card>
     </div>
     <div
@@ -38,10 +65,16 @@
     >
       <v-card
         class="mx-auto"
-        style="height: 500px; width: 35.9%; margin-left: 0; margin-right: 0; overflow-y: auto;"
+        style="
+          height: 500px;
+          width: 35.9%;
+          margin-left: 0;
+          margin-right: 0;
+          overflow-y: auto;
+        "
         tile
       >
-        <v-list dense style="padding: 0;">
+        <v-list dense style="padding: 0">
           <v-subheader style="background-color: #1bc6ec; color: aliceblue"
             >DAY</v-subheader
           >
@@ -101,6 +134,8 @@ export default {
       dateResult: [],
       selectedItem: 0,
       place: "",
+      nickname: "",
+      checkUser: null,
       items: [
         { text: "Real-Time" },
         { text: "Audience" },
@@ -177,6 +212,12 @@ export default {
         params: { id: this.id, plan: this.planner },
       });
     },
+    goKakaoMap() {
+      this.$router.push({
+        name: "KakaoMap",
+        params: { plan: this.planner },
+      });
+    },
   },
   mounted() {
     /* http://localhost:8080/api/v1/planner/${this.id} */
@@ -192,7 +233,12 @@ export default {
         }
       )
       .then((response) => {
-        console.log(response);
+        // this.nickname = response.data.nickname;
+        if (this.nickname == this.$store.state.userInfo.nickname) {
+          this.checkUser = 1;
+        } else {
+          this.checkUser = 0;
+        }
         this.planner.title = response.data.title;
         this.planner.intro = response.data.intro;
         this.planner.start_date = response.data.start_date.substring(0, 10);

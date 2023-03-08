@@ -165,10 +165,15 @@
             @click="showSelected = true"
             readonly
           ></v-text-field>
-          <v-radio-group v-model="planner.visibility" row>
-            <v-radio label="공개" value="VTP200Y"></v-radio>
-            <v-radio label="비공개" value="VTP403N"></v-radio>
-          </v-radio-group>
+          <div>
+            <v-radio-group v-model="planner.visibility" row>
+              <v-radio label="공개" value="VTP200Y"></v-radio>
+              <v-radio label="비공개" value="VTP403N"></v-radio>
+              <h6 style="margin-top: 5px" v-if="checkVisibility()">
+                ※공개를 선택할 경우 타인이 플래너를 조회할 수 있습니다.
+              </h6>
+            </v-radio-group>
+          </div>
         </div>
         <v-btn
           variant="flat"
@@ -533,7 +538,7 @@ export default {
         concept: "",
         placeList: [],
         planList: [],
-        visibility: "VTP200Y"
+        visibility: "VTP200Y",
       },
       plan: [],
       plan2: [],
@@ -547,7 +552,6 @@ export default {
       // 없다면 카카오 스크립트 추가 후 맵 실행
       this.loadScript();
     }
-    console.log(this.$route.params.plan.concept);
     this.planner.title = this.$route.params.plan.title;
     this.planner.intro = this.$route.params.plan.intro;
     this.planner.start_date = this.$route.params.plan.start_date;
@@ -555,11 +559,9 @@ export default {
     this.id = this.$route.params.id;
     this.concept = this.$route.params.plan.concept;
     this.$route.params.plan.placeList.forEach((a) => {
-      console.log(a);
       this.place.push(a.place);
       this.placeStr.push(a.place);
     });
-    console.log(this.place);
     this.modal = 1;
   },
   methods: {
@@ -793,6 +795,13 @@ export default {
       this.markers.length = 0;
       this.curCartegory = car;
       this.searchCartegory();
+    },
+    checkVisibility() {
+      if (this.planner.visibility == "VTP200Y") {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };
