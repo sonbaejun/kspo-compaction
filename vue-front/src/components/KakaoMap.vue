@@ -194,20 +194,6 @@
     </div>
     <div style="margin-top: 15px; margin-left: 33px">
       <v-btn
-        variant="flat"
-        style="
-          background-color: #1bc6ec;
-          color: white;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 700;
-          border-radius: 8px;
-        "
-        class="searchView"
-        @click="searchView"
-        >검색창 여닫이</v-btn
-      >
-      <v-btn
         @click="savePlan"
         variant="flat"
         style="
@@ -231,7 +217,7 @@
           font-weight: 700;
           border-radius: 8px;
         "
-        >관광명소</v-btn
+        ><i class="fas fa-archway"></i></v-btn
       >
       <v-btn
         @click="changeCartegory('PK6')"
@@ -244,8 +230,8 @@
           font-weight: 700;
           border-radius: 8px;
         "
-        >주차장</v-btn
-      >
+        ><i class="fas fa-car"></i
+      ></v-btn>
       <v-btn
         @click="changeCartegory('MT1')"
         variant="flat"
@@ -257,8 +243,8 @@
           font-weight: 700;
           border-radius: 8px;
         "
-        >대형마트</v-btn
-      >
+        ><i class="fas fa-cart-plus"></i
+      ></v-btn>
       <v-btn
         @click="changeCartegory('SW8')"
         variant="flat"
@@ -270,21 +256,8 @@
           font-weight: 700;
           border-radius: 8px;
         "
-        >지하철역</v-btn
-      >
-      <v-btn
-        @click="changeCartegory('CT1')"
-        variant="flat"
-        style="
-          background-color: #1bc6ec;
-          color: white;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 700;
-          border-radius: 8px;
-        "
-        >문화시설</v-btn
-      >
+        ><i class="fas fa-subway"></i
+      ></v-btn>
       <v-btn
         @click="changeCartegory('AD5')"
         variant="flat"
@@ -296,8 +269,8 @@
           font-weight: 700;
           border-radius: 8px;
         "
-        >숙박</v-btn
-      >
+        ><i class="fas fa-house-user"></i
+      ></v-btn>
       <v-btn
         @click="changeCartegory('FD6')"
         variant="flat"
@@ -309,8 +282,8 @@
           font-weight: 700;
           border-radius: 8px;
         "
-        >음식점</v-btn
-      >
+        ><i class="fas fa-utensils"></i
+      ></v-btn>
       <v-btn
         @click="changeCartegory('CE7')"
         variant="flat"
@@ -322,8 +295,8 @@
           font-weight: 700;
           border-radius: 8px;
         "
-        >카페</v-btn
-      >
+        ><i class="fas fa-mug-hot"></i
+      ></v-btn>
     </div>
     <div
       style="
@@ -335,16 +308,91 @@
         margin-left: 35px;
       "
     >
+      <v-card
+        class="mx-auto"
+        style="
+          height: 600px;
+          width: 8%;
+          margin-left: 0;
+          margin-right: 0;
+          overflow-y: auto;
+        "
+        tile
+      >
+        <v-list dense style="padding: 0">
+          <v-subheader style="background-color: #1bc6ec; color: aliceblue"
+            >DAY</v-subheader
+          >
+          <v-list-item-group v-model="selectedItem" color="primary">
+            <v-list-item v-for="(rs, i) in dateResult" :key="i">
+              <v-list-item-content @click="showDate(rs)">
+                <v-list-item-title>Day{{ i + 1 }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-card>
       <div
         style="
-          width: 40%;
+          width: 34%;
           display: flex;
           flex-direction: row;
           justify-content: flex-start;
           margin-left: 1px;
         "
       >
-        <div
+        <v-card
+          class="mx-auto"
+          style="height: 600px; width: 50%; overflow-y: auto"
+          tile
+        >
+          <v-list dense style="padding: 0">
+            <input
+              class="searchInput"
+              placeholder="SEARCH"
+              @keyup.enter="searchPlaces"
+            />
+            <div v-for="rs in search.results" :key="rs.place_name">
+              <v-list-item>
+                <v-list-item-content>
+                  <v-card elevation="5" outlined style="margin: 2px 0">
+                    <div
+                      style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                      "
+                    >
+                      <v-list-item-title
+                        style="
+                          margin: 7px 0px 15px 9px;
+                          width: 80%;
+                          cursor: pointer;
+                        "
+                        @click="setCenter(rs)"
+                        >{{ rs.place_name }}</v-list-item-title
+                      >
+                      <v-btn
+                        style="
+                          width: 10%;
+                          padding: 0%;
+                          background-color: aliceblue;
+                        "
+                        @click="addPlan(rs)"
+                      >
+                        <i class="fas fa-plus-circle"></i>
+                      </v-btn>
+                    </div>
+                    <div class="addr" style="margin: 3px 9px">
+                      <h5>{{ rs.address_name }}</h5>
+                    </div>
+                  </v-card>
+                </v-list-item-content>
+              </v-list-item>
+            </div>
+          </v-list>
+        </v-card>
+        <!-- <div
           class="searchbox"
           style="
             position: relative;
@@ -354,12 +402,6 @@
           "
         >
           <div style="background-color: ; position: relative">
-            <!-- <v-text-field
-              filled
-              label="search"
-              style="height: 40px; background-color: #1bc6ec"
-              @keyup.enter="searchPlaces"
-            ></v-text-field> -->
             <input
               class="searchInput"
               placeholder="SEARCH"
@@ -381,34 +423,11 @@
               <button @click="addPlan(rs)">+</button>
             </div>
           </div>
-        </div>
+        </div> -->
+
         <v-card
           class="mx-auto"
-          style="
-            height: 600px;
-            width: 35.9%;
-            margin-left: 0;
-            margin-right: 0;
-            overflow-y: auto;
-          "
-          tile
-        >
-          <v-list dense style="padding: 0">
-            <v-subheader style="background-color: #1bc6ec; color: aliceblue"
-              >DAY</v-subheader
-            >
-            <v-list-item-group v-model="selectedItem" color="primary">
-              <v-list-item v-for="(rs, i) in dateResult" :key="i">
-                <v-list-item-content @click="showDate(rs)">
-                  <v-list-item-title>Day{{ i + 1 }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-card>
-        <v-card
-          class="mx-auto"
-          style="height: 600px; width: 63.9%; overflow-y: auto"
+          style="height: 600px; width: 50%; overflow-y: auto"
           tile
         >
           <v-list dense style="padding: 0">
@@ -436,10 +455,15 @@
                         >{{ rs.name }}</v-list-item-title
                       >
                       <v-btn
-                        style="width: 15%; min-width: none; padding: 0%"
+                        style="
+                          width: 15%;
+                          min-width: none;
+                          padding: 0%;
+                          background-color: aliceblue;
+                        "
                         @click="deletePlan(i)"
-                        >-</v-btn
-                      >
+                        ><i class="fas fa-minus-circle"></i
+                      ></v-btn>
                     </div>
                     <v-menu
                       ref="menu"
@@ -495,31 +519,6 @@
         </v-card>
       </div>
       <div class="maparea">
-        <div class="searchbox" v-if="searchbox == 1">
-          <div style="background-color: ; position: relative">
-            <v-text-field
-              filled
-              label="search"
-              style="height: 57px; background-color: #1bc6ec"
-              @keyup.enter="searchPlaces"
-            ></v-text-field>
-          </div>
-          <div class="results">
-            <div
-              class="place"
-              v-for="rs in search.results"
-              :key="rs.place_name"
-            >
-              <h4 @click="setCenter(rs)" style="cursor: pointer">
-                {{ rs.place_name }}
-              </h4>
-              <div class="addr">
-                <h5>{{ rs.address_name }}</h5>
-              </div>
-              <button @click="addPlan(rs)">+</button>
-            </div>
-          </div>
-        </div>
         <div id="map"></div>
       </div>
       <!-- <div
@@ -656,7 +655,6 @@ export default {
   data() {
     return {
       modal: 1,
-      searchbox: 1,
       title: "",
       intro: "",
       start_date: "",
@@ -839,13 +837,6 @@ export default {
         alert("잘못된 형식입니다(공백 또는 날짜 형식을 확인해주세요)");
       }
     },
-    searchView() {
-      if (this.searchbox == 1) {
-        this.searchbox = 0;
-      } else {
-        this.searchbox = 1;
-      }
-    },
     setCenter(rs) {
       // 이동할 위도 경도 위치를 생성합니다
       let moveLatLon = new window.kakao.maps.LatLng(rs.y, rs.x);
@@ -894,7 +885,7 @@ export default {
   height: 600px;
 }
 .maparea {
-  width: 80%;
+  width: 58%;
   display: flex;
   position: relative;
 }
@@ -1002,5 +993,9 @@ export default {
 }
 .searchInput:focus {
   outline: 2px solid white;
+}
+
+.mx-auto::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 </style>
