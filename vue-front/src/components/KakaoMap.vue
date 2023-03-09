@@ -220,10 +220,114 @@
         "
         >플랜저장하기</v-btn
       >
+      <v-btn
+        @click="changeCartegory('AT4')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >관광명소</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('PK6')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >주차장</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('MT1')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >대형마트</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('SW8')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >지하철역</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('CT1')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >문화시설</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('AD5')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >숙박</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('FD6')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >음식점</v-btn
+      >
+      <v-btn
+        @click="changeCartegory('CE7')"
+        variant="flat"
+        style="
+          background-color: #1bc6ec;
+          color: white;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          border-radius: 8px;
+        "
+        >카페</v-btn
+      >
     </div>
     <div
       style="
-        width: 90%;
+        width: 95%;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -231,6 +335,165 @@
         margin-left: 35px;
       "
     >
+      <div
+        style="
+          width: 40%;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          margin-left: 1px;
+        "
+      >
+        <div
+          class="searchbox"
+          style="
+            position: relative;
+            outline: solid;
+            outline-color: whitesmoke;
+            outline-offset: 0.1px;
+          "
+        >
+          <div style="background-color: ; position: relative">
+            <!-- <v-text-field
+              filled
+              label="search"
+              style="height: 40px; background-color: #1bc6ec"
+              @keyup.enter="searchPlaces"
+            ></v-text-field> -->
+            <input
+              class="searchInput"
+              placeholder="SEARCH"
+              @keyup.enter="searchPlaces"
+            />
+          </div>
+          <div class="results" style="">
+            <div
+              class="place"
+              v-for="rs in search.results"
+              :key="rs.place_name"
+            >
+              <h4 @click="setCenter(rs)" style="cursor: pointer">
+                {{ rs.place_name }}
+              </h4>
+              <div class="addr">
+                <h5>{{ rs.address_name }}</h5>
+              </div>
+              <button @click="addPlan(rs)">+</button>
+            </div>
+          </div>
+        </div>
+        <v-card
+          class="mx-auto"
+          style="
+            height: 600px;
+            width: 35.9%;
+            margin-left: 0;
+            margin-right: 0;
+            overflow-y: auto;
+          "
+          tile
+        >
+          <v-list dense style="padding: 0">
+            <v-subheader style="background-color: #1bc6ec; color: aliceblue"
+              >DAY</v-subheader
+            >
+            <v-list-item-group v-model="selectedItem" color="primary">
+              <v-list-item v-for="(rs, i) in dateResult" :key="i">
+                <v-list-item-content @click="showDate(rs)">
+                  <v-list-item-title>Day{{ i + 1 }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
+        <v-card
+          class="mx-auto"
+          style="height: 600px; width: 63.9%; overflow-y: auto"
+          tile
+        >
+          <v-list dense style="padding: 0">
+            <v-subheader
+              style="
+                background-color: #1bc6ec;
+                color: aliceblue;
+                position: sticky;
+              "
+              >PLAN</v-subheader
+            >
+            <div v-for="(rs, i) in planner.planList" :key="i">
+              <v-list-item v-if="checkDay(rs)">
+                <v-list-item-content>
+                  <v-card elevation="5" outlined style="margin: 2px 0">
+                    <div
+                      style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                      "
+                    >
+                      <v-list-item-title
+                        style="margin: 7px 0px 15px 9px; width: 80%"
+                        >{{ rs.name }}</v-list-item-title
+                      >
+                      <v-btn
+                        style="width: 15%; min-width: none; padding: 0%"
+                        @click="deletePlan(i)"
+                        >-</v-btn
+                      >
+                    </div>
+                    <v-menu
+                      ref="menu"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          solo
+                          v-bind:value="getOrderDate(i)"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                          @click="timepicker = i"
+                          style="font-size: small; height: 45px"
+                        ></v-text-field>
+                      </template>
+                      <div v-if="timepicker == i">
+                        <v-time-picker
+                          v-model="timepickerTime"
+                          full-width
+                        ></v-time-picker>
+                        <v-btn
+                          @click="doneTimePicker(rs)"
+                          style="
+                            background-color: #1bc6ec;
+                            width: 100%;
+                            color: white;
+                            font-family: 'Inter';
+                            font-style: normal;
+                            font-weight: 700;
+                            border-radius: 4px;
+                          "
+                          >done</v-btn
+                        >
+                      </div>
+                    </v-menu>
+                    <v-text-field
+                      label="메모"
+                      solo
+                      v-model="rs.memo"
+                      style="font-size: small; height: 45px"
+                    ></v-text-field>
+                  </v-card>
+                </v-list-item-content>
+              </v-list-item>
+            </div>
+          </v-list>
+        </v-card>
+      </div>
       <div class="maparea">
         <div class="searchbox" v-if="searchbox == 1">
           <div style="background-color: ; position: relative">
@@ -259,7 +522,7 @@
         </div>
         <div id="map"></div>
       </div>
-      <div
+      <!-- <div
         style="
           width: 35%;
           display: flex;
@@ -379,7 +642,7 @@
             </div>
           </v-list>
         </v-card>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -530,13 +793,18 @@ export default {
       })
         .then((response) => {
           console.log("RESPONSE : " + JSON.stringify(response.data));
+          setTimeout(() => {
+            this.$router.push({ path: "/planList" });
+          }, 100);
         })
         .catch((error) => {
           console.log("ERROR : " + JSON.stringify(error));
+          //비로그인 시 로그인 창으로 이동
+          if (1) {
+            alert("로그인이 필요한 서비스입니다.");
+            this.$router.push({ path: "/login" });
+          }
         });
-      setTimeout(() => {
-        this.$router.push({ path: "/planList" });
-      }, 100);
     },
     doneBtn() {
       this.startDatePicker = 0;
@@ -642,12 +910,16 @@ export default {
   left: 0;
   height: 600px;
   z-index: 10000;
-  background-color: #ffffffaa;
-  color: rgb(21, 20, 20);
+  /*  background-color: #ffffffaa;
+  color: rgb(21, 20, 20); */
   overflow-y: auto;
-  width: 200px;
+  width: 250px;
   display: flex;
   flex-direction: column;
+}
+
+.searchbox::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 
 .v-text-field::lable {
@@ -711,5 +983,24 @@ export default {
 
 .dateResult h4 {
   cursor: pointer;
+}
+
+.searchInput {
+  color: aliceblue;
+  font-size: small;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 5px;
+  height: 40px;
+  background-color: #1bc6ec;
+  border-color: white;
+}
+
+.searchInput::placeholder {
+  color: aliceblue;
+  font-size: 12px;
+}
+.searchInput:focus {
+  outline: 2px solid white;
 }
 </style>
