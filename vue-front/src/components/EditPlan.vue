@@ -192,7 +192,7 @@
         </v-btn>
       </div>
     </div>
-    <div style="margin-top: 15px; margin-left: 33px">
+    <div style="margin-top: 15px; margin-left: 33px; white-space: nowrap">
       <v-btn
         @click="savePlan"
         variant="flat"
@@ -203,98 +203,51 @@
           font-style: normal;
           font-weight: 700;
           border-radius: 8px;
+          margin-right: 30px;
+          width: 41%;
         "
         >플랜저장하기</v-btn
       >
       <v-btn
         @click="changeCartegory('AT4')"
         variant="flat"
-        style="
-          background-color: #1bc6ec;
-          color: white;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 700;
-          border-radius: 8px;
-        "
+        style="background-color: #1bc6ec; color: white; border-radius: 8px"
         ><i class="fas fa-archway"></i
       ></v-btn>
       <v-btn
         @click="changeCartegory('PK6')"
         variant="flat"
-        style="
-          background-color: #1bc6ec;
-          color: white;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 700;
-          border-radius: 8px;
-        "
+        style="background-color: #1bc6ec; color: white; border-radius: 8px"
         ><i class="fas fa-car"></i
       ></v-btn>
       <v-btn
         @click="changeCartegory('MT1')"
         variant="flat"
-        style="
-          background-color: #1bc6ec;
-          color: white;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 700;
-          border-radius: 8px;
-        "
+        style="background-color: #1bc6ec; color: white; padding: 0px 0px"
         ><i class="fas fa-cart-plus"></i
       ></v-btn>
       <v-btn
         @click="changeCartegory('SW8')"
         variant="flat"
-        style="
-          background-color: #1bc6ec;
-          color: white;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 700;
-          border-radius: 8px;
-        "
+        style="background-color: #1bc6ec; color: white; padding: 0px 0px"
         ><i class="fas fa-subway"></i
       ></v-btn>
       <v-btn
         @click="changeCartegory('AD5')"
         variant="flat"
-        style="
-          background-color: #1bc6ec;
-          color: white;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 700;
-          border-radius: 8px;
-        "
+        style="background-color: #1bc6ec; color: white; padding: 0px 0px"
         ><i class="fas fa-house-user"></i
       ></v-btn>
       <v-btn
         @click="changeCartegory('FD6')"
         variant="flat"
-        style="
-          background-color: #1bc6ec;
-          color: white;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 700;
-          border-radius: 8px;
-        "
+        style="background-color: #1bc6ec; color: white; padding: 0px 0px"
         ><i class="fas fa-utensils"></i
       ></v-btn>
       <v-btn
         @click="changeCartegory('CE7')"
         variant="flat"
-        style="
-          background-color: #1bc6ec;
-          color: white;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 700;
-          border-radius: 8px;
-        "
+        style="background-color: #1bc6ec; color: white; margin: 0px"
         ><i class="fas fa-mug-hot"></i
       ></v-btn>
     </div>
@@ -361,6 +314,7 @@
                         display: flex;
                         flex-direction: row;
                         justify-content: flex-start;
+                        background-color: #1bc6ec;
                       "
                     >
                       <v-list-item-title
@@ -368,6 +322,7 @@
                           margin: 7px 0px 15px 9px;
                           width: 80%;
                           cursor: pointer;
+                          color: white;
                         "
                         @click="setCenter(rs)"
                         >{{ rs.place_name }}</v-list-item-title
@@ -377,6 +332,7 @@
                           width: 10%;
                           padding: 0%;
                           background-color: aliceblue;
+                          color: blue;
                         "
                         @click="addPlan(rs)"
                       >
@@ -384,7 +340,30 @@
                       </v-btn>
                     </div>
                     <div class="addr" style="margin: 3px 9px">
-                      <h5>{{ rs.address_name }}</h5>
+                      <h5
+                        style="
+                          text-overflow: ellipsis;
+                          overflow: hidden;
+                          white-space: nowrap;
+                          font-size: 10px;
+                          font-weight: 700;
+                        "
+                      >
+                        {{ rs.address_name }}
+                      </h5>
+                      <a
+                        :href="rs.place_url"
+                        target="_blank"
+                        style="
+                          text-overflow: ellipsis;
+                          overflow: hidden;
+                          white-space: nowrap;
+                          font-size: 10px;
+                          font-weight: 700;
+                        "
+                      >
+                        카카오맵 상세보기
+                      </a>
                     </div>
                   </v-card>
                 </v-list-item-content>
@@ -415,10 +394,12 @@
                         display: flex;
                         flex-direction: row;
                         justify-content: flex-start;
+                        background-color: #1bc6ec;
+                        color: aliceblue;
                       "
                     >
                       <v-list-item-title
-                        style="margin: 7px 0px 15px 9px; width: 80%"
+                        style="margin: 7px 0px 15px 9px; width: 80%;"
                         >{{ rs.name }}</v-list-item-title
                       >
                       <v-btn
@@ -427,6 +408,7 @@
                           min-width: none;
                           padding: 0%;
                           background-color: aliceblue;
+                          color: red;
                         "
                         @click="deletePlan(i)"
                         ><i class="fas fa-minus-circle"></i
@@ -486,7 +468,64 @@
         </v-card>
       </div>
       <div class="maparea">
-        <div id="map"></div>
+        <div id="map">
+          <div style="width: 330px; height: 0px;" ref="customOverlay">
+            <div
+              style="
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                background-color: #1bc6ec;
+              "
+            >
+              <v-list-item-title
+                style="margin: 7px 0px 7px 9px; width: 80%; color: white"
+                >{{ markerInfo.place_name }}</v-list-item-title
+              >
+              <v-btn
+                style="
+                  width: 10%;
+                  padding: 0%;
+                  background-color: aliceblue;
+                  color: blue;
+                "
+                @click="addPlan(markerInfo)"
+              >
+                <i class="fas fa-plus-circle"></i>
+              </v-btn>
+            </div>
+            <div
+              class="addr"
+              style="background-color: white; padding: 2px 0px 0px 8px"
+            >
+              <h5
+                style="
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  white-space: nowrap;
+                  font-size: 10px;
+                  font-weight: 700;
+                  background-color: white;
+                "
+              >
+                {{ markerInfo.address }}
+              </h5>
+              <a
+                :href="markerInfo.url"
+                target="_blank"
+                style="
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  white-space: nowrap;
+                  font-size: 10px;
+                  font-weight: 700;
+                "
+              >
+                카카오맵 상세보기
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -544,6 +583,17 @@ export default {
         planList: [],
         visibility: "VTP200Y",
       },
+      markerInfo: {
+        place_name: "",
+        address: "",
+        url: "",
+        x: "",
+        y: "",
+      },
+      customOverlay: new kakao.maps.CustomOverlay({
+        position: "",
+        content: "",
+      }),
       plan: [],
       plan2: [],
     };
@@ -602,6 +652,7 @@ export default {
         this.search.keyword = keyword;
         this.search.pgn = pgn;
         this.search.results = data;
+        console.log(this.search.results);
       });
     },
     addPlan(rs) {
@@ -724,6 +775,7 @@ export default {
     },
     searchCartegory() {
       this.removeMarkers();
+      this.customOverlay.setMap(null);
       this.positions.length = 0;
       this.markers.length = 0;
       let ps2 = new window.kakao.maps.services.Places(this.map);
@@ -732,7 +784,6 @@ export default {
       });
     },
     placesSearchCB(data, status, pagination) {
-      console.log(data[0]);
       for (let i = 0; i < data.length; i++) {
         this.displayMarker(data[i]);
       }
@@ -749,14 +800,6 @@ export default {
             imageSize
           );
 
-          var iwContent = '<div style="padding:5px;">hello world</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-            iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-          // 인포윈도우를 생성합니다
-          var infowindow = new kakao.maps.InfoWindow({
-            content: iwContent,
-            removable: iwRemoveable,
-          });
           // 마커를 생성합니다
           let marker = new window.kakao.maps.Marker({
             map: this.map, // 마커를 표시할 지도
@@ -767,13 +810,8 @@ export default {
 
           /* 마커에 클릭이벤트 등록 */
           kakao.maps.event.addListener(marker, "click", () => {
-            console.log(
-              `위치: ${this.positions[i].x} + ${this.positions[i].y} + ${this.positions[i].latlng} + ${this.positions[i].address}, 제목: ${this.positions[i].title}`
-            );
-            console.log(this.positions.length);
-            infowindow.open(this.map, marker);
+            this.displayPlaceInfo(this.positions[i]);
           });
-
           this.markers.push(marker);
         }
       }, 100);
@@ -786,6 +824,7 @@ export default {
         address: place.address_name,
         x: place.x,
         y: place.y,
+        url: place.place_url,
       };
       this.positions.push(obj);
     },
@@ -795,10 +834,26 @@ export default {
       }
     },
     changeCartegory(car) {
+      this.customOverlay.setMap(null);
       this.removeMarkers();
       this.markers.length = 0;
       this.curCartegory = car;
       this.searchCartegory();
+    },
+    displayPlaceInfo(place) {
+      this.markerInfo.place_name = place.title;
+      this.markerInfo.address = place.address;
+      this.markerInfo.url = place.url;
+      this.markerInfo.x = place.x;
+      this.markerInfo.y = place.y;
+
+      var content = this.$refs.customOverlay;
+      this.customOverlay = new kakao.maps.CustomOverlay({
+        position: place.latlng,
+        content: content,
+      });
+      // 커스텀 오버레이를 지도에 표시합니다
+      this.customOverlay.setMap(this.map);
     },
     checkVisibility() {
       if (this.planner.visibility == "VTP200Y") {
