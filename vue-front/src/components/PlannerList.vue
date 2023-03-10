@@ -31,13 +31,13 @@
               cover
             ></v-img>
 
-            <v-card-title style="height: 20%; white-space:nowrap; padding: 0;">
+            <v-card-title style="height: 20%; white-space: nowrap; padding: 0">
               {{ rs.title }}
             </v-card-title>
-            <v-card-subtitle style="height: 20%; padding: 0;">
+            <v-card-subtitle style="height: 20%; padding: 0">
               {{ rs.intro }}
             </v-card-subtitle>
-            <v-card-subtitle style="white-space:nowrap; padding: 0;">
+            <v-card-subtitle style="white-space: nowrap; padding: 0">
               {{ rs.start_date.substring(0, 10) + " to" }}
               {{ rs.end_date.substring(0, 10) }}
             </v-card-subtitle>
@@ -45,34 +45,6 @@
         </v-col>
       </v-row>
     </v-container>
-
-    <!-- <div style="background-color: #d9d9d9">
-      <v-col v-for="n in 1" :key="n" cols="12" sm="4">
-        <div
-          class="plan"
-          v-for="rs in planner.data"
-          :key="rs.name"
-          style="margin: 15px"
-        >
-          <v-card style="" class="ma-2 pa-2" max-width="344">
-            <v-img
-              @click="goPlan(rs)"
-              style="cursor: pointer"
-              src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-              height="200px"
-              cover
-            ></v-img>
-            <v-card-title> {{ rs.title }} </v-card-title>
-            <v-card-subtitle style="padding: 0">
-              {{ rs.intro }}
-            </v-card-subtitle>
-            <v-card-subtitle style="padding: 0">
-              {{ rs.start_date.substring(0, 10) }}
-            </v-card-subtitle>
-          </v-card>
-        </div>
-      </v-col>
-    </div> -->
   </div>
 </template>
 
@@ -114,7 +86,7 @@ export default {
       )
       .then((response) => {
         /* 서버 사용 시 data.? 내가 테스트할땐 data.data로 해야 돌아감 */
-        response.data.data.forEach((a) => {
+        response.data.forEach((a) => {
           this.planner.data.push(a);
         });
       })

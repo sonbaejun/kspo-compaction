@@ -233,7 +233,8 @@ export default {
         }
       )
       .then((response) => {
-        // this.nickname = response.data.nickname;
+        //서버 사용 시 response.data.nickname
+        this.nickname = response.data.nickname;
         if (this.nickname == this.$store.state.userInfo.nickname) {
           this.checkUser = 1;
         } else {
