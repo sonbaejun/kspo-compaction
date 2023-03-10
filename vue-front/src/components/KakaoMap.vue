@@ -217,8 +217,8 @@
           font-weight: 700;
           border-radius: 8px;
         "
-        ><i class="fas fa-archway"></i></v-btn
-      >
+        ><i class="fas fa-archway"></i
+      ></v-btn>
       <v-btn
         @click="changeCartegory('PK6')"
         variant="flat"
@@ -392,39 +392,6 @@
             </div>
           </v-list>
         </v-card>
-        <!-- <div
-          class="searchbox"
-          style="
-            position: relative;
-            outline: solid;
-            outline-color: whitesmoke;
-            outline-offset: 0.1px;
-          "
-        >
-          <div style="background-color: ; position: relative">
-            <input
-              class="searchInput"
-              placeholder="SEARCH"
-              @keyup.enter="searchPlaces"
-            />
-          </div>
-          <div class="results" style="">
-            <div
-              class="place"
-              v-for="rs in search.results"
-              :key="rs.place_name"
-            >
-              <h4 @click="setCenter(rs)" style="cursor: pointer">
-                {{ rs.place_name }}
-              </h4>
-              <div class="addr">
-                <h5>{{ rs.address_name }}</h5>
-              </div>
-              <button @click="addPlan(rs)">+</button>
-            </div>
-          </div>
-        </div> -->
-
         <v-card
           class="mx-auto"
           style="height: 600px; width: 50%; overflow-y: auto"
@@ -521,127 +488,6 @@
       <div class="maparea">
         <div id="map"></div>
       </div>
-      <!-- <div
-        style="
-          width: 35%;
-          display: flex;
-          flex-direction: row;
-          justify-content: flex-start;
-          margin-left: 1px;
-        "
-      >
-        <v-card
-          class="mx-auto"
-          style="
-            height: 600px;
-            width: 35.9%;
-            margin-left: 0;
-            margin-right: 0;
-            overflow-y: auto;
-          "
-          tile
-        >
-          <v-list dense style="padding: 0">
-            <v-subheader style="background-color: #1bc6ec; color: aliceblue"
-              >DAY</v-subheader
-            >
-            <v-list-item-group v-model="selectedItem" color="primary">
-              <v-list-item v-for="(rs, i) in dateResult" :key="i">
-                <v-list-item-content @click="showDate(rs)">
-                  <v-list-item-title>Day{{ i + 1 }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-card>
-        <v-card
-          class="mx-auto"
-          style="height: 600px; width: 63.9%; overflow-y: auto"
-          tile
-        >
-          <v-list dense style="padding: 0">
-            <v-subheader
-              style="
-                background-color: #1bc6ec;
-                color: aliceblue;
-                position: sticky;
-              "
-              >PLAN</v-subheader
-            >
-            <div v-for="(rs, i) in planner.planList" :key="i">
-              <v-list-item v-if="checkDay(rs)">
-                <v-list-item-content>
-                  <v-card elevation="5" outlined style="margin: 2px 0">
-                    <div
-                      style="
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: flex-start;
-                      "
-                    >
-                      <v-list-item-title
-                        style="margin: 7px 0px 15px 9px; width: 80%"
-                        >{{ rs.name }}</v-list-item-title
-                      >
-                      <v-btn
-                        style="width: 15%; min-width: none; padding: 0%"
-                        @click="deletePlan(i)"
-                        >-</v-btn
-                      >
-                    </div>
-                    <v-menu
-                      ref="menu"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      max-width="290px"
-                      min-width="290px"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          solo
-                          v-bind:value="getOrderDate(i)"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                          @click="timepicker = i"
-                          style="font-size: small; height: 45px"
-                        ></v-text-field>
-                      </template>
-                      <div v-if="timepicker == i">
-                        <v-time-picker
-                          v-model="timepickerTime"
-                          full-width
-                        ></v-time-picker>
-                        <v-btn
-                          @click="doneTimePicker(rs)"
-                          style="
-                            background-color: #1bc6ec;
-                            width: 100%;
-                            color: white;
-                            font-family: 'Inter';
-                            font-style: normal;
-                            font-weight: 700;
-                            border-radius: 4px;
-                          "
-                          >done</v-btn
-                        >
-                      </div>
-                    </v-menu>
-                    <v-text-field
-                      label="메모"
-                      solo
-                      v-model="rs.memo"
-                      style="font-size: small; height: 45px"
-                    ></v-text-field>
-                  </v-card>
-                </v-list-item-content>
-              </v-list-item>
-            </div>
-          </v-list>
-        </v-card>
-      </div> -->
     </div>
   </div>
 </template>
@@ -668,9 +514,12 @@ export default {
       timepickerTime: "00:00",
       showDialog: false,
       showSelected: false,
+      curCartegory: "AT4",
       selectedItem: 0,
+      markers: [],
       dateResult: [],
       place: [],
+      positions: [],
       mapOption: {
         center: {
           lat: 33.450701,
@@ -738,6 +587,8 @@ export default {
         level: 3,
       };
       this.map = new window.kakao.maps.Map(container, options);
+      kakao.maps.event.addListener(this.map, "idle", this.searchCartegory);
+      this.searchCartegory();
     },
     searchPlaces(e) {
       const keyword = e.target.value.trim();
@@ -775,11 +626,23 @@ export default {
         this.planner.placeList.push(obj);
       });
       console.log(this.planner);
+      //비로그인 시 로그인 창으로 이동
+      if (
+        this.$store.state.userInfo.nickname == undefined ||
+        this.$store.state.userInfo.nickname == ""
+      ) {
+        alert("로그인이 필요한 서비스입니다.");
+        this.$router.push({
+          name: "Login",
+          params: { plan: this.planner },
+        });
+        return;
+      }
       //https://reqres.in/api/users
       //http://localhost:8080/api/v1/planner/post
       axios({
         method: "post", // [요청 타입]
-        url: "http://localhost:8080/api/v1/planner/post", // [요청 주소]
+        url: "https://reqres.in/api/users", // [요청 주소]
         data: JSON.stringify(this.planner), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -797,11 +660,6 @@ export default {
         })
         .catch((error) => {
           console.log("ERROR : " + JSON.stringify(error));
-          //비로그인 시 로그인 창으로 이동
-          if (1) {
-            alert("로그인이 필요한 서비스입니다.");
-            this.$router.push({ path: "/login" });
-          }
         });
     },
     doneBtn() {
@@ -874,6 +732,84 @@ export default {
       } else {
         return false;
       }
+    },
+    searchCartegory() {
+      this.removeMarkers();
+      this.positions.length = 0;
+      this.markers.length = 0;
+      let ps2 = new window.kakao.maps.services.Places(this.map);
+      ps2.categorySearch(this.curCartegory, this.placesSearchCB, {
+        useMapBounds: true,
+      });
+    },
+    placesSearchCB(data, status, pagination) {
+      console.log(data[0]);
+      for (let i = 0; i < data.length; i++) {
+        this.displayMarker(data[i]);
+      }
+      setTimeout(() => {
+        for (let i = 0; i < this.positions.length; i++) {
+          // 마커 이미지의 이미지 크기 입니다
+          var imageSize = new window.kakao.maps.Size(24, 35);
+          var imageSrc =
+            "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+          // 마커 이미지를 생성합니다
+          var markerImage = new window.kakao.maps.MarkerImage(
+            imageSrc,
+            imageSize
+          );
+
+          var iwContent = '<div style="padding:5px;">hello world</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+          // 인포윈도우를 생성합니다
+          var infowindow = new kakao.maps.InfoWindow({
+            content: iwContent,
+            removable: iwRemoveable,
+          });
+          // 마커를 생성합니다
+          let marker = new window.kakao.maps.Marker({
+            map: this.map, // 마커를 표시할 지도
+            position: this.positions[i].latlng, // 마커를 표시할 위치
+            title: this.positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+            image: markerImage, // 마커 이미지
+          });
+
+          /* 마커에 클릭이벤트 등록 */
+          kakao.maps.event.addListener(marker, "click", () => {
+            console.log(
+              `위치: ${this.positions[i].x} + ${this.positions[i].y} + ${this.positions[i].latlng} + ${this.positions[i].address}, 제목: ${this.positions[i].title}`
+            );
+            console.log(this.positions.length);
+            infowindow.open(this.map, marker);
+          });
+
+          this.markers.push(marker);
+        }
+      }, 100);
+    },
+    displayMarker(place) {
+      let markerPosition = new window.kakao.maps.LatLng(place.y, place.x);
+      let obj = {
+        title: place.place_name,
+        latlng: markerPosition,
+        address: place.address_name,
+        x: place.x,
+        y: place.y,
+      };
+      this.positions.push(obj);
+    },
+    removeMarkers() {
+      for (let i = 0; i < this.markers.length; i++) {
+        this.markers[i].setMap(null);
+      }
+    },
+    changeCartegory(car) {
+      this.removeMarkers();
+      this.markers.length = 0;
+      this.curCartegory = car;
+      this.searchCartegory();
     },
   },
 };
