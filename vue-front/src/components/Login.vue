@@ -183,10 +183,8 @@ export default {
     //https://reqres.in/api/login
     //http://localhost:8080/api/v1/users/login
     Login() {
-      console.log(this.User);
       this.testUser.email = this.User.loginId;
       this.testUser.password = this.User.loginPassword;
-      console.log(this.testUser);
       axios({
         method: "post", // [요청 타입]
         //서버 사용시 http://localhost:8080/api/v1/users/login
@@ -202,6 +200,7 @@ export default {
       })
         .then((response) => {
           console.log("RESPONSE : " + JSON.stringify(response.data));
+          //서버 사용 시 token -> jwtToken
           this.$store.dispatch("setToken", response.data.jwtToken);
           localStorage.setItem("access_token", response.data.jwtToken);
           /* token을 이용해 유저정보 get */
@@ -218,7 +217,15 @@ export default {
               this.userInfo.nickname = response.data.nickname;
               this.$store.dispatch("setuserInfo", this.userInfo);
               localStorage.setItem("userInfo", JSON.stringify(this.userInfo));
-              this.$router.push("/").catch(() => {});
+              // 플랜 작성 창에서 넘어왔을 시 로그인 성공 후 플랜 작성 창으로 이동(플래너 데이터와 함께)
+              if (this.$route.params.plan != undefined) {
+                this.$router.push({
+                  name: "KakaoMap",
+                  params: { plan: this.$route.params.plan },
+                });
+              } else {
+                this.$router.push("/").catch(() => {});
+              }
             })
             .catch((err) => {
               console.log(err);
