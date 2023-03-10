@@ -122,7 +122,7 @@ export default {
         localStorage.removeItem("access_token");
         this.$store.commit("inituserInfo");
         this.$store.commit("initToken");
-        this.$router.push("/login").catch(() => {});
+        this.$router.push("/").catch(() => {});
       } else {
         this.$router.push("/login").catch(() => {});
       }
