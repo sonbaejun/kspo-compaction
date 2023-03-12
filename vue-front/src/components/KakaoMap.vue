@@ -7,15 +7,25 @@
             <v-card-title>여행테마 선택</v-card-title>
             <v-divider></v-divider>
             <v-card-text style="height: 300px">
-              <v-radio-group v-model="planner.concept" column>
-                <v-radio label="식도락" value="식도락"></v-radio>
-                <v-radio label="액티비티" value="액티비티"></v-radio>
-                <v-radio label="관광명소" value="관광명소"></v-radio>
-                <v-radio label="힐링" value="힐링"></v-radio>
-                <v-radio label="호캉스" value="호캉스"></v-radio>
-                <v-radio label="산악여행" value="산악여행"></v-radio>
-                <v-radio label="캠핑" value="캠핑"></v-radio>
-              </v-radio-group>
+              <div
+                v-for="item in conceptList"
+                :key="item.value"
+                style="margin: 4px 7px 0px 7px"
+              >
+                <input
+                  type="radio"
+                  :id="item.key"
+                  v-model="planner.concept"
+                  style="width: auto; margin: 10px 0px"
+                  :value="item.value"
+                />
+                <label
+                  :for="item.key"
+                  class="text"
+                  style="font-size: medium; font-weight: 600"
+                  >{{ item.value }}</label
+                >
+              </div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
@@ -35,10 +45,29 @@
       <v-row justify="center">
         <v-dialog v-model="showSelected" scrollable width="auto">
           <v-card>
-            <v-card-title>여행테마 선택</v-card-title>
+            <v-card-title>여행장소 선택</v-card-title>
             <v-divider></v-divider>
             <v-card-text style="height: 300px; width: 600px">
-              <v-select
+              <div
+                v-for="(item, index) in placeSelect"
+                :key="index"
+                style="margin: 4px 7px 0px 7px"
+              >
+                <input
+                  type="checkbox"
+                  :id="item"
+                  v-model="place"
+                  style="width: auto; margin: 10px 0px"
+                  :value="item"
+                />
+                <label
+                  :for="item"
+                  class="text"
+                  style="font-size: medium; font-weight: 600"
+                  >{{ item }}</label
+                >
+              </div>
+              <!-- <v-select
                 label="Select"
                 v-model="place"
                 :items="[
@@ -58,7 +87,7 @@
                   '충청도',
                 ]"
                 multiple
-              ></v-select>
+              ></v-select> -->
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
@@ -165,14 +194,30 @@
             @click="showSelected = true"
             readonly
           ></v-text-field>
-          <div>
-            <v-radio-group v-model="planner.visibility" row>
-              <v-radio label="공개" value="VTP200Y"></v-radio>
-              <v-radio label="비공개" value="VTP403N"></v-radio>
-              <h6 style="margin-top: 5px" v-if="checkVisibility()">
-                ※공개를 선택할 경우 타인이 플래너를 조회할 수 있습니다.
-              </h6>
-            </v-radio-group>
+          <div
+            style="
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+            "
+          >
+            <div
+              v-for="(item, index) in radioList"
+              :key="index"
+              style="margin: 0px 7px 0px 7px"
+            >
+              <input
+                type="radio"
+                :id="item.key"
+                v-model="planner.visibility"
+                style="width: auto; margin: 7px 0px"
+                :value="item.value"
+              />
+              <label :for="item.key" class="text">{{ item.label }}</label>
+            </div>
+            <h6 style="margin-top: 5px" v-if="checkVisibility()">
+              ※공개를 선택할 경우 타인이 플래너를 조회할 수 있습니다.
+            </h6>
           </div>
         </div>
         <v-btn
@@ -559,6 +604,64 @@ export default {
       dateResult: [],
       place: [],
       positions: [],
+      radioList: [
+        {
+          key: "00",
+          value: "VTP200Y",
+          label: "공개",
+        },
+        {
+          key: "01",
+          value: "VTP403N",
+          label: "비공개",
+        },
+      ],
+      conceptList: [
+        {
+          key: "0",
+          value: "식도락",
+        },
+        {
+          key: "1",
+          value: "액티비티",
+        },
+        {
+          key: "2",
+          value: "관광명소",
+        },
+        {
+          key: "3",
+          value: "힐링",
+        },
+        {
+          key: "4",
+          value: "호캉스",
+        },
+        {
+          key: "5",
+          value: "산악여행",
+        },
+        {
+          key: "6",
+          value: "캠핑",
+        },
+      ],
+      placeSelect: [
+        "서울",
+        "대전",
+        "대구",
+        "부산",
+        "광주",
+        "울산",
+        "인천",
+        "경기",
+        "강원도",
+        "경남",
+        "전라도",
+        "제주도",
+        "경북",
+        "충청도",
+      ],
       mapOption: {
         center: {
           lat: 33.450701,
@@ -778,6 +881,7 @@ export default {
       }
     },
     searchCartegoryForLoadMap() {
+      this.customOverlay = new kakao.maps.CustomOverlay({});
       let ps2 = new window.kakao.maps.services.Places(this.map);
       ps2.categorySearch(this.curCartegory, this.placesSearchCB, {
         useMapBounds: true,

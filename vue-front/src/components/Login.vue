@@ -50,7 +50,6 @@
       </v-form>
       <div style="clear: both">
         <h4 class="other" @click="dialog = true">회원가입</h4>
-        <h4 class="other">ID/PW 찾기</h4>
       </div>
     </v-sheet>
     <div class="text-center">
@@ -105,13 +104,25 @@
             v-model="userRegister.age"
             required
           ></v-text-field>
-          <v-select
-            :items="['Man', 'Woman']"
+          <v-text-field
+            label="성별"
             style="margin: 0px 15px 0px 15px"
             v-model="userRegister.gender"
-            label="Gender"
+            @click="gender()"
+            readonly
             required
-          ></v-select>
+          ></v-text-field>
+          <div v-if="genderSelect == 1" style="margin: 0px 15px 0px 15px">
+            <div v-for="(item, index) in radioList" :key="index">
+              <input
+                type="radio"
+                :id="item.key"
+                v-model="userRegister.gender"
+                :value="item.value"
+              />
+              <label :for="item.key" class="text">{{ item.value }}</label>
+            </div>
+          </div>
           <v-text-field
             label="거주지역"
             v-model="userRegister.address"
@@ -174,9 +185,20 @@ export default {
       userInfo: {
         nickname: "",
       },
+      radioList: [
+        {
+          key: "00",
+          value: "Man",
+        },
+        {
+          key: "01",
+          value: "Woman",
+        },
+      ],
       dialog: false,
       isLogin: false,
       token: "",
+      genderSelect: 0,
     };
   },
   methods: {
@@ -250,6 +272,7 @@ export default {
     //https://reqres.in/api/users
     //서버 사용 시 http://localhost:8080/api/v1/users/register
     userRegist() {
+      console.log(this.userRegister);
       axios({
         method: "post", // [요청 타입]
         url: "http://localhost:8080/api/v1/users/register", // [요청 주소]
@@ -272,6 +295,13 @@ export default {
           }
         });
       this.dialog = false;
+    },
+    gender() {
+      if(this.genderSelect == 1) {
+        this.genderSelect = 0;
+      } else {
+        this.genderSelect = 1;
+      }
     },
     goHome() {},
   },
@@ -300,7 +330,7 @@ export default {
   display: flex;
   align-items: center;
   float: left;
-  margin: 15px 0px 0px 50px;
+  margin: 15px 0px 0px 117px;
   cursor: pointer;
 
   color: #b3b3b3;
