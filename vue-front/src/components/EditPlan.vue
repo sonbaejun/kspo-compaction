@@ -399,7 +399,7 @@
                       "
                     >
                       <v-list-item-title
-                        style="margin: 7px 0px 15px 9px; width: 80%;"
+                        style="margin: 7px 0px 15px 9px; width: 80%"
                         >{{ rs.name }}</v-list-item-title
                       >
                       <v-btn
@@ -469,7 +469,7 @@
       </div>
       <div class="maparea">
         <div id="map">
-          <div style="width: 330px; height: 0px;" ref="customOverlay">
+          <div style="width: 330px; height: 0px" ref="customOverlay">
             <div
               style="
                 display: flex;
@@ -590,10 +590,7 @@ export default {
         x: "",
         y: "",
       },
-      customOverlay: new kakao.maps.CustomOverlay({
-        position: "",
-        content: "",
-      }),
+      customOverlay: {},
       plan: [],
       plan2: [],
     };
@@ -639,7 +636,7 @@ export default {
 
       this.map = new window.kakao.maps.Map(container, options);
       kakao.maps.event.addListener(this.map, "idle", this.searchCartegory);
-      this.searchCartegory();
+      this.searchCartegoryForLoadMap();
     },
     searchPlaces(e) {
       const keyword = e.target.value.trim();
@@ -772,6 +769,12 @@ export default {
     },
     getOrderDate(idx) {
       return this.planner.planList[idx].date.substring(11, 16);
+    },
+    searchCartegoryForLoadMap() {
+      let ps2 = new window.kakao.maps.services.Places(this.map);
+      ps2.categorySearch(this.curCartegory, this.placesSearchCB, {
+        useMapBounds: true,
+      });
     },
     searchCartegory() {
       this.removeMarkers();

@@ -362,7 +362,7 @@
                           font-weight: 700;
                         "
                       >
-                        카카오맵 상세보기
+                        상세보기
                       </a>
                     </div>
                   </v-card>
@@ -399,7 +399,7 @@
                       "
                     >
                       <v-list-item-title
-                      style="margin: 7px 0px 15px 9px; width: 80%;"
+                        style="margin: 7px 0px 15px 9px; width: 80%"
                         >{{ rs.name }}</v-list-item-title
                       >
                       <v-btn
@@ -469,7 +469,7 @@
       </div>
       <div class="maparea">
         <div id="map">
-          <div style="width: 330px; height: 0px;" ref="customOverlay">
+          <div style="width: 330px; height: 0px" ref="customOverlay">
             <div
               style="
                 display: flex;
@@ -521,7 +521,7 @@
                   font-weight: 700;
                 "
               >
-                카카오맵 상세보기
+                상세보기
               </a>
             </div>
           </div>
@@ -578,10 +578,7 @@ export default {
         x: "",
         y: "",
       },
-      customOverlay: new kakao.maps.CustomOverlay({
-        position: "",
-        content: "",
-      }),
+      customOverlay: {},
       planner: {
         title: "",
         intro: "",
@@ -638,7 +635,7 @@ export default {
       };
       this.map = new window.kakao.maps.Map(container, options);
       kakao.maps.event.addListener(this.map, "idle", this.searchCartegory);
-      this.searchCartegory();
+      this.searchCartegoryForLoadMap();
     },
     searchPlaces(e) {
       const keyword = e.target.value.trim();
@@ -676,18 +673,6 @@ export default {
         this.planner.placeList.push(obj);
       });
       console.log(this.planner);
-      //비로그인 시 로그인 창으로 이동
-      if (
-        this.$store.state.userInfo.nickname == undefined ||
-        this.$store.state.userInfo.nickname == ""
-      ) {
-        alert("로그인이 필요한 서비스입니다.");
-        this.$router.push({
-          name: "Login",
-          params: { plan: this.planner },
-        });
-        return;
-      }
       //https://reqres.in/api/users
       //http://localhost:8080/api/v1/planner/post
       axios({
@@ -709,6 +694,15 @@ export default {
           }, 100);
         })
         .catch((error) => {
+          //비로그인 시 로그인 창으로 이동
+          if (error.message == "에러메시지") {
+            alert("로그인이 필요한 서비스입니다.");
+            this.$router.push({
+              name: "Login",
+              params: { plan: this.planner },
+            });
+            return;
+          }
           console.log("ERROR : " + JSON.stringify(error));
         });
     },
@@ -782,6 +776,12 @@ export default {
       } else {
         return false;
       }
+    },
+    searchCartegoryForLoadMap() {
+      let ps2 = new window.kakao.maps.services.Places(this.map);
+      ps2.categorySearch(this.curCartegory, this.placesSearchCB, {
+        useMapBounds: true,
+      });
     },
     searchCartegory() {
       this.removeMarkers();
