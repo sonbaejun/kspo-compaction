@@ -7,15 +7,25 @@
             <v-card-title>여행테마 선택</v-card-title>
             <v-divider></v-divider>
             <v-card-text style="height: 300px">
-              <v-radio-group v-model="planner.concept" column>
-                <v-radio label="식도락" value="식도락"></v-radio>
-                <v-radio label="액티비티" value="액티비티"></v-radio>
-                <v-radio label="관광명소" value="관광명소"></v-radio>
-                <v-radio label="힐링" value="힐링"></v-radio>
-                <v-radio label="호캉스" value="호캉스"></v-radio>
-                <v-radio label="산악여행" value="산악여행"></v-radio>
-                <v-radio label="캠핑" value="캠핑"></v-radio>
-              </v-radio-group>
+              <div
+                v-for="item in conceptList"
+                :key="item.value"
+                style="margin: 4px 7px 0px 7px"
+              >
+                <input
+                  type="radio"
+                  :id="item.key"
+                  v-model="recommendInfo.concept"
+                  style="width: auto; margin: 10px 0px"
+                  :value="item.value"
+                />
+                <label
+                  :for="item.key"
+                  class="text"
+                  style="font-size: medium; font-weight: 600"
+                  >{{ item.value }}</label
+                >
+              </div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
@@ -35,30 +45,28 @@
       <v-row justify="center">
         <v-dialog v-model="showSelected" scrollable width="auto">
           <v-card>
-            <v-card-title>여행테마 선택</v-card-title>
+            <v-card-title>여행장소 선택</v-card-title>
             <v-divider></v-divider>
             <v-card-text style="height: 300px; width: 600px">
-              <v-select
-                label="Select"
-                v-model="place"
-                :items="[
-                  '서울',
-                  '대전',
-                  '대구',
-                  '부산',
-                  '광주',
-                  '울산',
-                  '인천',
-                  '경기',
-                  '강원도',
-                  '경남',
-                  '전라도',
-                  '제주도',
-                  '경북',
-                  '충청도',
-                ]"
-                multiple
-              ></v-select>
+              <div
+                v-for="(item, index) in placeSelect"
+                :key="index"
+                style="margin: 4px 7px 0px 7px"
+              >
+                <input
+                  type="checkbox"
+                  :id="item"
+                  v-model="place"
+                  style="width: auto; margin: 10px 0px"
+                  :value="item"
+                />
+                <label
+                  :for="item"
+                  class="text"
+                  style="font-size: medium; font-weight: 600"
+                  >{{ item }}</label
+                >
+              </div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
@@ -80,7 +88,7 @@
       v-if="startDatePicker == 1"
       style="z-index: 1000000; height: 100px; background-color: transparent"
     >
-      <v-date-picker v-model="planner.start_date" style="z-index: 1">
+      <v-date-picker v-model="recommendInfo.start_date" style="z-index: 1">
         <v-btn
           @click="startDatePicker = 0"
           style="
@@ -102,7 +110,7 @@
       v-if="endDatePicker == 1"
       style="z-index: 100000000; height: 100px; background-color: transparent"
     >
-      <v-date-picker v-model="planner.end_date" style="z-index: 1">
+      <v-date-picker v-model="recommendInfo.end_date" style="z-index: 1">
         <v-btn
           @click="endDatePicker = 0"
           style="
@@ -123,7 +131,7 @@
         <div>
           <v-text-field
             label="Start"
-            v-model="planner.start_date"
+            v-model="recommendInfo.start_date"
             style="margin-top: 0px; padding-top: 0px"
             @click="
               startDatePicker = 1;
@@ -133,7 +141,7 @@
           ></v-text-field>
           <v-text-field
             label="End"
-            v-model="planner.end_date"
+            v-model="recommendInfo.end_date"
             style="margin-top: 0px; padding-top: 0px"
             @click="
               endDatePicker = 1;
@@ -143,7 +151,7 @@
           ></v-text-field>
           <v-text-field
             label="Concept"
-            v-model="planner.concept"
+            v-model="recommendInfo.concept"
             style="margin-top: 0px; padding-top: 0px"
             @click="
               showDialog = true;
@@ -177,6 +185,128 @@
         </v-btn>
       </div>
     </div>
+    <div style="margin-left: 30px" v-if="modal == 0">
+      <v-btn
+        v-if="checkUser == 1"
+        class="editBtn"
+        @click="goEdit"
+        style="background-color: #1bc6ec; color: aliceblue; border-radius: 6px"
+        >수정</v-btn
+      >
+      <v-btn
+        v-if="checkUser == 1"
+        class="deleteBtn"
+        @click="deletePlan"
+        style="background-color: red; color: aliceblue; border-radius: 6px"
+        >삭제</v-btn
+      >
+      <v-btn
+        v-else-if="checkUser == 0"
+        class="editBtn"
+        @click="goKakaoMap"
+        style="background-color: #1bc6ec; color: aliceblue; border-radius: 6px"
+        >복사하기</v-btn
+      >
+    </div>
+    <div v-if="modal == 0">
+      <v-card
+        elevation="8"
+        style="
+          width: 40%;
+          margin-left: 30px;
+          margin-top: 20px;
+          border-radius: 10px;
+          background-color: #36cfff;
+          color: white;
+          border: 2px solid #1bc6ec;
+        "
+      >
+        <v-card-title>{{ planner.title }}</v-card-title>
+        <v-card-subtitle style="color: white">{{
+          planner.intro
+        }}</v-card-subtitle>
+        <v-card-text style="color: white; padding: 0px; margin-left: 16px">{{
+          planner.start_date + " to " + planner.end_date
+        }}</v-card-text>
+        <v-card-text
+          style="color: white; padding: 0px; margin: 2px 0px 0px 16px"
+          >{{ planner.concept + " 여행" }}</v-card-text
+        >
+        <v-card-text
+          style="color: white; padding: 0px; margin: 2px 0px 0px 16px"
+          >{{ placeString }}</v-card-text
+        >
+      </v-card>
+    </div>
+    <div
+      style="
+        width: 40%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-left: 30px;
+        margin-top: 18px;
+      "
+      v-if="modal == 0"
+    >
+      <v-card
+        class="mx-auto"
+        style="
+          height: 500px;
+          width: 35.9%;
+          margin-left: 0;
+          margin-right: 0;
+          overflow-y: auto;
+        "
+        tile
+      >
+        <v-list dense style="padding: 0">
+          <v-subheader style="background-color: #1bc6ec; color: aliceblue"
+            >DAY</v-subheader
+          >
+          <v-list-item-group v-model="selectedItem" color="primary">
+            <v-list-item v-for="(rs, i) in dateResult" :key="i">
+              <v-list-item-content @click="showDate(rs)">
+                <v-list-item-title>Day{{ i + 1 }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-card>
+      <v-card
+        class="mx-auto"
+        style="height: 500px; width: 63.9%; overflow-y: auto"
+        tile
+      >
+        <v-list dense style="padding: 0">
+          <v-subheader
+            style="
+              background-color: #1bc6ec;
+              color: aliceblue;
+              position: sticky;
+            "
+            >PLAN</v-subheader
+          >
+          <div v-for="(rs, i) in planner.planList" :key="i">
+            <v-list-item v-if="checkDay(rs)">
+              <v-list-item-content>
+                <v-card elevation="5" outlined style="margin: 2px 0"
+                  ><v-list-item-title style="margin: 5px">{{
+                    rs.name
+                  }}</v-list-item-title>
+                  <v-list-item-title style="margin: 5px">{{
+                    rs.memo
+                  }}</v-list-item-title>
+                  <v-list-item-title style="margin: 5px">{{
+                    rs.date.substring(11, 16)
+                  }}</v-list-item-title>
+                </v-card>
+              </v-list-item-content>
+            </v-list-item>
+          </div>
+        </v-list>
+      </v-card>
+    </div>
   </div>
 </template>
 
@@ -186,8 +316,28 @@ import axios from "axios";
 export default {
   data() {
     return {
+      id: "",
       modal: 1,
+      selectedItem: 0,
+      placeString: "",
+      nickname: "",
+      checkUser: null,
+      items: [
+        { text: "Real-Time" },
+        { text: "Audience" },
+        { text: "Conversions" },
+      ],
+      curDate: "",
       planner: {
+        title: "",
+        intro: "",
+        start_date: "",
+        end_date: "",
+        concept: "",
+        placeList: [],
+        planList: [],
+      },
+      recommendInfo: {
         start_date: "",
         end_date: "",
         concept: "",
@@ -199,33 +349,79 @@ export default {
       showSelected: false,
       dateResult: [],
       place: [],
+      conceptList: [
+        {
+          key: "0",
+          value: "식도락",
+        },
+        {
+          key: "1",
+          value: "액티비티",
+        },
+        {
+          key: "2",
+          value: "관광명소",
+        },
+        {
+          key: "3",
+          value: "힐링",
+        },
+        {
+          key: "4",
+          value: "호캉스",
+        },
+        {
+          key: "5",
+          value: "산악여행",
+        },
+        {
+          key: "6",
+          value: "캠핑",
+        },
+      ],
+      placeSelect: [
+        "서울",
+        "대전",
+        "대구",
+        "부산",
+        "광주",
+        "울산",
+        "인천",
+        "경기",
+        "강원도",
+        "경남",
+        "전라도",
+        "제주도",
+        "경북",
+        "충청도",
+      ],
     };
   },
   methods: {
     doneBtn() {
       this.startDatePicker = 0;
       this.endDatePicker = 0;
-      let date1 = new Date(this.planner.start_date);
-      let date2 = new Date(this.planner.end_date);
+      let date1 = new Date(this.recommendInfo.start_date);
+      let date2 = new Date(this.recommendInfo.end_date);
       let dateDiff = date1 <= date2;
       this.place.forEach((a) => {
         let obj = {
           place: a,
         };
-        this.planner.placeList.push(obj);
+        this.recommendInfo.placeList.push(obj);
       });
-      console.log(this.planner);
+      console.log(this.recommendInfo);
       if (
-        this.planner.start_date != "" &&
-        this.planner.end_date != "" &&
+        this.recommendInfo.start_date != "" &&
+        this.recommendInfo.end_date != "" &&
         dateDiff
       ) {
         // https://reqres.in/api/users
-        // http://localhost:8080/api/v1/recommend
+        // http://localhost:8080/api/v1/planner/recommend
         axios({
           method: "post", // [요청 타입]
-          url: "http://localhost:8080/api/v1/recommend", // [요청 주소]
-          data: JSON.stringify(this.planner), // [요청 데이터]
+          url: "http://localhost:8080/api/v1/planner/recommend", // [요청 주소]
+          data: JSON.stringify(this.recommendInfo), // [요청 데이터]
           headers: {
             "Content-Type": "application/json; charset=utf-8",
             // "X-AUTH-TOKEN": localStorage.getItem("access_token"),
@@ -235,7 +431,28 @@ export default {
           //responseType: "json" // [응답 데이터 : stream , json]
         })
           .then((response) => {
-            console.log("RESPONSE : " + JSON.stringify(response.data));
+            //서버 사용 시 response.data.nickname
+            this.nickname = response.data.nickname;
+            if (this.nickname == this.$store.state.userInfo.nickname) {
+              this.checkUser = 1;
+            } else {
+              this.checkUser = 0;
+            }
+            this.planner.title = response.data.title;
+            this.planner.intro = response.data.intro;
+            this.planner.start_date = response.data.start_date.substring(0, 10);
+            this.planner.end_date = response.data.end_date.substring(0, 10);
+            this.planner.concept = response.data.concept;
+            response.data.placeList.forEach((a) => {
+              this.place += `${a.place} `;
+              this.planner.placeList.push(a);
+            });
+            response.data.planList.forEach((a) => {
+              this.planner.planList.push(a);
+            });
+            this.setDate();
+            console.log(this.planner.planList);
+            console.log(this.planner);
           })
           .catch((error) => {
             console.log("ERROR : " + JSON.stringify(error));
@@ -245,9 +462,114 @@ export default {
         alert("잘못된 형식입니다(공백 또는 날짜 형식을 확인해주세요)");
       }
     },
+    /* 날짜 일수 만큼 Day 생성하는 함수 */
+    setDate() {
+      let curDate1 = new Date(this.planner.start_date.substring(0, 10));
+      while (curDate1 <= new Date(this.planner.end_date.substring(0, 10))) {
+        this.dateResult.push({
+          date: curDate1.toISOString().split("T")[0] + "T01:00+09:00",
+          view: 0,
+        });
+        curDate1.setDate(curDate1.getDate() + 1);
+      }
+      this.curDate = this.dateResult[0].date;
+    },
+    /* 날짜 별 조회 설정 함수 */
+    showDate(rs) {
+      rs.view = 1;
+      this.curDate = rs.date;
+    },
+    /* 현재 선태한 날짜와 플랜의 날짜가 일치하는지를 반환하는 함수 */
+    checkDay(rs) {
+      if (rs.date.substring(0, 10) == this.curDate.substring(0, 10)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    /* 플랜삭제를 처리하는 함수 */
+    /* http://localhost:8080/api/v1/planner/delete/${this.id} */
+    deletePlan() {
+      if (confirm("정말 삭제하시겠어요 ?")) {
+        axios({
+          method: "delete", // [요청 타입]
+          url: `http://localhost:8080/api/v1/planner/delete/${this.id}`, // [요청 주소]
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "X-AUTH-TOKEN": localStorage.getItem("access_token"),
+          }, // [요청 헤더]
+          timeout: 5000, // [타임 아웃 시간]
+
+          //responseType: "json" // [응답 데이터 : stream , json]
+        })
+          .then(function (response) {
+            console.log("RESPONSE : " + JSON.stringify(response.data));
+          })
+          .catch(function (error) {
+            console.log("ERROR : " + JSON.stringify(error));
+          });
+      }
+      setTimeout(() => {
+        this.$router.push({ path: "/planList" });
+      }, 100);
+    },
+    /* 수정 컴포넌트로 이동하는 함수 */
+    goEdit() {
+      this.$router.push({
+        name: "EditPlan",
+        params: { id: this.id, plan: this.planner },
+      });
+    },
+    goKakaoMap() {
+      this.$router.push({
+        name: "KakaoMap",
+        params: { plan: this.planner },
+      });
+    },
   },
 };
 </script>
 
 <style>
+.plan {
+  margin: 5px;
+}
+
+.planner {
+  margin: 10px;
+}
+
+.planner h4 {
+  margin: 0;
+}
+
+.plan h5 {
+  margin: 0;
+}
+
+.editBtn {
+  cursor: pointer;
+  background-color: rgb(148, 148, 254);
+}
+
+.deleteBtn {
+  cursor: pointer;
+  background-color: rgb(221, 146, 146);
+}
+
+.dateResult h4 {
+  cursor: pointer;
+}
+
+.planInfo h4 {
+  margin: 0;
+}
+
+.planInfo {
+  margin: 10px;
+}
+
+.mx-auto {
+  margin: 0 0;
+}
 </style>

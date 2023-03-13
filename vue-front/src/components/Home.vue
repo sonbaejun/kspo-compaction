@@ -16,7 +16,7 @@
       "
       @click="goPlannerList"
     >
-      PLANNER
+      MY PLANNER
     </v-btn>
 
     <v-btn
@@ -35,7 +35,7 @@
       "
       @click="goRecommend"
     >
-      CREW
+      RECOMMEND
     </v-btn>
     <v-btn
       depressed
