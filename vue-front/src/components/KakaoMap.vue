@@ -444,7 +444,11 @@
                       "
                     >
                       <v-list-item-title
-                        style="margin: 7px 0px 15px 9px; width: 80%; cursor: pointer;"
+                        style="
+                          margin: 7px 0px 15px 9px;
+                          width: 80%;
+                          cursor: pointer;
+                        "
                         @click="setCenter(rs)"
                         >{{ rs.name }}</v-list-item-title
                       >
@@ -762,6 +766,7 @@ export default {
       obj.x = rs.x;
       obj.y = rs.y;
       this.planner.planList.push(obj);
+      this.sortDate1(this.planner.planList);
     },
     // localhost:8080/api/v1/planner/post
     savePlan() {
@@ -870,6 +875,7 @@ export default {
       rs.date = `${date}${this.timepickerTime}`;
       this.timepicker = null;
       this.timepickerTime = "00:00";
+      this.sortDate1(this.planner.planList);
     },
     getOrderDate(idx) {
       return this.planner.planList[idx].date.substring(11, 16);
@@ -978,6 +984,13 @@ export default {
       });
       // 커스텀 오버레이를 지도에 표시합니다
       this.customOverlay.setMap(this.map);
+    },
+    // 오름차순
+    sortDate1(list) {
+      const sorted_list = list.sort((a, b) => {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      });
+      return sorted_list;
     },
   },
 };

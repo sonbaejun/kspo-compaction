@@ -747,6 +747,7 @@ export default {
       obj.x = rs.x;
       obj.y = rs.y;
       this.planner.planList.push(obj);
+      this.sortDate1(this.planner.planList);
     },
     // localhost:8080/api/v1/planner/post
     savePlan() {
@@ -853,6 +854,7 @@ export default {
       rs.date = `${date}${this.timepickerTime}`;
       this.timepicker = null;
       this.timepickerTime = "00:00";
+      this.sortDate1(this.planner.planList);
     },
     getOrderDate(idx) {
       return this.planner.planList[idx].date.substring(11, 16);
@@ -952,6 +954,12 @@ export default {
       } else {
         return false;
       }
+    },
+    sortDate1(list) {
+      const sorted_list = list.sort((a, b) => {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      });
+      return sorted_list;
     },
   },
 };
