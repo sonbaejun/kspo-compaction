@@ -5,10 +5,11 @@ import App from './App'
 import router from './router/index.js'
 import Vuex from 'vuex'
 
-
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import '@fortawesome/fontawesome-free/js/all.js'
+
 
 Vue.config.productionTip = false
 // createApp(App).use(router).mount('#app')
