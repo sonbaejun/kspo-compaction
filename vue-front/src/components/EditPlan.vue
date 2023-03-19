@@ -423,7 +423,12 @@
                       "
                     >
                       <v-list-item-title
-                        style="margin: 7px 0px 15px 9px; width: 80%"
+                        style="
+                          margin: 7px 0px 15px 9px;
+                          width: 80%;
+                          cursor: pointer;
+                        "
+                        @click="setCenter(rs)"
                         >{{ rs.name }}</v-list-item-title
                       >
                       <v-btn

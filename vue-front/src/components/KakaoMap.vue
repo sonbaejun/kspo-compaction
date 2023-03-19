@@ -444,7 +444,8 @@
                       "
                     >
                       <v-list-item-title
-                        style="margin: 7px 0px 15px 9px; width: 80%"
+                        style="margin: 7px 0px 15px 9px; width: 80%; cursor: pointer;"
+                        @click="setCenter(rs)"
                         >{{ rs.name }}</v-list-item-title
                       >
                       <v-btn
@@ -780,7 +781,7 @@ export default {
       //http://localhost:8080/api/v1/planner/post
       axios({
         method: "post", // [요청 타입]
-        url: "https://reqres.in/api/users", // [요청 주소]
+        url: "http://localhost:8080/api/v1/planner/post", // [요청 주소]
         data: JSON.stringify(this.planner), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -798,7 +799,7 @@ export default {
         })
         .catch((error) => {
           //비로그인 시 로그인 창으로 이동
-          if (error.message == "에러메시지") {
+          if (error.message == "Request failed with status code 403") {
             alert("로그인이 필요한 서비스입니다.");
             this.$router.push({
               name: "Login",
