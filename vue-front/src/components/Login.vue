@@ -68,44 +68,44 @@
             "
           />
           <v-text-field
-            label="아이디"
+            label="아이디(필수)"
             style="margin: 0px 15px 0px 15px"
             v-model="userRegister.loginId"
             required
           ></v-text-field>
           <v-text-field
-            label="비밀번호"
+            label="비밀번호(필수)"
             type="password"
             v-model="userRegister.loginPassword"
             style="margin: 0px 15px 0px 15px"
             required
           ></v-text-field>
           <v-text-field
-            label="이메일"
+            label="이메일(필수)"
             style="margin: 0px 15px 0px 15px"
             v-model="userRegister.email"
             required
           ></v-text-field>
           <v-text-field
-            label="이름"
+            label="이름(필수)"
             style="margin: 0px 15px 0px 15px"
             v-model="userRegister.name"
             required
           ></v-text-field>
           <v-text-field
-            label="닉네임"
+            label="닉네임(필수)"
             style="margin: 0px 15px 0px 15px"
             v-model="userRegister.nickname"
             required
           ></v-text-field>
           <v-text-field
-            label="나이"
+            label="나이(필수)"
             style="margin: 0px 15px 0px 15px"
             v-model="userRegister.age"
             required
           ></v-text-field>
           <v-text-field
-            label="성별"
+            label="성별(필수)"
             style="margin: 0px 15px 0px 15px"
             v-model="userRegister.gender"
             @click="gender()"
@@ -124,13 +124,13 @@
             </div>
           </div>
           <v-text-field
-            label="거주지역"
+            label="거주지역(선택)"
             v-model="userRegister.address"
             style="margin: 0px 15px 0px 15px"
             required
           ></v-text-field>
           <v-text-field
-            label="소개글"
+            label="소개글(선택)"
             style="margin: 0px 15px 0px 15px"
             v-model="userRegister.intro"
             required
@@ -245,6 +245,11 @@ export default {
                   name: "KakaoMap",
                   params: { plan: this.$route.params.plan },
                 });
+              } else if (this.$route.params.board != undefined) {
+                this.$router.push({
+                  name: "ReviewBoardWrite",
+                  params: { board: this.$route.params.board },
+                });
               } else {
                 this.$router.push("/").catch(() => {});
               }
@@ -297,7 +302,7 @@ export default {
       this.dialog = false;
     },
     gender() {
-      if(this.genderSelect == 1) {
+      if (this.genderSelect == 1) {
         this.genderSelect = 0;
       } else {
         this.genderSelect = 1;

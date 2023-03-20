@@ -8,8 +8,9 @@ import EditPlan from '@/components/EditPlan'
 import Login from '@/components/Login'
 import Recommend from '@/components/Recommend'
 import VisiblePlan from '@/components/VisiblePlan'
-
-
+import ReviewBoard from '@/components/ReviewBoard'
+import ReviewBoardView from '@/components/ReviewBoardView'
+import ReviewBoardWrite from '@/components/ReviewBoardWrite'
 
 Vue.use(Router)
 
@@ -60,6 +61,24 @@ export default new Router({
       path: '/visiblePlan',
       name: 'VisiblePlan',
       component: VisiblePlan,
+      props: true,
+    },
+    {
+      path: '/reviewBoard',
+      name: 'ReviewBoard',
+      component: ReviewBoard,
+      props: true,
+    },
+    {
+      path: '/reviewBoardView',
+      name: 'ReviewBoardView',
+      component: ReviewBoardView,
+      props: true,
+    },
+    {
+      path: '/reviewBoardWrite',
+      name: 'ReviewBoardWrite',
+      component: ReviewBoardWrite,
       props: true,
     }
   ]
