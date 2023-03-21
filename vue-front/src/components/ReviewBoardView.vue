@@ -1,9 +1,36 @@
 <template>
   <div>
+    <div class="text-center">
+      <v-dialog v-model="dialog" width="500">
+        <v-card>
+          <v-card-title class="text-h5 grey lighten-2">
+            댓글 수정하기
+          </v-card-title>
+
+          <v-textarea
+            outlined
+            name="input-7-4"
+            style="width: 90%; margin: 20px 0px 0px 35px"
+            label="댓글을 수정하세요"
+            auto-grow
+            rows="4"
+            row-height="30"
+            shaped
+            v-model="adjustComment"
+          ></v-textarea>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="editConfirm"> 수정완료 </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
+
     <v-card style="width: 90%; margin-left: 35px" elevation="6">
       <div class="view_header1">
         <div>{{ board.title }}</div>
-        <div class="manageBtn" v-if="checkBoardUser == 0">
+        <div class="manageBtn" v-if="checkBoardUser == 1">
           <button class="editBtn" @click="goEdit()">수정</button>
           <button class="deleteBtn" @click="deleteBoard()">삭제</button>
         </div>
@@ -18,14 +45,21 @@
       <div id="comment_num">{{ board.commentResponseDtoList.length }}</div>
       <div id="comment_title">Comments</div>
     </div>
-    <div v-for="item in board.commentResponseDtoList" :key="item.comment">
+    <div
+      v-for="(item, index) in board.commentResponseDtoList"
+      :key="item.comment"
+    >
       <v-card style="width: 90%; margin-left: 35px" elevation="4">
         <div class="comment_header">
           <div id="viewUser">
             <i class="fas fa-user"></i>{{ item.nickname }}
             <div class="manageComment" v-if="item.nickname == curNickname">
-              <button><i class="fas fa-edit"></i></button>
-              <button><i class="fas fa-trash"></i></button>
+              <button @click="editComment(index)">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button @click="deleteBoard(index)">
+                <i class="fas fa-trash"></i>
+              </button>
             </div>
           </div>
           <div id="viewDate">
@@ -57,8 +91,12 @@ import axios from "axios";
 export default {
   data() {
     return {
+      dialog: false,
       boardNickname: "",
       curNickname: "",
+      curIndex: 0,
+      curId: 0,
+      adjustComment: "",
       viewDate: "",
       checkBoardUser: 0,
       comment: {
@@ -75,7 +113,7 @@ export default {
     };
   },
   mounted() {
-    this.curNickname = this.$store.state.userInfo.nickname;
+    // this.curNickname = this.$store.state.userInfo.nickname;
     console.log(this.$route.params.id);
     this.id = this.$route.params.id;
     this.getBoard();
@@ -100,7 +138,6 @@ export default {
       })
         .then((response) => {
           console.log(response.data);
-          this.board.commentResponseDtoList.length = 0;
           this.getBoard();
         })
         .catch((error) => {
@@ -119,6 +156,7 @@ export default {
         });
     },
     getBoard() {
+      this.board.commentResponseDtoList.length = 0;
       /* http://localhost:8080/api/v1/board/list/${this.id} */
       /* https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/board/list/id */
       axios
@@ -179,6 +217,59 @@ export default {
             setTimeout(() => {
               this.$router.push({ path: "/reviewBoard" });
             }, 100);
+          })
+          .catch(function (error) {
+            console.log("ERROR : " + JSON.stringify(error));
+          });
+      }
+    },
+    editComment(index) {
+      this.dialog = true;
+      this.curIndex = index;
+      this.adjustComment =
+        this.board.commentResponseDtoList[this.curIndex].comment;
+    },
+    editConfirm() {
+      this.curId = this.board.commentResponseDtoList[this.curIndex].id;
+      // http://localhost:8080/api/v1/board/comments/update/${this.curId}
+      // https://reqres.in/api/users/2
+      axios({
+        method: "put", // [요청 타입]
+        url: `http://localhost:8080/api/v1/board/comments/update/${this.curId}`, // [요청 주소]
+        data: JSON.stringify(this.adjustComment), // [요청 데이터]
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "X-AUTH-TOKEN": localStorage.getItem("access_token"),
+        }, // [요청 헤더]
+        timeout: 5000, // [타임 아웃 시간]
+
+        //responseType: "json" // [응답 데이터 : stream , json]
+      })
+        .then((response) => {
+          console.log(response.data);
+          this.getBoard();
+          this.dialog = false;
+        })
+        .catch(function (error) {
+          console.log("ERROR : " + JSON.stringify(error));
+        });
+    },
+    deleteBoard(index) {
+      this.curIndex = index;
+      this.curId = this.board.commentResponseDtoList[this.curIndex].id;
+      if (confirm("정말 삭제하시겠어요 ?")) {
+        axios({
+          method: "delete", // [요청 타입]
+          url: `http://localhost:8080/api/v1/board/comments/delete/${this.curId}`, // [요청 주소]
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "X-AUTH-TOKEN": localStorage.getItem("access_token"),
+          }, // [요청 헤더]
+          timeout: 5000, // [타임 아웃 시간]
+        })
+          .then((response) => {
+            console.log("RESPONSE : " + JSON.stringify(response.data));
+            this.getBoard();
           })
           .catch(function (error) {
             console.log("ERROR : " + JSON.stringify(error));
