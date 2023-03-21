@@ -196,14 +196,14 @@ export default {
         })
           .then(function (response) {
             console.log("RESPONSE : " + JSON.stringify(response.data));
+            setTimeout(() => {
+              this.$router.push({ path: "/planList" });
+            }, 100);
           })
           .catch(function (error) {
             console.log("ERROR : " + JSON.stringify(error));
           });
       }
-      setTimeout(() => {
-        this.$router.push({ path: "/planList" });
-      }, 100);
     },
     /* 수정 컴포넌트로 이동하는 함수 */
     goEdit() {
@@ -220,18 +220,15 @@ export default {
     },
   },
   mounted() {
-    /* http://localhost:8080/api/v1/planner/${this.id} */
+    /* http://localhost:8080/api/v1/planner/detail/${this.id} */
     /* https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/api/v1/planner */
     this.id = this.$route.params.id;
     axios
-      .get(
-        `http://localhost:8080/api/v1/planner/${this.id}`,
-        {
-          headers: {
-            "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
-          },
-        }
-      )
+      .get(`http://localhost:8080/api/v1/planner/detail/${this.id}`, {
+        headers: {
+          "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
+        },
+      })
       .then((response) => {
         //서버 사용 시 response.data.nickname
         this.nickname = response.data.nickname;

@@ -985,7 +985,6 @@ export default {
       // 커스텀 오버레이를 지도에 표시합니다
       this.customOverlay.setMap(this.map);
     },
-    // 오름차순
     sortDate1(list) {
       const sorted_list = list.sort((a, b) => {
         return new Date(a.date).getTime() - new Date(b.date).getTime();

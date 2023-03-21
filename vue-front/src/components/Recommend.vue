@@ -88,7 +88,7 @@
       v-if="startDatePicker == 1"
       style="z-index: 1000000; height: 100px; background-color: transparent"
     >
-      <v-date-picker v-model="recommendInfo.start_date" style="z-index: 1">
+      <v-date-picker v-model="recommendInfo.startDate" style="z-index: 1">
         <v-btn
           @click="startDatePicker = 0"
           style="
@@ -110,7 +110,7 @@
       v-if="endDatePicker == 1"
       style="z-index: 100000000; height: 100px; background-color: transparent"
     >
-      <v-date-picker v-model="recommendInfo.end_date" style="z-index: 1">
+      <v-date-picker v-model="recommendInfo.endDate" style="z-index: 1">
         <v-btn
           @click="endDatePicker = 0"
           style="
@@ -131,7 +131,7 @@
         <div>
           <v-text-field
             label="Start"
-            v-model="recommendInfo.start_date"
+            v-model="recommendInfo.startDate"
             style="margin-top: 0px; padding-top: 0px"
             @click="
               startDatePicker = 1;
@@ -141,7 +141,7 @@
           ></v-text-field>
           <v-text-field
             label="End"
-            v-model="recommendInfo.end_date"
+            v-model="recommendInfo.endDate"
             style="margin-top: 0px; padding-top: 0px"
             @click="
               endDatePicker = 1;
@@ -338,8 +338,8 @@ export default {
         planList: [],
       },
       recommendInfo: {
-        start_date: "",
-        end_date: "",
+        startDate: "",
+        endDate: "",
         concept: "",
         placeList: [],
       },
@@ -401,8 +401,8 @@ export default {
     doneBtn() {
       this.startDatePicker = 0;
       this.endDatePicker = 0;
-      let date1 = new Date(this.recommendInfo.start_date);
-      let date2 = new Date(this.recommendInfo.end_date);
+      let date1 = new Date(this.recommendInfo.startDate);
+      let date2 = new Date(this.recommendInfo.endDate);
       let dateDiff = date1 <= date2;
       this.place.forEach((a) => {
         let obj = {
@@ -412,8 +412,8 @@ export default {
       });
       console.log(this.recommendInfo);
       if (
-        this.recommendInfo.start_date != "" &&
-        this.recommendInfo.end_date != "" &&
+        this.recommendInfo.startDate != "" &&
+        this.recommendInfo.endDate != "" &&
         dateDiff
       ) {
         // https://reqres.in/api/users
@@ -431,6 +431,7 @@ export default {
           //responseType: "json" // [응답 데이터 : stream , json]
         })
           .then((response) => {
+            console.log(1);
             //서버 사용 시 response.data.nickname
             this.nickname = response.data.nickname;
             if (this.nickname == this.$store.state.userInfo.nickname) {
@@ -455,6 +456,10 @@ export default {
             console.log(this.planner);
           })
           .catch((error) => {
+            if(error.stateCode == 404) {
+              alert('조건에 부합하는 플래너가 존재하지 않습니다');
+              this.$router.push({ path: "/" });
+            }
             console.log("ERROR : " + JSON.stringify(error));
           });
         this.modal = 0;

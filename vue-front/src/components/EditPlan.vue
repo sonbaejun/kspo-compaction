@@ -386,7 +386,7 @@
                           font-weight: 700;
                         "
                       >
-                        카카오맵 상세보기
+                        상세보기
                       </a>
                     </div>
                   </v-card>
@@ -550,7 +550,7 @@
                   font-weight: 700;
                 "
               >
-                카카오맵 상세보기
+                상세보기
               </a>
             </div>
           </div>
@@ -818,13 +818,6 @@ export default {
         this.curDate = this.dateResult[0].date;
       } else {
         alert("잘못된 형식입니다(공백 또는 날짜 형식을 확인해주세요)");
-      }
-    },
-    searchView() {
-      if (this.searchbox == 1) {
-        this.searchbox = 0;
-      } else {
-        this.searchbox = 1;
       }
     },
     setCenter(rs) {
