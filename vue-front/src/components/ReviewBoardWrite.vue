@@ -55,7 +55,7 @@ export default {
         //http://localhost:8080/api/v1/board/post
         axios({
           method: "post", // [요청 타입]
-          url: "https://reqres.in/api/users", // [요청 주소]
+          url: "http://localhost:8080/api/v1/board/post", // [요청 주소]
           data: JSON.stringify(this.board), // [요청 데이터]
           headers: {
             "Content-Type": "application/json; charset=utf-8",

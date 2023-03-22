@@ -126,7 +126,7 @@ export default {
       //http://localhost:8080/api/v1/board/comments/post/${this.id}
       axios({
         method: "post", // [요청 타입]
-        url: `https://reqres.in/api/users`, // [요청 주소]
+        url: `http://localhost:8080/api/v1/board/comments/post/${this.id}`, // [요청 주소]
         data: JSON.stringify(this.comment), // [요청 데이터]
         headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -161,7 +161,7 @@ export default {
       /* https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/board/list/id */
       axios
         .get(
-          `https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/board/list/id`,
+          `http://localhost:8080/api/v1/board/list/${this.id}`,
           {
             headers: {
               "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
