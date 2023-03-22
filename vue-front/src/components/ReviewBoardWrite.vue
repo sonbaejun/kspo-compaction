@@ -34,15 +34,14 @@ export default {
       id: "",
       board: {
         title: "",
-        nickname: "",
         content: "",
       },
+
     };
   },
   mounted() {
     if (this.$route.params.board != undefined) {
       this.board.title = this.$route.params.board.title;
-      this.board.nickname = this.$route.params.board.nickname;
       this.board.content = this.$route.params.board.content;
       this.id = this.$route.params.id;
     }

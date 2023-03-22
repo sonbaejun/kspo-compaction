@@ -65,7 +65,7 @@ export default {
       )
       .then((response) => {
         /* 서버 사용 시 data.? 내가 테스트할땐 data.data로 해야 돌아감 */
-        response.data.data.forEach((a) => {
+        response.data.forEach((a) => {
           this.boardList.push(a);
         });
       })
@@ -75,6 +75,8 @@ export default {
   },
   methods: {
     handleClick(item) {
+      console.log(item);
+      console.log(item.id);
       this.$router.push({ name: "ReviewBoardView", params: { id: item.id } });
     },
     goReviewBoardWrite() {

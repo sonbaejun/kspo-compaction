@@ -16,7 +16,7 @@
             rows="4"
             row-height="30"
             shaped
-            v-model="adjustComment"
+            v-model="adjustComment.content"
           ></v-textarea>
           <v-divider></v-divider>
           <v-card-actions>
@@ -57,7 +57,7 @@
               <button @click="editComment(index)">
                 <i class="fas fa-edit"></i>
               </button>
-              <button @click="deleteBoard(index)">
+              <button @click="deleteComment(index)">
                 <i class="fas fa-trash"></i>
               </button>
             </div>
@@ -91,12 +91,15 @@ import axios from "axios";
 export default {
   data() {
     return {
+      id: "",
       dialog: false,
       boardNickname: "",
       curNickname: "",
       curIndex: 0,
       curId: 0,
-      adjustComment: "",
+      adjustComment: {
+        content: "",
+      },
       viewDate: "",
       checkBoardUser: 0,
       comment: {
@@ -113,7 +116,7 @@ export default {
     };
   },
   mounted() {
-    // this.curNickname = this.$store.state.userInfo.nickname;
+    this.curNickname = this.$store.state.userInfo.nickname;
     console.log(this.$route.params.id);
     this.id = this.$route.params.id;
     this.getBoard();
@@ -139,6 +142,9 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.getBoard();
+          setTimeout(() => {
+            this.comment.comment = "";
+          }, 100)
         })
         .catch((error) => {
           //비로그인 시 로그인 창으로 이동
@@ -156,18 +162,14 @@ export default {
         });
     },
     getBoard() {
-      this.board.commentResponseDtoList.length = 0;
       /* http://localhost:8080/api/v1/board/list/${this.id} */
       /* https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/board/list/id */
       axios
-        .get(
-          `http://localhost:8080/api/v1/board/list/${this.id}`,
-          {
-            headers: {
-              "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
-            },
-          }
-        )
+        .get(`http://localhost:8080/api/v1/board/list/${this.id}`, {
+          headers: {
+            "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
+          },
+        })
         .then((response) => {
           //서버 사용 시 response.data.nickname
           this.boardNickname = response.data.nickname;
@@ -181,9 +183,15 @@ export default {
           this.board.content = response.data.content;
           this.board.createdDate = response.data.createdDate;
           this.board.modifiedDate = response.data.modifiedDate;
-          response.data.commentResponseDtoList.forEach((a) => {
-            this.board.commentResponseDtoList.push(a);
-          });
+          this.board.commentResponseDtoList.length = 0;
+          if(response.data.commentResponseDtoList.length > 0) {
+            console.log(10);
+            response.data.commentResponseDtoList.forEach((a) => {
+              this.board.commentResponseDtoList.push(a);
+            });
+          } else {
+            this.board.commentResponseDtoList = response.data.commentResponseDtoList;
+          }
           this.board.content.replace("\n", "<br />");
           if (this.board.modifiedDate == "") {
             this.viewDate = this.board.createdDate;
@@ -214,19 +222,19 @@ export default {
         })
           .then(function (response) {
             console.log("RESPONSE : " + JSON.stringify(response.data));
-            setTimeout(() => {
-              this.$router.push({ path: "/reviewBoard" });
-            }, 100);
           })
           .catch(function (error) {
             console.log("ERROR : " + JSON.stringify(error));
           });
+        setTimeout(() => {
+          this.$router.push({ path: "/reviewBoard" });
+        }, 100);
       }
     },
     editComment(index) {
       this.dialog = true;
       this.curIndex = index;
-      this.adjustComment =
+      this.adjustComment.content =
         this.board.commentResponseDtoList[this.curIndex].comment;
     },
     editConfirm() {
@@ -254,7 +262,7 @@ export default {
           console.log("ERROR : " + JSON.stringify(error));
         });
     },
-    deleteBoard(index) {
+    deleteComment(index) {
       this.curIndex = index;
       this.curId = this.board.commentResponseDtoList[this.curIndex].id;
       if (confirm("정말 삭제하시겠어요 ?")) {
@@ -269,11 +277,13 @@ export default {
         })
           .then((response) => {
             console.log("RESPONSE : " + JSON.stringify(response.data));
-            this.getBoard();
           })
           .catch(function (error) {
             console.log("ERROR : " + JSON.stringify(error));
           });
+        setTimeout(() => {
+          this.getBoard();
+        }, 100);
       }
     },
   },
