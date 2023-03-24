@@ -26,7 +26,7 @@
             <v-img
               @click="goPlan(rs)"
               style="cursor: pointer"
-              src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+              :src="rs.url"
               height="200px"
               cover
             ></v-img>
@@ -38,8 +38,8 @@
               {{ rs.intro }}
             </v-card-subtitle>
             <v-card-subtitle style="white-space: nowrap; padding: 0">
-              {{ rs.start_date.substring(0, 10) + " to" }}
-              {{ rs.end_date.substring(0, 10) }}
+              {{ rs.start_date.substring(0, 10) + " -" }}
+              {{ rs.end_date.substring(5, 10) }}
             </v-card-subtitle>
           </v-card>
         </v-col>
@@ -48,7 +48,7 @@
   </div>
 </template>
 
-  <script>
+<script>
 import axios from "axios";
 
 export default {
@@ -57,6 +57,29 @@ export default {
     return {
       planner: {
         data: [],
+      },
+      mapImg: {
+        서울: "https://velog.velcdn.com/images/sonbaejun/post/62c9c806-447f-4ed3-a985-a79ff8863f26/image.png",
+        대전: "https://velog.velcdn.com/images/sonbaejun/post/b0c88f93-72c3-4990-89f1-403fa9de63f9/image.png",
+        대구: "https://velog.velcdn.com/images/sonbaejun/post/07ecc5e6-7e4a-4f50-8d38-83ea34c6cb53/image.png",
+        부산: "https://velog.velcdn.com/images/sonbaejun/post/b9854730-713c-4627-adb6-87da5ef21d78/image.png",
+        광주: "https://velog.velcdn.com/images/sonbaejun/post/cf7942e8-b13b-48a2-9468-3998e27c760f/image.png",
+        울산: "https://velog.velcdn.com/images/sonbaejun/post/5a668efa-7fb0-4395-ace6-213d568c9ec3/image.png",
+        인천: "https://velog.velcdn.com/images/sonbaejun/post/753cb7e8-4c26-4ea3-be3d-dc527f230496/image.png",
+        경기도:
+          "https://velog.velcdn.com/images/sonbaejun/post/a5818990-e7fb-42eb-83e5-0ff8ce0db778/image.png",
+        강원도:
+          "https://velog.velcdn.com/images/sonbaejun/post/09388686-76e4-47c7-addc-d9ac3238b5ca/image.png",
+        경상남도:
+          "https://velog.velcdn.com/images/sonbaejun/post/ae1c4a48-075b-46a5-a34a-cfbdadc21750/image.png",
+        전라도:
+          "https://velog.velcdn.com/images/sonbaejun/post/a6a9fe53-f866-47c9-a4b0-fbf233eae420/image.png",
+        제주도:
+          "https://velog.velcdn.com/images/sonbaejun/post/e8d3959d-7a79-4af4-985f-249de987e96a/image.png",
+        경상북도:
+          "https://velog.velcdn.com/images/sonbaejun/post/66f5c935-609a-4333-b673-04fadaf49420/image.png",
+        충청도:
+          "https://velog.velcdn.com/images/sonbaejun/post/59683b10-0bbf-49f0-9f03-4e19e578874d/image.png",
       },
     };
   },
@@ -72,15 +95,21 @@ export default {
     //https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/planner
     //http://localhost:8080/api/v1/planner
     axios
-      .get("http://localhost:8080/api/v1/planner", {
-        headers: {
-          "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
-        },
-      })
+      .get(
+        "https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/planner",
+        {
+          headers: {
+            "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
+          },
+        }
+      )
       .then((response) => {
         /* 서버 사용 시 data.? 내가 테스트할땐 data.data로 해야 돌아감 */
         response.data.forEach((a) => {
           this.planner.data.push(a);
+          let placeImg = a.placeList[0].place;
+          let val = this.mapImg[placeImg];
+          a.url = val;
         });
       })
       .catch((err) => {
