@@ -52,12 +52,14 @@
         {{ $store.state.userInfo.nickname }}
       </h4>
       <div style="margin-top: 3px" v-if="$store.state.token != null">
-        <!-- <v-btn
-          color="warning"
-          fab
-          dark
-          style="height: 37px; width: 37px; margin-top: 3px"
-        ></v-btn> -->
+        <v-img
+          style="cursor: pointer; border-radius: 50px; margin-top: 3px"
+          contain
+          src="https://velog.velcdn.com/images/heelieben/post/87bbb462-dbd5-49a5-a9e9-70ed2007cdaf/image.png"
+          height="50px"
+          width="50px"
+          cover
+        ></v-img>
         <v-btn
           class="loginBtn"
           style="
@@ -76,19 +78,29 @@
           >Logout</v-btn
         >
       </div>
-      <div style="margin-top: 3px" v-else>
-        <v-btn
-          color="warning"
-          fab
-          dark
-          style="height: 37px; width: 37px; margin-top: 3px"
-        ></v-btn>
+      <div
+        style="
+          margin-top: 3px;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+        "
+        v-else
+      >
+        <v-img
+          style="cursor: pointer; border-radius: 50px; margin-top: 3px"
+          contain
+          src="https://velog.velcdn.com/images/heelieben/post/87bbb462-dbd5-49a5-a9e9-70ed2007cdaf/image.png"
+          height="50px"
+          width="50px"
+          cover
+        ></v-img>
         <v-btn
           class="loginBtn"
           style="
             height: 37px;
             width: 37px;
-            margin-right: 15px;
+            margin: 7px 15px 0px 2px;
             border-radius: 8px;
             background-color: #1bc6ec;
             color: aliceblue;
