@@ -12,6 +12,7 @@ export const store = new Vuex.Store({
         isLogin: false,
         userInfo: {
             nickname: (JSON.parse(localStorage.getItem("userInfo")) == null) ? null : JSON.parse(localStorage.getItem("userInfo")).nickname,
+            picture: (JSON.parse(localStorage.getItem("userInfo")) == null) ? null : JSON.parse(localStorage.getItem("userInfo")).picture,
         },
         counter: 0,
     },
@@ -32,6 +33,7 @@ export const store = new Vuex.Store({
         },
         inituserInfo(state) {
             state.userInfo.nickname = "";
+            state.userInfo.picture = ""
         },
         initToken(state) {
             state.token = null;

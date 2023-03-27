@@ -52,14 +52,12 @@
         {{ $store.state.userInfo.nickname }}
       </h4>
       <div style="margin-top: 3px" v-if="$store.state.token != null">
-        <v-img
+        <img
           style="cursor: pointer; border-radius: 50px; margin-top: 3px"
-          contain
-          src="https://velog.velcdn.com/images/heelieben/post/87bbb462-dbd5-49a5-a9e9-70ed2007cdaf/image.png"
+          :src="$store.state.userInfo.picture"
           height="50px"
           width="50px"
-          cover
-        ></v-img>
+        />
         <v-btn
           class="loginBtn"
           style="
@@ -87,14 +85,12 @@
         "
         v-else
       >
-        <v-img
+        <img
           style="cursor: pointer; border-radius: 50px; margin-top: 3px"
-          contain
-          src="https://velog.velcdn.com/images/heelieben/post/87bbb462-dbd5-49a5-a9e9-70ed2007cdaf/image.png"
+          :src="$store.state.userInfo.picture"
           height="50px"
           width="50px"
-          cover
-        ></v-img>
+        />
         <v-btn
           class="loginBtn"
           style="
