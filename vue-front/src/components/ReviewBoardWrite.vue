@@ -18,7 +18,16 @@
       shaped
       v-model="board.content"
     ></v-textarea>
+    <div contenteditable="true" style="padding: 20px" id="boardContent">
+      <img v-for="rs in uploadFile" :key="rs" :src="rs" class="boardImg" />
+    </div>
     <div style="width: 90%; margin-left: 35px">
+      <input
+        @change="upload($event.target)"
+        multiple
+        accept="image/*"
+        type="file"
+      />
       <v-btn color="#1bc6ec" style="color: white" @click="writeBoard"
         >완료</v-btn
       >
@@ -32,11 +41,13 @@ export default {
   data() {
     return {
       id: "",
+      imgURL: "",
+      uploadFile: [],
+      sendingImg: [],
       board: {
         title: "",
         content: "",
       },
-
     };
   },
   mounted() {
@@ -48,13 +59,18 @@ export default {
   },
   methods: {
     writeBoard() {
+      const element = document.getElementById("boardContent");
+      this.board.content = element.innerText;
+      console.log(element.innerText);
+      console.log(element.innerHTML);
+      console.log(this.sendingImg);
       if (this.id == "") {
         this.board.nickname = this.$store.state.userInfo.nickname;
         //https://reqres.in/api/users
         //http://localhost:8080/api/v1/board/post
         axios({
           method: "post", // [요청 타입]
-          url: "http://localhost:8080/api/v1/board/post", // [요청 주소]
+          url: "https://reqres.in/api/users", // [요청 주소]
           data: JSON.stringify(this.board), // [요청 데이터]
           headers: {
             "Content-Type": "application/json; charset=utf-8",
@@ -108,6 +124,14 @@ export default {
         }, 100);
       }
     },
+    upload(value) {
+      let uploader = value.files;
+      this.sendingImg.push(uploader[0]);
+      let url = URL.createObjectURL(uploader[0]);
+      this.uploadFile.push(url);
+      console.log(this.uploadFile);
+      console.log(url);
+    },
   },
 };
 </script>
@@ -115,5 +139,11 @@ export default {
 <style scoped>
 ::v-deep .test {
   background-color: #1bc6ec !important;
+}
+
+.boardImg {
+  height: 300px;
+  width: 500px;
+  object-fit: cover;
 }
 </style>
