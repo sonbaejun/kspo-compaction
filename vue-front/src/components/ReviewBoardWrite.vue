@@ -18,17 +18,25 @@
       shaped
       v-model="board.content"
     ></v-textarea>
-    <div contenteditable="true" style="padding: 20px" id="boardContent">
-      <img v-for="rs in uploadFile" :key="rs" :src="rs" class="boardImg" />
+    <div id="boardContent">
+      <img
+        v-for="rs in board.uploadFile"
+        :key="rs"
+        :src="rs.pictureURL"
+        class="boardImg"
+      />
     </div>
-    <div style="width: 90%; margin-left: 35px">
+    <div style="width: 90%; margin-left: 35px; padding: 10px">
       <input
         @change="upload($event.target)"
         multiple
         accept="image/*"
         type="file"
       />
-      <v-btn color="#1bc6ec" style="color: white" @click="writeBoard"
+      <v-btn
+        color="#1bc6ec"
+        style="color: white; float: right"
+        @click="writeBoard"
         >완료</v-btn
       >
     </div>
@@ -42,11 +50,11 @@ export default {
     return {
       id: "",
       imgURL: "",
-      uploadFile: [],
       sendingImg: [],
       board: {
         title: "",
         content: "",
+        uploadFile: [],
       },
     };
   },
@@ -59,11 +67,6 @@ export default {
   },
   methods: {
     writeBoard() {
-      const element = document.getElementById("boardContent");
-      this.board.content = element.innerText;
-      console.log(element.innerText);
-      console.log(element.innerHTML);
-      console.log(this.sendingImg);
       if (this.id == "") {
         this.board.nickname = this.$store.state.userInfo.nickname;
         //https://reqres.in/api/users
@@ -128,8 +131,11 @@ export default {
       let uploader = value.files;
       this.sendingImg.push(uploader[0]);
       let url = URL.createObjectURL(uploader[0]);
-      this.uploadFile.push(url);
-      console.log(this.uploadFile);
+      let obj = {
+        pictureURL: url,
+      };
+      this.board.uploadFile.push(obj);
+      console.log(this.board.uploadFile);
       console.log(url);
     },
   },
@@ -143,7 +149,18 @@ export default {
 
 .boardImg {
   height: 300px;
-  width: 500px;
+  width: 450px;
   object-fit: cover;
+}
+#boardContent {
+  padding: 15px 50px;
+  border-radius: 10px;
+  border-color: rgba(0, 0, 0, 0.42);
+}
+
+#boardContent [contenteditable="true"]:empty:before {
+  content: attr(placeholder);
+  pointer-events: none;
+  display: block; /* For Firefox */
 }
 </style>

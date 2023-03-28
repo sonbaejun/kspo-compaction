@@ -39,6 +39,14 @@
         <div id="viewUser"><i class="fas fa-user"></i>{{ board.nickname }}</div>
         <div id="viewDate"><i class="fas fa-clock"></i> {{ viewDate }}</div>
       </div>
+      <div id="boardContent">
+        <img
+          v-for="rs in uploadFile"
+          :key="rs.pictureURL"
+          :src="rs.pictureURL"
+          class="boardImg"
+        />
+      </div>
       <div class="viewContent" v-text="board.content"></div>
     </v-card>
     <div class="balloon">
@@ -97,6 +105,7 @@ export default {
       curNickname: "",
       curIndex: 0,
       curId: 0,
+      uploadFile: [],
       adjustComment: {
         content: "",
       },
@@ -144,7 +153,7 @@ export default {
           this.getBoard();
           setTimeout(() => {
             this.comment.comment = "";
-          }, 100)
+          }, 100);
         })
         .catch((error) => {
           //비로그인 시 로그인 창으로 이동
@@ -165,14 +174,19 @@ export default {
       /* http://localhost:8080/api/v1/board/list/${this.id} */
       /* https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/board/list/id */
       axios
-        .get(`https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/board/list/id`, {
-          headers: {
-            "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
-          },
-        })
+        .get(
+          `https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/board/list/id`,
+          {
+            headers: {
+              "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
+            },
+          }
+        )
         .then((response) => {
           //서버 사용 시 response.data.nickname
           this.boardNickname = response.data.nickname;
+          this.uploadFile = response.data.uploadFile;
+          console.log(this.uploadFile);
           if (this.boardNickname == this.$store.state.userInfo.nickname) {
             this.checkBoardUser = 1;
           } else {
@@ -184,13 +198,14 @@ export default {
           this.board.createdDate = response.data.createdDate;
           this.board.modifiedDate = response.data.modifiedDate;
           this.board.commentResponseDtoList.length = 0;
-          if(response.data.commentResponseDtoList.length > 0) {
+          if (response.data.commentResponseDtoList.length > 0) {
             console.log(10);
             response.data.commentResponseDtoList.forEach((a) => {
               this.board.commentResponseDtoList.push(a);
             });
           } else {
-            this.board.commentResponseDtoList = response.data.commentResponseDtoList;
+            this.board.commentResponseDtoList =
+              response.data.commentResponseDtoList;
           }
           this.board.content.replace("\n", "<br />");
           if (this.board.modifiedDate == "") {
@@ -375,7 +390,7 @@ export default {
 }
 .viewContent {
   white-space: pre-line;
-  padding: 15px 30px;
+  padding: 10px 50px;
 }
 .commentContent {
   white-space: pre-line;
@@ -405,5 +420,15 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+}
+.boardImg {
+  height: 300px;
+  width: 450px;
+  object-fit: cover;
+}
+#boardContent {
+  padding: 15px 50px;
+  border-radius: 10px;
+  border-color: rgba(0, 0, 0, 0.42);
 }
 </style>
