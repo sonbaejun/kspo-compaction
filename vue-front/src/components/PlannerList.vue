@@ -20,9 +20,14 @@
       >
     </div>
     <v-container class="bg-surface-variant">
+      <div class="planbox">
+        <a @click="goComponent()"
+          >VISIBLE PLAN >></a
+        >
+      </div>
       <v-row no-gutters>
         <v-col v-for="rs in planner.data" :key="rs.name" cols="12" sm="3">
-          <v-card class="ma-2 pa-2" max-width="344" style="height: 400px">
+          <v-card class="ma-2 pa-2" style="height: 400px">
             <v-img
               @click="goPlan(rs)"
               style="cursor: pointer"
@@ -90,16 +95,22 @@ export default {
     goWritePlan() {
       this.$router.push("/planWrite").catch(() => {});
     },
+    goComponent() {
+      this.$router.push("/visiblePlan").catch(() => {});
+    },
   },
   mounted() {
     //https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/planner
     //http://localhost:8080/api/v1/planner
     axios
-      .get("http://localhost:8080/api/v1/planner", {
-        headers: {
-          "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
-        },
-      })
+      .get(
+        "http://localhost:8080/api/v1/planner",
+        {
+          headers: {
+            "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
+          },
+        }
+      )
       .then((response) => {
         /* 서버 사용 시 data.? 내가 테스트할땐 data.data로 해야 돌아감 */
         response.data.forEach((a) => {
@@ -135,5 +146,17 @@ export default {
 }
 .plan h5 {
   margin: 0;
+}
+.planbox {
+  background-color: whitesmoke;
+  padding: 8px !important;
+  margin: 8px !important;
+  border-radius: 10px;
+  border: solid #f8f8f8 3px;
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 </style>

@@ -85,12 +85,12 @@
         "
         v-else
       >
-        <img
+<!--         <img
           style="cursor: pointer; border-radius: 50px; margin-top: 3px"
           :src="$store.state.userInfo.picture"
           height="50px"
           width="50px"
-        />
+        /> -->
         <v-btn
           class="loginBtn"
           style="

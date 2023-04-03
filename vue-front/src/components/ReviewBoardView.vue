@@ -175,7 +175,7 @@ export default {
       /* https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/board/list/id */
       axios
         .get(
-          `https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/board/list/id`,
+          `http://localhost:8080/api/v1/board/list/${this.id}`,
           {
             headers: {
               "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
