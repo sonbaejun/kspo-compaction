@@ -171,11 +171,12 @@ export default {
         });
     },
     getBoard() {
+      this.pictureList = JSON.parse(localStorage.getItem("pictureList"))
       /* http://localhost:8080/api/v1/board/list/${this.id} */
       /* https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/board/list/id */
       axios
         .get(
-          `http://localhost:8080/api/v1/board/list/${this.id}`,
+          `https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/board/list/id`,
           {
             headers: {
               "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
@@ -185,7 +186,6 @@ export default {
         .then((response) => {
           //서버 사용 시 response.data.nickname
           this.boardNickname = response.data.nickname;
-          this.pictureList = response.data.pictureList;
           console.log(this.pictureList);
           if (this.boardNickname == this.$store.state.userInfo.nickname) {
             this.checkBoardUser = 1;

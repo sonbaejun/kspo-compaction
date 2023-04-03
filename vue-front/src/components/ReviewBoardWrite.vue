@@ -70,6 +70,7 @@ export default {
       if (this.id == "") {
         this.board.nickname = this.$store.state.userInfo.nickname;
         console.log(this.board);
+        localStorage.setItem("pictureList", JSON.stringify(this.board.pictureList));
         //https://reqres.in/api/users
         //http://localhost:8080/api/v1/board/post
         axios({
