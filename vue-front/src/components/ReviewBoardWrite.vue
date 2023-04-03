@@ -20,7 +20,7 @@
     ></v-textarea>
     <div id="boardContent">
       <img
-        v-for="rs in board.uploadFile"
+        v-for="rs in board.pictureList"
         :key="rs"
         :src="rs.pictureURL"
         class="boardImg"
@@ -54,7 +54,7 @@ export default {
       board: {
         title: "",
         content: "",
-        uploadFile: [],
+        pictureList: [],
       },
     };
   },
@@ -69,6 +69,7 @@ export default {
     writeBoard() {
       if (this.id == "") {
         this.board.nickname = this.$store.state.userInfo.nickname;
+        console.log(this.board);
         //https://reqres.in/api/users
         //http://localhost:8080/api/v1/board/post
         axios({
@@ -134,8 +135,8 @@ export default {
       let obj = {
         pictureURL: url,
       };
-      this.board.uploadFile.push(obj);
-      console.log(this.board.uploadFile);
+      this.board.pictureList.push(obj);
+      console.log(this.board.pictureList);
       console.log(url);
     },
   },

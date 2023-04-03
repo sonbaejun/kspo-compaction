@@ -41,7 +41,7 @@
       </div>
       <div id="boardContent">
         <img
-          v-for="rs in uploadFile"
+          v-for="rs in pictureList"
           :key="rs.pictureURL"
           :src="rs.pictureURL"
           class="boardImg"
@@ -105,7 +105,7 @@ export default {
       curNickname: "",
       curIndex: 0,
       curId: 0,
-      uploadFile: [],
+      pictureList: [],
       adjustComment: {
         content: "",
       },
@@ -185,8 +185,8 @@ export default {
         .then((response) => {
           //서버 사용 시 response.data.nickname
           this.boardNickname = response.data.nickname;
-          this.uploadFile = response.data.uploadFile;
-          console.log(this.uploadFile);
+          this.pictureList = response.data.pictureList;
+          console.log(this.pictureList);
           if (this.boardNickname == this.$store.state.userInfo.nickname) {
             this.checkBoardUser = 1;
           } else {
