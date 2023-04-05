@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav style="margin-bottom: 0px;">
     <v-toolbar
       dense
       style="
@@ -29,10 +29,12 @@
         style="
           color: #1bc6ec;
           margin-top: 3px;
+          margin-left: 6px;
           cursor: pointer;
-          font-family: 'Inter';
+          font-family: 'sans-serif';
           font-style: normal;
           font-weight: 700;
+          letter-spacing: 8px;
         "
         @click="goHome"
         >ClickTour</v-toolbar-title
@@ -96,7 +98,7 @@
           style="
             height: 37px;
             width: 37px;
-            margin: 7px 15px 0px 2px;
+            margin: 2px 15px 0px 2px;
             border-radius: 8px;
             background-color: #1bc6ec;
             color: aliceblue;
