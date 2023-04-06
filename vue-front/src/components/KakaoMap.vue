@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-top: 35px">
     <div class="text-center" style="z-index: 1000000; background-color: white">
       <v-row justify="center">
         <v-dialog v-model="showDialog" scrollable width="auto">
@@ -67,27 +67,6 @@
                   >{{ item }}</label
                 >
               </div>
-              <!-- <v-select
-                label="Select"
-                v-model="place"
-                :items="[
-                  '서울',
-                  '대전',
-                  '대구',
-                  '부산',
-                  '광주',
-                  '울산',
-                  '인천',
-                  '경기',
-                  '강원도',
-                  '경남',
-                  '전라도',
-                  '제주도',
-                  '경북',
-                  '충청도',
-                ]"
-                multiple
-              ></v-select> -->
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
@@ -237,65 +216,6 @@
         </v-btn>
       </div>
     </div>
-    <div style="margin-top: 15px; margin-left: 33px; white-space: nowrap">
-      <v-btn
-        @click="savePlan"
-        variant="flat"
-        style="
-          background-color: #1bc6ec;
-          color: white;
-          font-family: 'Inter';
-          font-sty le: normal;
-          font-weight: 700;
-          border-radius: 8px;
-          margin-right: 30px;
-          width: 41%;
-        "
-        >플랜저장하기</v-btn
-      >
-      <v-btn
-        @click="changeCartegory('AT4')"
-        variant="flat"
-        style="background-color: #1bc6ec; color: white; border-radius: 8px"
-        ><i class="fas fa-archway"></i
-      ></v-btn>
-      <v-btn
-        @click="changeCartegory('PK6')"
-        variant="flat"
-        style="background-color: #1bc6ec; color: white; border-radius: 8px"
-        ><i class="fas fa-car"></i
-      ></v-btn>
-      <v-btn
-        @click="changeCartegory('MT1')"
-        variant="flat"
-        style="background-color: #1bc6ec; color: white; border-radius: 8px"
-        ><i class="fas fa-cart-plus"></i
-      ></v-btn>
-      <v-btn
-        @click="changeCartegory('SW8')"
-        variant="flat"
-        style="background-color: #1bc6ec; color: white; border-radius: 8px"
-        ><i class="fas fa-subway"></i
-      ></v-btn>
-      <v-btn
-        @click="changeCartegory('AD5')"
-        variant="flat"
-        style="background-color: #1bc6ec; color: white; border-radius: 8px"
-        ><i class="fas fa-house-user"></i
-      ></v-btn>
-      <v-btn
-        @click="changeCartegory('FD6')"
-        variant="flat"
-        style="background-color: #1bc6ec; color: white; border-radius: 8px"
-        ><i class="fas fa-utensils"></i
-      ></v-btn>
-      <v-btn
-        @click="changeCartegory('CE7')"
-        variant="flat"
-        style="background-color: #1bc6ec; color: white; border-radius: 8px"
-        ><i class="fas fa-mug-hot"></i
-      ></v-btn>
-    </div>
     <div
       style="
         width: 95%;
@@ -306,277 +226,327 @@
         margin-left: 35px;
       "
     >
-      <v-card
-        class="mx-auto"
-        style="
-          height: 600px;
-          width: 8%;
-          margin-left: 0;
-          margin-right: 0;
-          overflow-y: auto;
-        "
-        tile
-      >
-        <v-list dense style="padding: 0">
-          <v-subheader style="background-color: #1bc6ec; color: aliceblue"
-            >DAY</v-subheader
+      <!-- grid1 시작지점 -->
+      <v-row>
+        <v-col cols="12" sm="5">
+          <div
+            style="
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              margin-left: 1px;
+            "
           >
-          <v-list-item-group v-model="selectedItem" color="primary">
-            <v-list-item v-for="(rs, i) in dateResult" :key="i">
-              <v-list-item-content @click="showDate(rs)">
-                <v-list-item-title>Day{{ i + 1 }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-card>
-      <div
-        style="
-          width: 34%;
-          display: flex;
-          flex-direction: row;
-          justify-content: flex-start;
-          margin-left: 1px;
-        "
-      >
-        <v-card
-          class="mx-auto"
-          style="height: 600px; width: 50%; overflow-y: auto"
-          tile
-        >
-          <v-list dense style="padding: 0">
-            <input
-              class="searchInput"
-              placeholder="SEARCH"
-              @keyup.enter="searchPlaces"
-            />
-            <div v-for="rs in search.results" :key="rs.place_name">
-              <v-list-item>
-                <v-list-item-content>
-                  <v-card elevation="5" outlined style="margin: 2px 0">
-                    <div
-                      style="
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: flex-start;
-                        background-color: #1bc6ec;
-                      "
-                    >
-                      <v-list-item-title
-                        style="
-                          margin: 7px 0px 15px 9px;
-                          width: 80%;
-                          cursor: pointer;
-                          color: white;
-                        "
-                        @click="setCenter(rs)"
-                        >{{ rs.place_name }}</v-list-item-title
-                      >
-                      <v-btn
-                        style="
-                          width: 10%;
-                          padding: 0%;
-                          background-color: aliceblue;
-                          color: blue;
-                        "
-                        @click="addPlan(rs)"
-                      >
-                        <i class="fas fa-plus-circle"></i>
-                      </v-btn>
-                    </div>
-                    <div class="addr" style="margin: 3px 9px">
-                      <h5
-                        style="
-                          text-overflow: ellipsis;
-                          overflow: hidden;
-                          white-space: nowrap;
-                          font-size: 10px;
-                          font-weight: 700;
-                        "
-                      >
-                        {{ rs.address_name }}
-                      </h5>
-                      <a
-                        :href="rs.place_url"
-                        target="_blank"
-                        style="
-                          text-overflow: ellipsis;
-                          overflow: hidden;
-                          white-space: nowrap;
-                          font-size: 10px;
-                          font-weight: 700;
-                        "
-                      >
-                        상세보기
-                      </a>
-                    </div>
-                  </v-card>
-                </v-list-item-content>
-              </v-list-item>
-            </div>
-          </v-list>
-        </v-card>
-        <v-card
-          class="mx-auto"
-          style="height: 600px; width: 50%; overflow-y: auto"
-          tile
-        >
-          <v-list dense style="padding: 0">
-            <v-subheader
+            <v-card
+              class="mx-auto"
               style="
-                background-color: #1bc6ec;
-                color: aliceblue;
-                position: sticky;
+                height: 600px;
+                width: 20%;
+                margin-left: 0;
+                margin-right: 0;
+                overflow-y: auto;
               "
-              >PLAN</v-subheader
+              tile
             >
-            <div v-for="(rs, i) in planner.planList" :key="i">
-              <v-list-item v-if="checkDay(rs)">
-                <v-list-item-content>
-                  <v-card elevation="5" outlined style="margin: 2px 0">
-                    <div
-                      style="
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: flex-start;
-                        background-color: #1bc6ec;
-                        color: aliceblue;
-                      "
-                    >
-                      <v-list-item-title
-                        style="
-                          margin: 7px 0px 15px 9px;
-                          width: 80%;
-                          cursor: pointer;
-                        "
-                        @click="setCenter(rs)"
-                        >{{ rs.name }}</v-list-item-title
-                      >
-                      <v-btn
-                        style="
-                          width: 15%;
-                          min-width: none;
-                          padding: 0%;
-                          background-color: aliceblue;
-                          color: red;
-                        "
-                        @click="deletePlan(i)"
-                        ><i class="fas fa-minus-circle"></i
-                      ></v-btn>
-                    </div>
-                    <v-menu
-                      ref="menu"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      max-width="290px"
-                      min-width="290px"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
+              <v-list dense style="padding: 0">
+                <v-subheader style="background-color: green; color: aliceblue"
+                  >DAY</v-subheader
+                >
+                <v-list-item-group v-model="selectedItem" color="primary">
+                  <v-list-item v-for="(rs, i) in dateResult" :key="i">
+                    <v-list-item-content @click="showDate(rs)">
+                      <v-list-item-title>Day{{ i + 1 }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </v-card>
+            <v-card
+              class="mx-auto"
+              style="
+                height: 600px;
+                width: 40%;
+                overflow-y: auto;
+                margin-left: 5px;
+              "
+              tile
+            >
+              <v-list dense style="padding: 0">
+                <v-subheader
+                  style="
+                    background-color: rgb(29, 165, 29);
+                    color: aliceblue;
+                    position: sticky;
+                  "
+                  >PLAN</v-subheader
+                >
+                <div v-for="(rs, i) in planner.planList" :key="i">
+                  <v-list-item v-if="checkDay(rs)">
+                    <v-list-item-content>
+                      <v-card elevation="5" outlined style="margin: 2px 0">
+                        <div
+                          style="
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: flex-start;
+                            background-color: #1bc6ec;
+                            color: aliceblue;
+                          "
+                        >
+                          <v-list-item-title
+                            style="
+                              margin: 7px 0px 15px 9px;
+                              width: 80%;
+                              cursor: pointer;
+                            "
+                            @click="setCenter(rs)"
+                            >{{ rs.name }}</v-list-item-title
+                          >
+                          <v-btn
+                            style="
+                              width: 15%;
+                              min-width: none;
+                              padding: 0%;
+                              background-color: aliceblue;
+                              color: red;
+                            "
+                            @click="deletePlan(i)"
+                            ><i class="fas fa-minus-circle"></i
+                          ></v-btn>
+                        </div>
+                        <v-menu
+                          ref="menu"
+                          :close-on-content-click="false"
+                          :nudge-right="40"
+                          transition="scale-transition"
+                          offset-y
+                          max-width="290px"
+                          min-width="290px"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              solo
+                              v-bind:value="getOrderDate(i)"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                              @click="timepicker = i"
+                              style="font-size: small; height: 45px"
+                            ></v-text-field>
+                          </template>
+                          <div v-if="timepicker == i">
+                            <v-time-picker
+                              v-model="timepickerTime"
+                              full-width
+                            ></v-time-picker>
+                            <v-btn
+                              @click="doneTimePicker(rs)"
+                              style="
+                                background-color: #1bc6ec;
+                                width: 100%;
+                                color: white;
+                                font-family: 'Inter';
+                                font-style: normal;
+                                font-weight: 700;
+                                border-radius: 4px;
+                              "
+                              >done</v-btn
+                            >
+                          </div>
+                        </v-menu>
                         <v-text-field
+                          label="메모"
                           solo
-                          v-bind:value="getOrderDate(i)"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                          @click="timepicker = i"
+                          v-model="rs.memo"
                           style="font-size: small; height: 45px"
                         ></v-text-field>
-                      </template>
-                      <div v-if="timepicker == i">
-                        <v-time-picker
-                          v-model="timepickerTime"
-                          full-width
-                        ></v-time-picker>
-                        <v-btn
-                          @click="doneTimePicker(rs)"
+                      </v-card>
+                    </v-list-item-content>
+                  </v-list-item>
+                </div>
+              </v-list>
+            </v-card>
+            <v-card
+              class="mx-auto"
+              style="height: 600px; width: 40%; overflow-y: auto"
+              tile
+            >
+              <v-list dense style="padding: 0">
+                <input
+                  class="searchInput"
+                  placeholder="SEARCH"
+                  @keyup.enter="searchPlaces"
+                />
+                <div v-for="rs in search.results" :key="rs.place_name">
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-card elevation="5" outlined style="margin: 2px 0">
+                        <div
                           style="
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: flex-start;
                             background-color: #1bc6ec;
-                            width: 100%;
-                            color: white;
-                            font-family: 'Inter';
-                            font-style: normal;
-                            font-weight: 700;
-                            border-radius: 4px;
                           "
-                          >done</v-btn
                         >
-                      </div>
-                    </v-menu>
-                    <v-text-field
-                      label="메모"
-                      solo
-                      v-model="rs.memo"
-                      style="font-size: small; height: 45px"
-                    ></v-text-field>
-                  </v-card>
-                </v-list-item-content>
-              </v-list-item>
+                          <v-list-item-title
+                            style="
+                              margin: 7px 0px 15px 9px;
+                              width: 80%;
+                              cursor: pointer;
+                              color: white;
+                            "
+                            @click="setCenter(rs)"
+                            >{{ rs.place_name }}</v-list-item-title
+                          >
+                          <v-btn
+                            style="
+                              width: 10%;
+                              padding: 0%;
+                              background-color: aliceblue;
+                              color: blue;
+                            "
+                            @click="addPlan(rs)"
+                          >
+                            <i class="fas fa-plus-circle"></i>
+                          </v-btn>
+                        </div>
+                        <div class="addr" style="margin: 3px 9px">
+                          <h5
+                            style="
+                              text-overflow: ellipsis;
+                              overflow: hidden;
+                              white-space: nowrap;
+                              font-size: 10px;
+                              font-weight: 700;
+                            "
+                          >
+                            {{ rs.address_name }}
+                          </h5>
+                          <a
+                            :href="rs.place_url"
+                            target="_blank"
+                            style="
+                              text-overflow: ellipsis;
+                              overflow: hidden;
+                              white-space: nowrap;
+                              font-size: 10px;
+                              font-weight: 700;
+                            "
+                          >
+                            상세보기
+                          </a>
+                        </div>
+                      </v-card>
+                    </v-list-item-content>
+                  </v-list-item>
+                </div>
+              </v-list>
+            </v-card>
+          </div>
+        </v-col>
+        <v-col cols="12" sm="7">
+          <!-- grid1 종료지점 -->
+          <!-- grid2 시작지점 -->
+          <div class="maparea">
+            <div class="categoryList">
+              <div class="categoryElement" @click="changeCartegory('AT4')">
+                <i class="fas fa-archway"></i>
+                <h4>관광지</h4>
+              </div>
+              <div class="categoryElement" @click="changeCartegory('PK6')">
+                <i class="fas fa-car"></i>
+                <h4>주차장</h4>
+              </div>
+              <div class="categoryElement" @click="changeCartegory('MT1')">
+                <i class="fas fa-cart-plus"></i>
+                <h4>마트</h4>
+              </div>
+              <div class="categoryElement" @click="changeCartegory('SW8')">
+                <i class="fas fa-subway"></i>
+                <h4>지하철</h4>
+              </div>
+              <div class="categoryElement" @click="changeCartegory('AD5')">
+                <i class="fas fa-house-user"></i>
+                <h4>숙소</h4>
+              </div>
+              <div class="categoryElement" @click="changeCartegory('FD6')">
+                <i class="fas fa-utensils"></i>
+                <h4>식당</h4>
+              </div>
+              <div class="categoryElement" @click="changeCartegory('CE7')">
+                <i class="fas fa-mug-hot"></i>
+                <h4>카페</h4>
+              </div>
             </div>
-          </v-list>
-        </v-card>
-      </div>
-      <div class="maparea">
-        <div id="map">
-          <div style="width: 330px; height: 0px" ref="customOverlay">
-            <div
-              style="
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                background-color: #1bc6ec;
-              "
-            >
-              <v-list-item-title
-                style="margin: 7px 0px 7px 9px; width: 80%; color: white"
-                >{{ markerInfo.place_name }}</v-list-item-title
-              >
-              <v-btn
-                style="
-                  width: 10%;
-                  padding: 0%;
-                  background-color: aliceblue;
-                  color: blue;
-                "
-                @click="addPlan(markerInfo)"
-              >
-                <i class="fas fa-plus-circle"></i>
-              </v-btn>
-            </div>
-            <div
-              class="addr"
-              style="background-color: white; padding: 2px 0px 0px 8px"
-            >
-              <h5
-                style="
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                  white-space: nowrap;
-                  font-size: 10px;
-                  font-weight: 700;
-                  background-color: white;
-                "
-              >
-                {{ markerInfo.address }}
-              </h5>
-              <a
-                :href="markerInfo.url"
-                target="_blank"
-                style="
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                  white-space: nowrap;
-                  font-size: 10px;
-                  font-weight: 700;
-                "
-              >
-                상세보기
-              </a>
+            <div id="map">
+              <div style="width: 330px; height: 0px" ref="customOverlay">
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    background-color: #1bc6ec;
+                  "
+                >
+                  <v-list-item-title
+                    style="margin: 7px 0px 7px 9px; width: 80%; color: white"
+                    >{{ markerInfo.place_name }}</v-list-item-title
+                  >
+                  <v-btn
+                    style="
+                      width: 10%;
+                      padding: 0%;
+                      background-color: aliceblue;
+                      color: blue;
+                    "
+                    @click="addPlan(markerInfo)"
+                  >
+                    <i class="fas fa-plus-circle"></i>
+                  </v-btn>
+                </div>
+                <div
+                  class="addr"
+                  style="background-color: white; padding: 2px 0px 0px 8px"
+                >
+                  <h5
+                    style="
+                      text-overflow: ellipsis;
+                      overflow: hidden;
+                      white-space: nowrap;
+                      font-size: 10px;
+                      font-weight: 700;
+                      background-color: white;
+                    "
+                  >
+                    {{ markerInfo.address }}
+                  </h5>
+                  <a
+                    :href="markerInfo.url"
+                    target="_blank"
+                    style="
+                      text-overflow: ellipsis;
+                      overflow: hidden;
+                      white-space: nowrap;
+                      font-size: 10px;
+                      font-weight: 700;
+                    "
+                  >
+                    상세보기
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
+          <!-- grid2 종료지점 -->
+        </v-col>
+        <div style="margin-left: auto; margin-bottom: 50px; padding: 0px 12px">
+          <button class="cancelBtn b2" @click="goComponents('planList')">
+            취소
+          </button>
+          <button class="cancelBtn b1" @click="savePlan">저장</button>
         </div>
-      </div>
+      </v-row>
     </div>
   </div>
 </template>
@@ -991,6 +961,9 @@ export default {
       });
       return sorted_list;
     },
+    goComponents(path) {
+      this.$router.push({ path: `/${path}` });
+    },
   },
 };
 </script>
@@ -1001,7 +974,7 @@ export default {
   height: 600px;
 }
 .maparea {
-  width: 58%;
+  width: 100%;
   display: flex;
   position: relative;
 }
@@ -1099,7 +1072,7 @@ export default {
   padding-left: 10px;
   padding-right: 5px;
   height: 40px;
-  background-color: #1bc6ec;
+  background-color: rgb(29, 187, 29);
   border-color: white;
 }
 
@@ -1113,5 +1086,51 @@ export default {
 
 .mx-auto::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
+}
+
+.cartegoryBtn {
+  position: absolute;
+  z-index: 2;
+  padding: 50px;
+  margin: 0px;
+  width: 50px;
+}
+.categoryList {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  border-radius: 5px;
+  border: 1px solid #909090;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  background: #fff;
+  overflow: hidden;
+  z-index: 2;
+}
+.categoryElement {
+  float: left;
+  list-style: none;
+  width: 50px;
+  border-right: 1px solid #acacac;
+  padding: 6px 0;
+  text-align: center;
+  cursor: pointer;
+  font-size: small;
+}
+.cancelBtn {
+  font-family: "Inter";
+  border-radius: 8px;
+  width: 63px;
+  height: 36px;
+  font-size: 14px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+}
+.b1 {
+  background-color: rgba(0, 153, 255, 0.884);
+  color: white;
+}
+.b2 {
+  background-color: none;
+  color: black;
+  border: solid 1px black;
 }
 </style>
