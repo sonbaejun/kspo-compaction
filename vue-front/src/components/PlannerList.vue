@@ -16,14 +16,13 @@
           font-weight: 700;
         "
         @click="goWritePlan"
-        >Make Plan!</v-btn
+        >새 플래너 만들러 가기</v-btn
       >
     </div>
     <v-container class="bg-surface-variant">
-      <div class="planbox">
-        <a @click="goComponent()"
-          >VISIBLE PLAN >></a
-        >
+      <div class="planbox" style="">
+        <h4>내 플래너 목록</h4>
+        <a @click="goComponent()" style="margin-left: auto">다른 사람들의 플래너 구경하러 가기!</a>
       </div>
       <v-row no-gutters>
         <v-col v-for="rs in planner.data" :key="rs.name" cols="12" sm="3">
@@ -36,13 +35,13 @@
               cover
             ></v-img>
 
-            <v-card-title style="height: 20%; white-space: nowrap; padding: 0">
+            <v-card-title style="height: 20%; white-space: nowrap; padding: 0; overflow-x: hidden;">
               {{ rs.title }}
             </v-card-title>
-            <v-card-subtitle style="height: 20%; padding: 0">
+            <v-card-subtitle style="height: 20%; padding: 0; overflow-x: hidden;">
               {{ rs.intro }}
             </v-card-subtitle>
-            <v-card-subtitle style="white-space: nowrap; padding: 0">
+            <v-card-subtitle style="white-space: nowrap; padding: 0; overflow-x: hidden;">
               {{ rs.start_date.substring(0, 10) + " -" }}
               {{ rs.end_date.substring(5, 10) }}
             </v-card-subtitle>
@@ -104,7 +103,7 @@ export default {
     //http://localhost:8080/api/v1/planner
     axios
       .get(
-        "http://localhost:8080/api/v1/planner",
+        "https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/planner",
         {
           headers: {
             "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
@@ -113,7 +112,7 @@ export default {
       )
       .then((response) => {
         /* 서버 사용 시 data.? 내가 테스트할땐 data.data로 해야 돌아감 */
-        response.data.forEach((a) => {
+        response.data.data.forEach((a) => {
           this.planner.data.push(a);
           let placeImg = a.placeList[0].place;
           let val = this.mapImg[placeImg];

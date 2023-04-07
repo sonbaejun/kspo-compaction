@@ -185,128 +185,147 @@
         </v-btn>
       </div>
     </div>
-    <div style="margin-left: 30px" v-if="modal == 0">
-      <v-btn
-        v-if="checkUser == 1"
-        class="editBtn"
-        @click="goEdit"
-        style="background-color: #1bc6ec; color: aliceblue; border-radius: 6px"
-        >수정</v-btn
-      >
-      <v-btn
-        v-if="checkUser == 1"
-        class="deleteBtn"
-        @click="deletePlan"
-        style="background-color: red; color: aliceblue; border-radius: 6px"
-        >삭제</v-btn
-      >
-      <v-btn
-        v-else-if="checkUser == 0"
-        class="editBtn"
-        @click="goKakaoMap"
-        style="background-color: #1bc6ec; color: aliceblue; border-radius: 6px"
-        >복사하기</v-btn
-      >
-    </div>
-    <div v-if="modal == 0">
-      <v-card
-        elevation="8"
-        style="
-          width: 40%;
-          margin-left: 30px;
-          margin-top: 20px;
-          border-radius: 10px;
-          background-color: #36cfff;
-          color: white;
-          border: 2px solid #1bc6ec;
-        "
-      >
-        <v-card-title>{{ planner.title }}</v-card-title>
-        <v-card-subtitle style="color: white">{{
-          planner.intro
-        }}</v-card-subtitle>
-        <v-card-text style="color: white; padding: 0px; margin-left: 16px">{{
-          planner.start_date + " to " + planner.end_date
-        }}</v-card-text>
-        <v-card-text
-          style="color: white; padding: 0px; margin: 2px 0px 0px 16px"
-          >{{ planner.concept + " 여행" }}</v-card-text
-        >
-        <v-card-text
-          style="color: white; padding: 0px; margin: 2px 0px 0px 16px"
-          >{{ placeString }}</v-card-text
-        >
-      </v-card>
-    </div>
-    <div
-      style="
-        width: 40%;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        margin-left: 30px;
-        margin-top: 18px;
-      "
-      v-if="modal == 0"
-    >
-      <v-card
-        class="mx-auto"
-        style="
-          height: 500px;
-          width: 35.9%;
-          margin-left: 0;
-          margin-right: 0;
-          overflow-y: auto;
-        "
-        tile
-      >
-        <v-list dense style="padding: 0">
-          <v-subheader style="background-color: #1bc6ec; color: aliceblue"
-            >DAY</v-subheader
-          >
-          <v-list-item-group v-model="selectedItem" color="primary">
-            <v-list-item v-for="(rs, i) in dateResult" :key="i">
-              <v-list-item-content @click="showDate(rs)">
-                <v-list-item-title>Day{{ i + 1 }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-card>
-      <v-card
-        class="mx-auto"
-        style="height: 500px; width: 63.9%; overflow-y: auto"
-        tile
-      >
-        <v-list dense style="padding: 0">
-          <v-subheader
+    <v-row>
+      <v-col cols="12" sm="4">
+        <div style="margin-left: 30px" v-if="modal == 0">
+          <v-btn
+            v-if="checkUser == 1"
+            class="editBtn"
+            @click="goEdit"
             style="
               background-color: #1bc6ec;
               color: aliceblue;
-              position: sticky;
+              border-radius: 6px;
             "
-            >PLAN</v-subheader
+            >수정</v-btn
           >
-          <div v-for="(rs, i) in planner.planList" :key="i">
-            <v-list-item v-if="checkDay(rs)">
-              <v-list-item-content>
-                <v-card elevation="5" outlined style="margin: 2px 0"
-                  ><v-list-item-title style="margin: 5px">{{
-                    rs.name
-                  }}</v-list-item-title>
-                  <v-list-item-title style="margin: 5px">{{
-                    rs.memo
-                  }}</v-list-item-title>
-                  <v-list-item-title style="margin: 5px">{{
-                    rs.date.substring(11, 16)
-                  }}</v-list-item-title>
-                </v-card>
-              </v-list-item-content>
-            </v-list-item>
-          </div>
-        </v-list>
-      </v-card>
-    </div>
+          <v-btn
+            v-if="checkUser == 1"
+            class="deleteBtn"
+            @click="deletePlan"
+            style="background-color: red; color: aliceblue; border-radius: 6px"
+            >삭제</v-btn
+          >
+          <v-btn
+            v-else-if="checkUser == 0"
+            class="editBtn"
+            @click="goKakaoMap"
+            style="
+              background-color: #1bc6ec;
+              color: aliceblue;
+              border-radius: 6px;
+            "
+            >복사하기</v-btn
+          >
+        </div>
+        <div v-if="modal == 0">
+          <v-card
+            elevation="8"
+            style="
+              width: 40%;
+              margin-left: 30px;
+              margin-top: 20px;
+              border-radius: 10px;
+              background-color: #36cfff;
+              color: white;
+              border: 2px solid #1bc6ec;
+            "
+          >
+            <v-card-title>{{ planner.title }}</v-card-title>
+            <v-card-subtitle style="color: white">{{
+              planner.intro
+            }}</v-card-subtitle>
+            <v-card-text
+              style="color: white; padding: 0px; margin-left: 16px"
+              >{{ planner.start_date + " to " + planner.end_date }}</v-card-text
+            >
+            <v-card-text
+              style="color: white; padding: 0px; margin: 2px 0px 0px 16px"
+              >{{ planner.concept + " 여행" }}</v-card-text
+            >
+            <v-card-text
+              style="color: white; padding: 0px; margin: 2px 0px 0px 16px"
+              >{{ placeString }}</v-card-text
+            >
+          </v-card>
+        </div>
+        <div
+          style="
+            width: 40%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            margin-left: 30px;
+            margin-top: 18px;
+          "
+          v-if="modal == 0"
+        >
+          <v-card
+            class="mx-auto"
+            style="
+              height: 500px;
+              width: 35.9%;
+              margin-left: 0;
+              margin-right: 0;
+              overflow-y: auto;
+            "
+            tile
+          >
+            <v-list dense style="padding: 0">
+              <v-subheader style="background-color: #1bc6ec; color: aliceblue"
+                >DAY</v-subheader
+              >
+              <v-list-item-group v-model="selectedItem" color="primary">
+                <v-list-item v-for="(rs, i) in dateResult" :key="i">
+                  <v-list-item-content @click="showDate(rs)">
+                    <v-list-item-title>Day{{ i + 1 }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-card>
+          <v-card
+            class="mx-auto"
+            style="height: 500px; width: 63.9%; overflow-y: auto"
+            tile
+          >
+            <v-list dense style="padding: 0">
+              <v-subheader
+                style="
+                  background-color: #1bc6ec;
+                  color: aliceblue;
+                  position: sticky;
+                "
+                >PLAN</v-subheader
+              >
+              <div v-for="(rs, i) in planner.planList" :key="i">
+                <v-list-item v-if="checkDay(rs)">
+                  <v-list-item-content>
+                    <v-card elevation="5" outlined style="margin: 2px 0"
+                      ><v-list-item-title style="margin: 5px">{{
+                        rs.name
+                      }}</v-list-item-title>
+                      <v-list-item-title style="margin: 5px">{{
+                        rs.memo
+                      }}</v-list-item-title>
+                      <v-list-item-title style="margin: 5px">{{
+                        rs.date.substring(11, 16)
+                      }}</v-list-item-title>
+                    </v-card>
+                  </v-list-item-content>
+                </v-list-item>
+              </div>
+            </v-list>
+          </v-card>
+        </div>
+      </v-col>
+
+      <v-col cols="12" sm="8">
+        <div class="maparea">
+          <div id="map"></div>
+        </div>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -322,6 +341,7 @@ export default {
       placeString: "",
       nickname: "",
       checkUser: null,
+      map: null,
       items: [
         { text: "Real-Time" },
         { text: "Audience" },
@@ -397,7 +417,41 @@ export default {
       ],
     };
   },
+  mounted() {
+    if (window.kakao && window.kakao.maps) {
+      // 카카오 객체가 있고, 카카오 맵 그릴 준비가 되어 있다면 맵 실행
+      this.loadMap();
+    } else {
+      // 없다면 카카오 스크립트 추가 후 맵 실행
+      this.loadScript();
+    }
+  },
   methods: {
+    loadScript() {
+      const script = document.createElement("script");
+      script.src =
+        "//dapi.kakao.com/v2/maps/sdk.js?appkey=481f069feb92ed44bf85d3126b832741&libraries=services&autoload=false";
+      script.onload = () => window.kakao.maps.load(this.loadMap); //script load가 끝난 뒤 지도 실행
+
+      document.head.appendChild(script);
+    },
+    loadMap() {
+      // 지도를 담을 DOM 영역
+      const container = document.getElementById("map");
+      // 지도 초기 정보
+      const options = {
+        center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+        level: 3,
+      };
+      this.map = new window.kakao.maps.Map(container, options);
+    },
+    setCenter(rs) {
+      // 이동할 위도 경도 위치를 생성합니다
+      let moveLatLon = new window.kakao.maps.LatLng(rs.y, rs.x);
+
+      // 지도 중심을 이동 시킵니다
+      this.map.setCenter(moveLatLon);
+    },
     doneBtn() {
       this.startDatePicker = 0;
       this.endDatePicker = 0;
@@ -456,8 +510,8 @@ export default {
             console.log(this.planner);
           })
           .catch((error) => {
-            if(error.stateCode == 404) {
-              alert('조건에 부합하는 플래너가 존재하지 않습니다');
+            if (error.stateCode == 404) {
+              alert("조건에 부합하는 플래너가 존재하지 않습니다");
               this.$router.push({ path: "/" });
             }
             console.log("ERROR : " + JSON.stringify(error));
@@ -535,7 +589,15 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+#map {
+  flex: 1 1 auto;
+  height: 600px;
+}
+.maparea {
+  padding: 50px 0px;
+  margin-right: 30px;
+}
 .plan {
   margin: 5px;
 }

@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="main-background">
-      <h4 class="main-title">Make Your Plan!</h4>
-      <h6 class="main-subtitle">여기에 소개글이 이런방식으로</h6>
+      <h4 class="main-title">Plan Yourself!</h4>
+      <h6 class="main-subtitle">클릭투어에 오신걸 환영합니다!</h6>
       <h6 class="main-subtitle">
-        여기에 소개글이 이정도 길이감으로 들어갈꺼고
+        환상적인 여행을 위한 여러분의 플랜을
       </h6>
-      <h6 class="main-subtitle">지금바로 여러분의 플래너를 만들어보세요!</h6>
+      <h6 class="main-subtitle">지금 여기, 클릭투어에서 만들어보세요!</h6>
       <button class="main-button" @click="goComponents('planList')">
         PLANNER
       </button>
@@ -55,7 +55,7 @@
               <button class="iconBtn2">
                 <i class="fas fa-car" style="height: 85px"></i>
               </button>
-              <h4 class="cardTitle">Recommend Plan!</h4>
+              <h4 class="cardTitle">Visible Plan!</h4>
               <h4 class="cardSubtitle">Click!</h4>
               <br />
             </v-card>
@@ -80,7 +80,7 @@
               <button class="iconBtn3">
                 <i class="fas fa-pen" style="height: 85px"></i>
               </button>
-              <h4 class="cardTitle">Recommend Plan!</h4>
+              <h4 class="cardTitle">Review Board!</h4>
               <h4 class="cardSubtitle">Click!</h4>
               <br />
             </v-card>
@@ -119,7 +119,7 @@ export default {
 .main-title {
   color: white;
   font-size: 40px;
-  margin-top: 55px;
+  margin-top: 65px;
   margin-bottom: 20px;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
