@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 35px">
+  <div style="margin-top: 60px">
     <div class="text-center" style="z-index: 1000000; background-color: white">
       <v-row justify="center">
         <v-dialog v-model="showDialog" scrollable width="auto">
@@ -228,7 +228,7 @@
     >
       <!-- grid1 시작지점 -->
       <v-row>
-        <v-col cols="12" sm="5">
+        <v-col cols="12" sm="3">
           <div
             style="
               display: flex;
@@ -241,7 +241,7 @@
               class="mx-auto"
               style="
                 height: 600px;
-                width: 20%;
+                width: 100px;
                 margin-left: 0;
                 margin-right: 0;
                 overflow-y: auto;
@@ -249,7 +249,15 @@
               tile
             >
               <v-list dense style="padding: 0">
-                <v-subheader style="background-color: green; color: aliceblue"
+                <div class="searchIcon calendarIcon">
+                  <i class="fas fa-calendar"></i>
+                </div>
+                <v-subheader
+                  style="
+                    background-color: green;
+                    color: aliceblue;
+                    margin-left: 20px;
+                  "
                   >DAY</v-subheader
                 >
                 <v-list-item-group v-model="selectedItem" color="primary">
@@ -265,18 +273,24 @@
               class="mx-auto"
               style="
                 height: 600px;
-                width: 40%;
+                width: 100%;
                 overflow-y: auto;
                 margin-left: 5px;
               "
               tile
             >
               <v-list dense style="padding: 0">
+                <div
+                  class="searchIcon editIcon"
+                  style="background-color: rgb(29, 165, 29)"
+                >
+                  <i class="fas fa-edit"></i>
+                </div>
                 <v-subheader
                   style="
                     background-color: rgb(29, 165, 29);
                     color: aliceblue;
-                    position: sticky;
+                    margin-left: 20px;
                   "
                   >PLAN</v-subheader
                 >
@@ -366,88 +380,98 @@
                 </div>
               </v-list>
             </v-card>
-            <v-card
-              class="mx-auto"
-              style="height: 600px; width: 40%; overflow-y: auto"
-              tile
-            >
-              <v-list dense style="padding: 0">
-                <input
-                  class="searchInput"
-                  placeholder="SEARCH"
-                  @keyup.enter="searchPlaces"
-                />
-                <div v-for="rs in search.results" :key="rs.place_name">
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-card elevation="5" outlined style="margin: 2px 0">
-                        <div
-                          style="
-                            display: flex;
-                            flex-direction: row;
-                            justify-content: flex-start;
-                            background-color: #1bc6ec;
-                          "
-                        >
-                          <v-list-item-title
-                            style="
-                              margin: 7px 0px 15px 9px;
-                              width: 80%;
-                              cursor: pointer;
-                              color: white;
-                            "
-                            @click="setCenter(rs)"
-                            >{{ rs.place_name }}</v-list-item-title
-                          >
-                          <v-btn
-                            style="
-                              width: 10%;
-                              padding: 0%;
-                              background-color: aliceblue;
-                              color: blue;
-                            "
-                            @click="addPlan(rs)"
-                          >
-                            <i class="fas fa-plus-circle"></i>
-                          </v-btn>
-                        </div>
-                        <div class="addr" style="margin: 3px 9px">
-                          <h5
-                            style="
-                              text-overflow: ellipsis;
-                              overflow: hidden;
-                              white-space: nowrap;
-                              font-size: 10px;
-                              font-weight: 700;
-                            "
-                          >
-                            {{ rs.address_name }}
-                          </h5>
-                          <a
-                            :href="rs.place_url"
-                            target="_blank"
-                            style="
-                              text-overflow: ellipsis;
-                              overflow: hidden;
-                              white-space: nowrap;
-                              font-size: 10px;
-                              font-weight: 700;
-                            "
-                          >
-                            상세보기
-                          </a>
-                        </div>
-                      </v-card>
-                    </v-list-item-content>
-                  </v-list-item>
-                </div>
-              </v-list>
-            </v-card>
           </div>
         </v-col>
-        <v-col cols="12" sm="7">
+        <v-col cols="12" sm="9" style="max-width: 100%">
           <!-- grid1 종료지점 -->
           <!-- grid2 시작지점 -->
+          <v-card
+            v-if="showSearch == true"
+            class="mx-auto"
+            style="
+              height: 600px;
+              width: 20%;
+              overflow-y: auto;
+              float: left;
+              min-width: 170px;
+            "
+            tile
+          >
+            <v-list dense style="padding: 0">
+              <div class="searchIcon">
+                <i class="fas fa-search"></i>
+              </div>
+              <input
+                class="searchInput"
+                placeholder="SEARCH"
+                @keyup.enter="searchPlaces"
+              />
+              <div v-for="rs in search.results" :key="rs.place_name">
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-card elevation="5" outlined style="margin: 2px 0">
+                      <div
+                        style="
+                          display: flex;
+                          flex-direction: row;
+                          justify-content: flex-start;
+                          background-color: #1bc6ec;
+                        "
+                      >
+                        <v-list-item-title
+                          style="
+                            margin: 7px 0px 15px 9px;
+                            width: 80%;
+                            cursor: pointer;
+                            color: white;
+                          "
+                          @click="setCenter(rs)"
+                          >{{ rs.place_name }}</v-list-item-title
+                        >
+                        <v-btn
+                          style="
+                            width: 10%;
+                            padding: 0%;
+                            background-color: aliceblue;
+                            color: blue;
+                          "
+                          @click="addPlan(rs)"
+                        >
+                          <i class="fas fa-plus-circle"></i>
+                        </v-btn>
+                      </div>
+                      <div class="addr" style="margin: 3px 9px">
+                        <h5
+                          style="
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            font-size: 10px;
+                            font-weight: 700;
+                          "
+                        >
+                          {{ rs.address_name }}
+                        </h5>
+                        <a
+                          :href="rs.place_url"
+                          target="_blank"
+                          style="
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            font-size: 10px;
+                            font-weight: 700;
+                          "
+                        >
+                          상세보기
+                        </a>
+                      </div>
+                    </v-card>
+                  </v-list-item-content>
+                </v-list-item>
+              </div>
+            </v-list>
+          </v-card>
           <div class="maparea">
             <div class="categoryList">
               <div class="categoryElement" @click="changeCartegory('AT4')">
@@ -573,6 +597,8 @@ export default {
       timepickerTime: "00:00",
       showDialog: false,
       showSelected: false,
+      showSearch: true,
+      width: 0,
       curCartegory: "AT4",
       selectedItem: 0,
       markers: [],
@@ -693,6 +719,10 @@ export default {
         this.place.push(a.place);
       });
     }
+    if (window.innerWidth < 600) {
+      this.showSearch = false;
+    }
+    window.addEventListener("resize", this.handleResize);
   },
   methods: {
     loadScript() {
@@ -964,6 +994,13 @@ export default {
     goComponents(path) {
       this.$router.push({ path: `/${path}` });
     },
+    handleResize(event) {
+      if (window.innerWidth < 600) {
+        this.showSearch = false;
+      } else {
+        this.showSearch = true;
+      }
+    },
   },
 };
 </script>
@@ -974,7 +1011,6 @@ export default {
   height: 600px;
 }
 .maparea {
-  width: 100%;
   display: flex;
   position: relative;
 }
@@ -1074,6 +1110,7 @@ export default {
   height: 40px;
   background-color: rgb(29, 187, 29);
   border-color: white;
+  margin-left: 20px;
 }
 
 .searchInput::placeholder {
@@ -1132,5 +1169,22 @@ export default {
   background-color: none;
   color: black;
   border: solid 1px black;
+}
+.searchIcon {
+  position: absolute;
+  background-color: #1dbb1d;
+  height: 40px;
+  width: 20px;
+  color: white;
+  padding-top: 10px;
+  padding-left: 9px;
+  z-index: 3;
+  font-size: 13px;
+}
+.editIcon {
+  background-color: rgb(29, 165, 29);
+}
+.calendarIcon{
+  background-color: green;
 }
 </style>
