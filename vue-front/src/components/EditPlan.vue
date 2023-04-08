@@ -300,8 +300,8 @@
                             display: flex;
                             flex-direction: row;
                             justify-content: flex-start;
-                            background-color: #1bc6ec;
-                            color: aliceblue;
+                            background-color: rgba(185, 198, 39, 0.77);
+                            color: white;
                           "
                         >
                           <v-list-item-title
@@ -412,7 +412,7 @@
                           display: flex;
                           flex-direction: row;
                           justify-content: flex-start;
-                          background-color: #1bc6ec;
+                          background-color: rgb(175 180 181 / 90%);
                         "
                       >
                         <v-list-item-title
@@ -507,7 +507,7 @@
                     display: flex;
                     flex-direction: row;
                     justify-content: flex-start;
-                    background-color: #1bc6ec;
+                    background-color: rgb(175 180 181 / 90%);
                   "
                 >
                   <v-list-item-title
@@ -1086,7 +1086,7 @@ export default {
   padding-left: 10px;
   padding-right: 5px;
   height: 40px;
-  background-color: rgb(29, 187, 29);
+  background-color: rgb(196 202 196 / 75%);
   border-color: white;
 }
 
@@ -1116,7 +1116,8 @@ export default {
   border-radius: 5px;
   border: 1px solid #909090;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
-  background: #fff;
+  background: rgb(42 61 217 / 65%);
+  color: white;
   overflow: hidden;
   z-index: 2;
 }
@@ -1149,7 +1150,7 @@ export default {
 }
 .searchIcon {
   position: absolute;
-  background-color: #1dbb1d;
+  background-color: rgb(196 202 196 / 72%);
   height: 40px;
   width: 20px;
   color: white;
