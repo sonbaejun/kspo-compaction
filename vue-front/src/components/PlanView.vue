@@ -1,10 +1,14 @@
 <template>
   <div>
+    <div class="planbox">
+      <i class="fas fa-bookmark" style="margin: 3px 3px 0px 12px"></i>
+      <h4>플래너 상세보기</h4>
+    </div>
     <v-row>
       <v-col
         cols="12"
         sm="3"
-        style="max-width=100%; padding: 50px 0px 0px 20px"
+        style="max-width=100%; padding: 12px 0px 0px 35px;"
       >
         <div>
           <div>
@@ -12,65 +16,93 @@
               elevation="8"
               style="
                 width: 100%;
+                height: 200px;
                 border-radius: 10px;
-                background-color: #36cfff;
-                color: white;
-                border: 2px solid #1bc6ec;
+                background-color: white;
+                color: black;
               "
             >
-              <div>
+              <div style="padding-left: 15px; padding-top: 5px">
+                <v-btn
+                  v-if="checkUser == 1"
+                  class="deleteBtn"
+                  @click="deletePlan"
+                  elevation="1"
+                  style="
+                    background-color: white;
+                    color: black;
+                    border-radius: 6px;
+                  "
+                  >삭제</v-btn
+                >
                 <v-btn
                   v-if="checkUser == 1"
                   class="editBtn"
                   @click="goEdit"
                   style="
-                    background-color: #1bc6ec;
-                    color: aliceblue;
+                    background-color: rgba(0, 153, 255, 0.884);
+                    color: white;
                     border-radius: 6px;
                   "
                   >수정</v-btn
-                >
-                <v-btn
-                  v-if="checkUser == 1"
-                  class="deleteBtn"
-                  @click="deletePlan"
-                  style="
-                    background-color: red;
-                    color: aliceblue;
-                    border-radius: 6px;
-                  "
-                  >삭제</v-btn
                 >
                 <v-btn
                   v-else-if="checkUser == 0"
                   class="editBtn"
                   @click="goKakaoMap"
                   style="
-                    background-color: #1bc6ec;
-                    color: aliceblue;
+                    background-color: rgba(0, 153, 255, 0.884);
+                    color: white;
                     border-radius: 6px;
                   "
                   >복사하기</v-btn
                 >
               </div>
-              <v-card-title>{{ planner.title }}</v-card-title>
-              <v-card-subtitle style="color: white">{{
-                planner.intro
-              }}</v-card-subtitle>
-              <v-card-text
-                style="color: white; padding: 0px; margin-left: 16px"
-                >{{
-                  planner.start_date + " to " + planner.end_date
-                }}</v-card-text
-              >
-              <v-card-text
-                style="color: white; padding: 0px; margin: 2px 0px 0px 16px"
-                >{{ planner.concept + " 여행" }}</v-card-text
-              >
-              <v-card-text
-                style="color: white; padding: 0px; margin: 2px 0px 0px 16px"
-                >{{ place }}</v-card-text
-              >
+              <div style="overflow-x: hidden; padding-top: 7px">
+                <i
+                  class="fas fa-star"
+                  style="float: left; margin: 8px 5px 0px 15px"
+                ></i>
+                <v-card-title style="padding: 0px; white-space: nowrap">{{
+                  planner.title
+                }}</v-card-title>
+              </div>
+              <div style="overflow-x: hidden">
+                <i
+                  class="fas fa-pencil"
+                  style="float: left; margin: 3px 5px 0px 15px"
+                ></i>
+                <v-card-subtitle style="padding: 0px; white-space: nowrap">{{
+                  planner.intro
+                }}</v-card-subtitle>
+              </div>
+              <div style="overflow-x: hidden; padding-top: 12px">
+                <i
+                  class="fas fa-calendar"
+                  style="float: left; margin: 3px 5px 0px 15px"
+                ></i>
+                <v-card-text style="padding: 0px; white-space: nowrap">{{
+                  planner.start_date + " - " + planner.end_date.substring(5, 10)
+                }}</v-card-text>
+              </div>
+              <div style="overflow-x: hidden">
+                <i
+                  class="fas fa-key"
+                  style="float: left; margin: 3px 5px 0px 15px"
+                ></i>
+                <v-card-text style="padding: 0px; white-space: nowrap">{{
+                  planner.concept
+                }}</v-card-text>
+              </div>
+              <div style="overflow-x: hidden">
+                <i
+                  class="fas fa-map"
+                  style="float: left; margin: 3px 5px 0px 15px"
+                ></i>
+                <v-card-text style="padding: 0px; white-space: nowrap">{{
+                  place
+                }}</v-card-text>
+              </div>
             </v-card>
           </div>
           <div
@@ -79,10 +111,12 @@
               display: flex;
               flex-direction: row;
               justify-content: flex-start;
+              margin-top: 10px;
             "
           >
             <v-card
               class="mx-auto"
+              elevation="6"
               style="
                 height: 450px;
                 width: 35.9%;
@@ -93,7 +127,15 @@
               tile
             >
               <v-list dense style="padding: 0">
-                <v-subheader style="background-color: #1bc6ec; color: aliceblue"
+                <div class="searchIcon calendarIcon">
+                  <i class="fas fa-calendar"></i>
+                </div>
+                <v-subheader
+                  style="
+                    background-color: green;
+                    color: aliceblue;
+                    margin-left: 20px;
+                  "
                   >DAY</v-subheader
                 >
                 <v-list-item-group v-model="selectedItem" color="primary">
@@ -107,15 +149,22 @@
             </v-card>
             <v-card
               class="mx-auto"
+              elevation="6"
               style="height: 450px; width: 63.9%; overflow-y: auto"
               tile
             >
               <v-list dense style="padding: 0">
+                <div
+                  class="searchIcon editIcon"
+                  style="background-color: rgb(29, 165, 29)"
+                >
+                  <i class="fas fa-edit"></i>
+                </div>
                 <v-subheader
                   style="
-                    background-color: #1bc6ec;
+                    background-color: rgb(29, 165, 29);
                     color: aliceblue;
-                    position: sticky;
+                    margin-left: 20px;
                   "
                   >PLAN</v-subheader
                 >
@@ -222,6 +271,7 @@ export default {
       let marker = new window.kakao.maps.Marker({
         position: markerPosition,
         image: markerImage, // 마커 이미지
+        title: rs.name,
       });
 
       // 마커가 지도 위에 표시되도록 설정합니다
@@ -348,10 +398,11 @@ export default {
 #map {
   flex: 1 1 auto;
   height: 600px;
+  height: 655px;
 }
 .maparea {
-  padding: 50px 0px;
   margin-right: 30px;
+  margin-left: 20px;
 }
 .plan {
   margin: 5px;
@@ -393,5 +444,33 @@ export default {
 
 .mx-auto {
   margin: 0 0;
+}
+.searchIcon {
+  position: absolute;
+  background-color: #1dbb1d;
+  height: 40px;
+  width: 20px;
+  color: white;
+  padding-top: 10px;
+  padding-left: 9px;
+  z-index: 3;
+  font-size: 13px;
+}
+.editIcon {
+  background-color: rgb(29, 165, 29);
+}
+.calendarIcon {
+  background-color: green;
+}
+.planbox {
+  background-color: whitesmoke;
+  padding: 8px !important;
+  border-radius: 10px;
+  border: solid #f8f8f8 3px;
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 </style>

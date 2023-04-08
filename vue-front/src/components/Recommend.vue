@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div class="planbox" v-if="modal == 0">
+      <i class="fas fa-bookmark" style="margin: 3px 3px 0px 12px"></i>
+      <h4>조건에 맞는 플랜 중 랜덤으로 선정된 플랜입니다</h4>
+    </div>
     <div class="text-center" style="z-index: 1000000; background-color: white">
       <v-row justify="center">
         <v-dialog v-model="showDialog" scrollable width="auto">
@@ -88,7 +92,10 @@
       v-if="startDatePicker == 1"
       style="z-index: 1000000; height: 100px; background-color: transparent"
     >
-      <v-date-picker v-model="recommendInfo.startDate" style="z-index: 1">
+      <v-date-picker
+        v-model="recommendInfo.startDate"
+        style="z-index: 1; padding-top: 100px"
+      >
         <v-btn
           @click="startDatePicker = 0"
           style="
@@ -110,7 +117,10 @@
       v-if="endDatePicker == 1"
       style="z-index: 100000000; height: 100px; background-color: transparent"
     >
-      <v-date-picker v-model="recommendInfo.endDate" style="z-index: 1">
+      <v-date-picker
+        v-model="recommendInfo.endDate"
+        style="z-index: 1; padding-top: 100px"
+      >
         <v-btn
           @click="endDatePicker = 0"
           style="
@@ -186,137 +196,191 @@
       </div>
     </div>
     <v-row>
-      <v-col cols="12" sm="4">
-        <div style="margin-left: 30px" v-if="modal == 0">
-          <v-btn
-            v-if="checkUser == 1"
-            class="editBtn"
-            @click="goEdit"
-            style="
-              background-color: #1bc6ec;
-              color: aliceblue;
-              border-radius: 6px;
-            "
-            >수정</v-btn
-          >
-          <v-btn
-            v-if="checkUser == 1"
-            class="deleteBtn"
-            @click="deletePlan"
-            style="background-color: red; color: aliceblue; border-radius: 6px"
-            >삭제</v-btn
-          >
-          <v-btn
-            v-else-if="checkUser == 0"
-            class="editBtn"
-            @click="goKakaoMap"
-            style="
-              background-color: #1bc6ec;
-              color: aliceblue;
-              border-radius: 6px;
-            "
-            >복사하기</v-btn
-          >
-        </div>
-        <div v-if="modal == 0">
-          <v-card
-            elevation="8"
-            style="
-              width: 40%;
-              margin-left: 30px;
-              margin-top: 20px;
-              border-radius: 10px;
-              background-color: #36cfff;
-              color: white;
-              border: 2px solid #1bc6ec;
-            "
-          >
-            <v-card-title>{{ planner.title }}</v-card-title>
-            <v-card-subtitle style="color: white">{{
-              planner.intro
-            }}</v-card-subtitle>
-            <v-card-text
-              style="color: white; padding: 0px; margin-left: 16px"
-              >{{ planner.start_date + " to " + planner.end_date }}</v-card-text
+      <v-col
+        cols="12"
+        sm="3"
+        style="max-width=100%; padding: 50px 0px 0px 35px;"
+        v-if="modal == 0"
+      >
+        <div>
+          <div>
+            <v-card
+              elevation="8"
+              style="
+                width: 100%;
+                height: 200px;
+                border-radius: 10px;
+                background-color: white;
+                color: black;
+              "
             >
-            <v-card-text
-              style="color: white; padding: 0px; margin: 2px 0px 0px 16px"
-              >{{ planner.concept + " 여행" }}</v-card-text
-            >
-            <v-card-text
-              style="color: white; padding: 0px; margin: 2px 0px 0px 16px"
-              >{{ placeString }}</v-card-text
-            >
-          </v-card>
-        </div>
-        <div
-          style="
-            width: 40%;
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            margin-left: 30px;
-            margin-top: 18px;
-          "
-          v-if="modal == 0"
-        >
-          <v-card
-            class="mx-auto"
-            style="
-              height: 500px;
-              width: 35.9%;
-              margin-left: 0;
-              margin-right: 0;
-              overflow-y: auto;
-            "
-            tile
-          >
-            <v-list dense style="padding: 0">
-              <v-subheader style="background-color: #1bc6ec; color: aliceblue"
-                >DAY</v-subheader
-              >
-              <v-list-item-group v-model="selectedItem" color="primary">
-                <v-list-item v-for="(rs, i) in dateResult" :key="i">
-                  <v-list-item-content @click="showDate(rs)">
-                    <v-list-item-title>Day{{ i + 1 }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-card>
-          <v-card
-            class="mx-auto"
-            style="height: 500px; width: 63.9%; overflow-y: auto"
-            tile
-          >
-            <v-list dense style="padding: 0">
-              <v-subheader
-                style="
-                  background-color: #1bc6ec;
-                  color: aliceblue;
-                  position: sticky;
-                "
-                >PLAN</v-subheader
-              >
-              <div v-for="(rs, i) in planner.planList" :key="i">
-                <v-list-item v-if="checkDay(rs)">
-                  <v-list-item-content>
-                    <v-card elevation="5" outlined style="margin: 2px 0"
-                      ><v-list-item-title style="margin: 5px">{{
-                        rs.name
-                      }}</v-list-item-title>
-                      <v-list-item-title style="margin: 5px">{{
-                        rs.memo
-                      }}</v-list-item-title>
-                      <v-list-item-title style="margin: 5px">{{
-                        rs.date.substring(11, 16)
-                      }}</v-list-item-title>
-                    </v-card>
-                  </v-list-item-content>
-                </v-list-item>
+              <div style="padding-left: 15px; padding-top: 5px">
+                <v-btn
+                  v-if="checkUser == 0"
+                  class="deleteBtn"
+                  @click="deletePlan"
+                  elevation="1"
+                  style="
+                    background-color: white;
+                    color: black;
+                    border-radius: 6px;
+                  "
+                  >삭제</v-btn
+                >
+                <v-btn
+                  v-if="checkUser == 0"
+                  class="editBtn"
+                  @click="goEdit"
+                  style="
+                    background-color: rgba(0, 153, 255, 0.884);
+                    color: white;
+                    border-radius: 6px;
+                  "
+                  >수정</v-btn
+                >
+                <v-btn
+                  v-else-if="checkUser == 1"
+                  class="editBtn"
+                  @click="goKakaoMap"
+                  style="
+                    background-color: rgba(0, 153, 255, 0.884);
+                    color: white;
+                    border-radius: 6px;
+                  "
+                  >복사하기</v-btn
+                >
               </div>
-            </v-list>
-          </v-card>
+              <div style="overflow-x: hidden; padding-top: 7px">
+                <i
+                  class="fas fa-star"
+                  style="float: left; margin: 8px 5px 0px 15px"
+                ></i>
+                <v-card-title style="padding: 0px; white-space: nowrap">{{
+                  planner.title
+                }}</v-card-title>
+              </div>
+              <div style="overflow-x: hidden">
+                <i
+                  class="fas fa-pencil"
+                  style="float: left; margin: 3px 5px 0px 15px"
+                ></i>
+                <v-card-subtitle style="padding: 0px; white-space: nowrap">{{
+                  planner.intro
+                }}</v-card-subtitle>
+              </div>
+              <div style="overflow-x: hidden; padding-top: 12px">
+                <i
+                  class="fas fa-calendar"
+                  style="float: left; margin: 3px 5px 0px 15px"
+                ></i>
+                <v-card-text style="padding: 0px; white-space: nowrap">{{
+                  planner.start_date + " - " + planner.end_date.substring(5, 10)
+                }}</v-card-text>
+              </div>
+              <div style="overflow-x: hidden">
+                <i
+                  class="fas fa-key"
+                  style="float: left; margin: 3px 5px 0px 15px"
+                ></i>
+                <v-card-text style="padding: 0px; white-space: nowrap">{{
+                  planner.concept
+                }}</v-card-text>
+              </div>
+              <div style="overflow-x: hidden">
+                <i
+                  class="fas fa-map"
+                  style="float: left; margin: 3px 5px 0px 15px"
+                ></i>
+                <v-card-text style="padding: 0px; white-space: nowrap">{{
+                  placeString
+                }}</v-card-text>
+              </div>
+            </v-card>
+          </div>
+          <div
+            style="
+              width: 100%;
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              margin-top: 10px;
+            "
+          >
+            <v-card
+              class="mx-auto"
+              elevation="6"
+              style="
+                height: 450px;
+                width: 35.9%;
+                margin-left: 0;
+                margin-right: 0;
+                overflow-y: auto;
+              "
+              tile
+            >
+              <v-list dense style="padding: 0">
+                <div class="searchIcon calendarIcon">
+                  <i class="fas fa-calendar"></i>
+                </div>
+                <v-subheader
+                  style="
+                    background-color: green;
+                    color: aliceblue;
+                    margin-left: 20px;
+                  "
+                  >DAY</v-subheader
+                >
+                <v-list-item-group v-model="selectedItem" color="primary">
+                  <v-list-item v-for="(rs, i) in dateResult" :key="i">
+                    <v-list-item-content @click="showDate(rs)">
+                      <v-list-item-title>Day{{ i + 1 }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </v-card>
+            <v-card
+              class="mx-auto"
+              style="height: 450px; width: 63.9%; overflow-y: auto"
+              tile
+            >
+              <v-list dense style="padding: 0">
+                <div
+                  class="searchIcon editIcon"
+                  style="background-color: rgb(29, 165, 29)"
+                >
+                  <i class="fas fa-edit"></i>
+                </div>
+                <v-subheader
+                  style="
+                    background-color: rgb(29, 165, 29);
+                    color: aliceblue;
+                    margin-left: 20px;
+                  "
+                  >PLAN</v-subheader
+                >
+                <div v-for="(rs, i) in planner.planList" :key="i">
+                  <v-list-item v-if="checkDay(rs)">
+                    <v-list-item-content>
+                      <v-card elevation="5" outlined style="margin: 2px 0"
+                        ><v-list-item-title
+                          style="margin: 5px; cursor: pointer"
+                          @click="setCenter(rs)"
+                          >{{ rs.name }}</v-list-item-title
+                        >
+                        <v-list-item-title style="margin: 5px">{{
+                          rs.memo
+                        }}</v-list-item-title>
+                        <v-list-item-title style="margin: 5px">{{
+                          rs.date.substring(11, 16)
+                        }}</v-list-item-title>
+                      </v-card>
+                    </v-list-item-content>
+                  </v-list-item>
+                </div>
+              </v-list>
+            </v-card>
+          </div>
         </div>
       </v-col>
 
@@ -340,7 +404,7 @@ export default {
       selectedItem: 0,
       placeString: "",
       nickname: "",
-      checkUser: null,
+      checkUser: true,
       map: null,
       items: [
         { text: "Real-Time" },
@@ -446,11 +510,31 @@ export default {
       this.map = new window.kakao.maps.Map(container, options);
     },
     setCenter(rs) {
+      console.log(rs);
       // 이동할 위도 경도 위치를 생성합니다
       let moveLatLon = new window.kakao.maps.LatLng(rs.y, rs.x);
 
       // 지도 중심을 이동 시킵니다
       this.map.setCenter(moveLatLon);
+
+      var imageSize = new window.kakao.maps.Size(24, 35);
+      var imageSrc =
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+      // 마커 이미지를 생성합니다
+      var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+      // 마커가 표시될 위치입니다
+      let markerPosition = new window.kakao.maps.LatLng(rs.y, rs.x);
+
+      // 마커를 생성합니다
+      let marker = new window.kakao.maps.Marker({
+        position: markerPosition,
+        image: markerImage, // 마커 이미지
+        title: rs.name,
+      });
+
+      // 마커가 지도 위에 표시되도록 설정합니다
+      marker.setMap(this.map);
     },
     doneBtn() {
       this.startDatePicker = 0;
@@ -593,10 +677,12 @@ export default {
 #map {
   flex: 1 1 auto;
   height: 600px;
+  height: 655px;
 }
 .maparea {
-  padding: 50px 0px;
+  padding-top: 42px;
   margin-right: 30px;
+  margin-left: 20px;
 }
 .plan {
   margin: 5px;
@@ -638,5 +724,22 @@ export default {
 
 .mx-auto {
   margin: 0 0;
+}
+.searchIcon {
+  position: absolute;
+  background-color: #1dbb1d;
+  height: 40px;
+  width: 20px;
+  color: white;
+  padding-top: 10px;
+  padding-left: 9px;
+  z-index: 3;
+  font-size: 13px;
+}
+.editIcon {
+  background-color: rgb(29, 165, 29);
+}
+.calendarIcon {
+  background-color: green;
 }
 </style>

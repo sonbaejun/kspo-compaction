@@ -50,6 +50,8 @@
     </div> -->
     <v-container class="bg-surface-variant" style="margin-top: 15px">
       <div class="planbox">
+        <i class="fas fa-bookmark" style="margin: 3px 3px 0px 12px"></i>
+
         <h4>많은 사람들의 플래너를 구경해보세요!</h4>
         <a @click="goComponent()" style="margin-left: auto"
           >내 플래너 목록으로 가기!</a

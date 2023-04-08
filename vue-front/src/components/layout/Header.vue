@@ -53,7 +53,7 @@
       >
         {{ $store.state.userInfo.nickname }}
       </h4>
-      <div style="margin-top: 3px" v-if="$store.state.token != null">
+      <div style="margin-top: 19px" v-if="$store.state.token != null">
         <img
           style="cursor: pointer; border-radius: 50px; margin-top: 3px"
           :src="$store.state.userInfo.picture"
@@ -65,7 +65,7 @@
           style="
             height: 37px;
             width: 37px;
-            margin-right: 15px;
+            margin-bottom: 37px;
             border-radius: 8px;
             background-color: #1bc6ec;
             color: aliceblue;

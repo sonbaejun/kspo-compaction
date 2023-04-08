@@ -20,7 +20,8 @@
       >
     </div>
     <v-container class="bg-surface-variant">
-      <div class="planbox" style="">
+      <div class="planbox">
+        <i class="fas fa-bookmark" style="margin: 3px 3px 0px 12px"></i>
         <h4>내 플래너 목록</h4>
         <a @click="goComponent()" style="margin-left: auto">다른 사람들의 플래너 구경하러 가기!</a>
       </div>
@@ -149,7 +150,7 @@ export default {
 .planbox {
   background-color: whitesmoke;
   padding: 8px !important;
-  margin: 8px !important;
+  margin: 10px !important;
   border-radius: 10px;
   border: solid #f8f8f8 3px;
   font-weight: 700;
