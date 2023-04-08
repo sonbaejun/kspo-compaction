@@ -355,7 +355,7 @@ export default {
     this.id = this.$route.params.id;
     axios
       .get(
-        `https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/api/v1/planner`,
+        `http://localhost:8080/api/v1/planner/detail/${this.id}`,
         {
           headers: {
             "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
