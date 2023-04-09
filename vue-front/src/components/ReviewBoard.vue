@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-top: 55px;">
     <v-card style="width: 95%; margin-left: 35px">
       <v-card-title>
         <v-text-field

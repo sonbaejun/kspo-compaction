@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div style="text-align: center">
-      <v-btn
+    <div style="text-align: center; margin-top: 15px;">
+      <!-- <v-btn
         depressed
         style="
           background-color: #1bc6ec;
@@ -17,7 +17,7 @@
         "
         @click="goWritePlan"
         >새 플래너 만들러 가기</v-btn
-      >
+      > -->
     </div>
     <v-container class="bg-surface-variant">
       <div class="planbox">
@@ -36,13 +36,24 @@
               cover
             ></v-img>
 
-            <v-card-title style="height: 20%; white-space: nowrap; padding: 0; overflow-x: hidden;">
+            <v-card-title
+              style="
+                height: 20%;
+                white-space: nowrap;
+                padding: 0;
+                overflow-x: hidden;
+              "
+            >
               {{ rs.title }}
             </v-card-title>
-            <v-card-subtitle style="height: 20%; padding: 0; overflow-x: hidden;">
+            <v-card-subtitle
+              style="height: 20%; padding: 0; overflow-x: hidden"
+            >
               {{ rs.intro }}
             </v-card-subtitle>
-            <v-card-subtitle style="white-space: nowrap; padding: 0; overflow-x: hidden;">
+            <v-card-subtitle
+              style="white-space: nowrap; padding: 0; overflow-x: hidden"
+            >
               {{ rs.start_date.substring(0, 10) + " -" }}
               {{ rs.end_date.substring(5, 10) }}
             </v-card-subtitle>

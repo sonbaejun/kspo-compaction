@@ -127,7 +127,7 @@
       </v-date-picker>
     </v-row>
     <div class="black-bg" v-if="modal == 1">
-      <div class="white-bg" style="margin: 50px 150px; width: 50%">
+      <div class="white-bg" style="margin: 100px 530px; width: fit-content">
         <div>
           <v-text-field
             label="Title"
@@ -240,7 +240,7 @@
             <v-card
               class="mx-auto"
               style="
-                height: 600px;
+                height: 655px;
                 width: 100px;
                 margin-left: 0;
                 margin-right: 0;
@@ -252,12 +252,7 @@
                 <div class="searchIcon calendarIcon">
                   <i class="fas fa-calendar"></i>
                 </div>
-                <v-subheader
-                  style="
-                    background-color: green;
-                    color: aliceblue;
-                    margin-left: 20px;
-                  "
+                <v-subheader style="margin-left: 20px; color: black"
                   >DAY</v-subheader
                 >
                 <v-list-item-group v-model="selectedItem" color="primary">
@@ -272,7 +267,7 @@
             <v-card
               class="mx-auto"
               style="
-                height: 600px;
+                height: 655px;
                 width: 100%;
                 overflow-y: auto;
                 margin-left: 5px;
@@ -280,18 +275,10 @@
               tile
             >
               <v-list dense style="padding: 0">
-                <div
-                  class="searchIcon editIcon"
-                  style="background-color: rgb(29, 165, 29)"
-                >
+                <div class="searchIcon editIcon">
                   <i class="fas fa-edit"></i>
                 </div>
-                <v-subheader
-                  style="
-                    background-color: rgb(29, 165, 29);
-                    color: aliceblue;
-                    margin-left: 20px;
-                  "
+                <v-subheader style="color: black; margin-left: 20px"
                   >PLAN</v-subheader
                 >
                 <div v-for="(rs, i) in planner.planList" :key="i">
@@ -303,15 +290,18 @@
                             display: flex;
                             flex-direction: row;
                             justify-content: flex-start;
-                            background-color: rgba(185, 198, 39, 0.77);
                             color: white;
                           "
                         >
+                          <div class="planNumber">
+                            <h4>{{ i + 1 }}</h4>
+                          </div>
                           <v-list-item-title
                             style="
                               margin: 7px 0px 15px 9px;
                               width: 80%;
                               cursor: pointer;
+                              color: black;
                             "
                             @click="setCenter(rs)"
                             >{{ rs.name }}</v-list-item-title
@@ -321,7 +311,6 @@
                               width: 15%;
                               min-width: none;
                               padding: 0%;
-                              background-color: aliceblue;
                               color: red;
                             "
                             @click="deletePlan(i)"
@@ -389,7 +378,7 @@
             v-if="showSearch == true"
             class="mx-auto"
             style="
-              height: 600px;
+              height: 655px;
               width: 20%;
               overflow-y: auto;
               float: left;
@@ -398,14 +387,18 @@
             tile
           >
             <v-list dense style="padding: 0">
-              <div class="searchIcon">
-                <i class="fas fa-search"></i>
+              <div style="padding: 10px">
+                <div style="border: solid; border-radius: 10px">
+                  <div class="searchIcon">
+                    <i class="fas fa-search"></i>
+                  </div>
+                  <input
+                    class="searchInput"
+                    placeholder="SEARCH"
+                    @keyup.enter="searchPlaces"
+                  />
+                </div>
               </div>
-              <input
-                class="searchInput"
-                placeholder="SEARCH"
-                @keyup.enter="searchPlaces"
-              />
               <div v-for="rs in search.results" :key="rs.place_name">
                 <v-list-item>
                   <v-list-item-content>
@@ -415,7 +408,7 @@
                           display: flex;
                           flex-direction: row;
                           justify-content: flex-start;
-                          background-color: rgb(175 180 181 / 90%);
+                          color: black;
                         "
                       >
                         <v-list-item-title
@@ -423,31 +416,31 @@
                             margin: 7px 0px 15px 9px;
                             width: 80%;
                             cursor: pointer;
-                            color: white;
+                            font-weight: 700;
                           "
                           @click="setCenter(rs)"
                           >{{ rs.place_name }}</v-list-item-title
                         >
                         <v-btn
-                          style="
-                            width: 10%;
-                            padding: 0%;
-                            background-color: aliceblue;
-                            color: blue;
-                          "
+                          style="width: 10%; padding: 0%"
                           @click="addPlan(rs)"
                         >
                           <i class="fas fa-plus-circle"></i>
                         </v-btn>
                       </div>
-                      <div class="addr" style="margin: 3px 9px">
+                      <div
+                        class="addr"
+                        style="
+                          margin: 3px 9px;
+                        "
+                      >
                         <h5
                           style="
                             text-overflow: ellipsis;
                             overflow: hidden;
                             white-space: nowrap;
                             font-size: 10px;
-                            font-weight: 700;
+                            font-weight: 300;
                           "
                         >
                           {{ rs.address_name }}
@@ -461,6 +454,7 @@
                             white-space: nowrap;
                             font-size: 10px;
                             font-weight: 700;
+                            color: #1976d2a1;
                           "
                         >
                           상세보기
@@ -475,55 +469,84 @@
           <div class="maparea">
             <div class="categoryList">
               <div class="categoryElement" @click="changeCartegory('AT4')">
-                <i class="fas fa-archway"></i>
-                <h4>관광지</h4>
+                <i class="fas fa-archway" style="color: blue"></i>
+                <span style="color: black">관광지</span>
               </div>
               <div class="categoryElement" @click="changeCartegory('PK6')">
-                <i class="fas fa-car"></i>
-                <h4>주차장</h4>
-              </div>
-              <div class="categoryElement" @click="changeCartegory('MT1')">
-                <i class="fas fa-cart-plus"></i>
-                <h4>마트</h4>
+                <i class="fas fa-car" style="color: blue"></i>
+                <span style="color: black">주차장</span>
               </div>
               <div class="categoryElement" @click="changeCartegory('SW8')">
-                <i class="fas fa-subway"></i>
-                <h4>지하철</h4>
+                <i class="fas fa-subway" style="color: blue"></i>
+                <span style="color: black">지하철</span>
               </div>
-              <div class="categoryElement" @click="changeCartegory('AD5')">
-                <i class="fas fa-house-user"></i>
-                <h4>숙소</h4>
+              <div class="categoryElement" @click="changeCartegory('MT1')">
+                <i class="fas fa-cart-plus" style="color: orange"></i>
+                <span style="color: black">마트</span>
               </div>
               <div class="categoryElement" @click="changeCartegory('FD6')">
-                <i class="fas fa-utensils"></i>
-                <h4>식당</h4>
+                <i class="fas fa-utensils" style="color: orange"></i>
+                <span style="color: black">식당</span>
+              </div>
+              <div class="categoryElement" @click="changeCartegory('AD5')">
+                <i class="fas fa-house-user" style="color: purple"></i>
+                <span style="color: black">숙소</span>
               </div>
               <div class="categoryElement" @click="changeCartegory('CE7')">
-                <i class="fas fa-mug-hot"></i>
-                <h4>카페</h4>
+                <i class="fas fa-mug-hot" style="color: brown"></i>
+                <span style="color: black">카페</span>
               </div>
             </div>
+            <div
+              style="
+                margin-left: auto;
+                margin-bottom: 50px;
+                padding: 0px 12px;
+                position: absolute;
+                z-index: 3;
+                right: 0;
+                top: 11px;
+                border-radius: 10px;
+              "
+            >
+              <!--               <button class="cancelBtn b2" @click="goComponents('planList')">
+                취소
+              </button> -->
+
+              <button class="cancelBtn b1" @click="savePlan">
+                <i
+                  class="fas fa-save"
+                  style="color: #0001ffd9; border: none"
+                ></i>
+                저장
+              </button>
+            </div>
             <div id="map">
-              <div style="width: 330px; height: 0px" ref="customOverlay">
+              <div
+                style="width: 330px; height: 0px; border-radius: 3px"
+                ref="customOverlay"
+              >
                 <div
                   style="
                     display: flex;
                     flex-direction: row;
                     justify-content: flex-start;
-                    background-color: rgb(175 180 181 / 90%);
+                    background-color: white;
+                    color: black;
+                    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
                   "
                 >
                   <v-list-item-title
-                    style="margin: 7px 0px 7px 9px; width: 80%; color: white"
+                    style="
+                      margin: 7px 0px 7px 9px;
+                      width: 80%;
+                      color: black;
+                      font-weight: 700;
+                    "
                     >{{ markerInfo.place_name }}</v-list-item-title
                   >
                   <v-btn
-                    style="
-                      width: 10%;
-                      padding: 0%;
-                      background-color: aliceblue;
-                      color: blue;
-                    "
+                    style="width: 10%; padding: 0%; color: black"
                     @click="addPlan(markerInfo)"
                   >
                     <i class="fas fa-plus-circle"></i>
@@ -531,7 +554,11 @@
                 </div>
                 <div
                   class="addr"
-                  style="background-color: white; padding: 2px 0px 0px 8px"
+                  style="
+                    background-color: white;
+                    padding: 2px 0px 0px 8px;
+                    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
+                  "
                 >
                   <h5
                     style="
@@ -539,7 +566,7 @@
                       overflow: hidden;
                       white-space: nowrap;
                       font-size: 10px;
-                      font-weight: 700;
+                      font-weight: 300;
                       background-color: white;
                     "
                   >
@@ -554,6 +581,7 @@
                       white-space: nowrap;
                       font-size: 10px;
                       font-weight: 700;
+                      color: #1976d2a1;
                     "
                   >
                     상세보기
@@ -564,12 +592,6 @@
           </div>
           <!-- grid2 종료지점 -->
         </v-col>
-        <div style="margin-left: auto; margin-bottom: 50px; padding: 0px 12px">
-          <button class="cancelBtn b2" @click="goComponents('planList')">
-            취소
-          </button>
-          <button class="cancelBtn b1" @click="savePlan">저장</button>
-        </div>
       </v-row>
     </div>
   </div>
@@ -721,6 +743,8 @@ export default {
     }
     if (window.innerWidth < 600) {
       this.showSearch = false;
+      let target = document.getElementsByClassName("categoryList");
+      target.style.width = "300px";
     }
     window.addEventListener("resize", this.handleResize);
   },
@@ -1008,7 +1032,7 @@ export default {
 <style scoped>
 #map {
   flex: 1 1 auto;
-  height: 600px;
+  height: 655px;
 }
 .maparea {
   display: flex;
@@ -1066,7 +1090,29 @@ export default {
 .planner button {
   margin: 3px;
 }
-
+.planNumber {
+  border-radius: 50%;
+  border: none;
+  background: #7c30f5e6;
+  color: white;
+  width: 1vw;
+  height: 1vw;
+  -webkit-box-pack: center;
+  justify-content: center;
+  margin-top: 9px;
+  display: flex;
+  -webkit-box-align: center;
+  margin-left: 12px;
+  padding-bottom: 1px;
+  align-items: center;
+}
+.planNumber h4 {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1vw;
+  text-align: center;
+  width: 1vw;
+}
 .black-bg {
   width: 100%;
   height: 100%;
@@ -1102,23 +1148,23 @@ export default {
 }
 
 .searchInput {
-  color: aliceblue;
+  color: black;
   font-size: small;
   width: 100%;
   padding-left: 10px;
   padding-right: 5px;
   height: 40px;
-  background-color: rgb(196 202 196 / 75%);
-  border-color: white;
+  /*   background-color: rgb(196 202 196 / 75%);
+ */
   margin-left: 20px;
 }
 
 .searchInput::placeholder {
-  color: aliceblue;
+  color: rgba(0, 0, 0, 0.35);
   font-size: 12px;
 }
 .searchInput:focus {
-  outline: 2px solid white;
+  outline: none;
 }
 
 .mx-auto::-webkit-scrollbar {
@@ -1139,20 +1185,24 @@ export default {
   border-radius: 5px;
   border: 1px solid #909090;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
-  background: rgb(42 61 217 / 65%);
+  background-color: white;
   color: white;
   overflow: hidden;
   z-index: 2;
+  padding: 12px 15px;
+  width: fit-content;
 }
 .categoryElement {
   float: left;
   list-style: none;
-  width: 50px;
-  border-right: 1px solid #acacac;
-  padding: 6px 0;
+  width: 70px;
   text-align: center;
   cursor: pointer;
-  font-size: small;
+  font-size: 13px;
+  font-weight: bold;
+}
+.categoryElement i {
+  margin-right: 5px;
 }
 .cancelBtn {
   font-family: "Inter";
@@ -1163,8 +1213,10 @@ export default {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
 }
 .b1 {
-  background-color: rgba(0, 153, 255, 0.884);
-  color: white;
+  background-color: white;
+  color: black;
+  height: 43px;
+  border: solid 1px;
 }
 .b2 {
   background-color: none;
@@ -1173,19 +1225,13 @@ export default {
 }
 .searchIcon {
   position: absolute;
-  background-color: rgb(196 202 196 / 72%);
+  /* background-color: rgb(196 202 196 / 72%); */
   height: 40px;
   width: 20px;
-  color: white;
+  /* color: white; */
   padding-top: 10px;
   padding-left: 9px;
   z-index: 3;
   font-size: 13px;
-}
-.editIcon {
-  background-color: rgb(29, 165, 29);
-}
-.calendarIcon{
-  background-color: green;
 }
 </style>

@@ -3,13 +3,14 @@
     <div class="main-background">
       <h4 class="main-title">Plan Yourself!</h4>
       <h6 class="main-subtitle">클릭투어에 오신걸 환영합니다!</h6>
-      <h6 class="main-subtitle">
-        환상적인 여행을 위한 여러분의 플랜을
-      </h6>
+      <h6 class="main-subtitle">환상적인 여행을 위한 여러분의 플랜을</h6>
       <h6 class="main-subtitle">지금 여기, 클릭투어에서 만들어보세요!</h6>
-      <button class="main-button" @click="goComponents('planList')">
-        PLANNER
+      <button class="main-button" @click="goComponents('planWrite')">
+        MAKE PLAN
       </button>
+      <button class="main-button" @click="goComponents('planList')">
+        MY PLAN
+      </button> 
     </div>
     <div style="text-align: center">
       <div class="main-component">
@@ -105,10 +106,10 @@ export default {
     
 <style scoped>
 .main-background {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)),
+    url(../assets/mainPage.jpg);
   width: 100%;
   height: 470px;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)),
-    url("../assets/mainPage.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -121,12 +122,12 @@ export default {
   font-size: 40px;
   margin-top: 65px;
   margin-bottom: 20px;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .main-subtitle {
   color: white;
   font-size: 15px;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .main-button {
   background-color: rgba(211, 211, 211, 0.68);
@@ -137,7 +138,7 @@ export default {
   height: 35px;
   border-radius: 10px;
   margin-top: 27px;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .main-component {
   /* background-color: rgb(215, 250, 247); */
@@ -160,10 +161,10 @@ export default {
 .cardTitle {
   margin-top: 10px;
   font-size: 18px;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .cardSubtitle {
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 </style>

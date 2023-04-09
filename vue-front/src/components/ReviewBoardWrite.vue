@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-top: 55px;">
     <v-text-field
       label="제목"
       outlined

@@ -1,5 +1,5 @@
 <template>
-  <nav style="margin-bottom: 0px;">
+  <nav style="margin-bottom: 0px">
     <v-toolbar
       dense
       style="
@@ -41,31 +41,40 @@
       >
 
       <v-spacer></v-spacer>
-      <h4
+      <div
         style="
-          color: #1bc6ec;
-          margin-top: 3px;
-          margin-right: 5px;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 700;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          margin-bottom: 5px;
         "
+        v-if="$store.state.token != null"
       >
-        {{ $store.state.userInfo.nickname }}
-      </h4>
-      <div style="margin-top: 19px" v-if="$store.state.token != null">
         <img
-          style="cursor: pointer; border-radius: 50px; margin-top: 3px"
+          style="cursor: pointer; border-radius: 50px; margin-top: 14px"
           :src="$store.state.userInfo.picture"
           height="50px"
           width="50px"
         />
+        <h4
+          style="
+            color: #1bc6ec;
+            margin-top: 30px;
+            margin-right: 15px;
+            margin-left: 3px;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 700;
+          "
+        >
+          {{ $store.state.userInfo.nickname }}
+        </h4>
         <v-btn
           class="loginBtn"
           style="
             height: 37px;
             width: 37px;
-            margin-bottom: 37px;
+            margin-top: 23px;
             border-radius: 8px;
             background-color: #1bc6ec;
             color: aliceblue;
@@ -87,12 +96,6 @@
         "
         v-else
       >
-<!--         <img
-          style="cursor: pointer; border-radius: 50px; margin-top: 3px"
-          :src="$store.state.userInfo.picture"
-          height="50px"
-          width="50px"
-        /> -->
         <v-btn
           class="loginBtn"
           style="

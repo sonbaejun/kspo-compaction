@@ -24,7 +24,7 @@
             >
               <div style="padding-left: 15px; padding-top: 5px">
                 <v-btn
-                  v-if="checkUser == 1"
+                  v-if="checkUser == 0"
                   class="deleteBtn"
                   @click="deletePlan"
                   elevation="1"
@@ -36,7 +36,7 @@
                   >삭제</v-btn
                 >
                 <v-btn
-                  v-if="checkUser == 1"
+                  v-if="checkUser == 0"
                   class="editBtn"
                   @click="goEdit"
                   style="
@@ -47,7 +47,7 @@
                   >수정</v-btn
                 >
                 <v-btn
-                  v-else-if="checkUser == 0"
+                  v-else-if="checkUser == 1"
                   class="editBtn"
                   @click="goKakaoMap"
                   style="
@@ -130,12 +130,7 @@
                 <div class="searchIcon calendarIcon">
                   <i class="fas fa-calendar"></i>
                 </div>
-                <v-subheader
-                  style="
-                    background-color: green;
-                    color: aliceblue;
-                    margin-left: 20px;
-                  "
+                <v-subheader style="margin-left: 20px; font-weight: 700"
                   >DAY</v-subheader
                 >
                 <v-list-item-group v-model="selectedItem" color="primary">
@@ -154,35 +149,48 @@
               tile
             >
               <v-list dense style="padding: 0">
-                <div
-                  class="searchIcon editIcon"
-                  style="background-color: rgb(29, 165, 29)"
-                >
+                <div class="searchIcon editIcon">
                   <i class="fas fa-edit"></i>
                 </div>
-                <v-subheader
-                  style="
-                    background-color: rgb(29, 165, 29);
-                    color: aliceblue;
-                    margin-left: 20px;
-                  "
+                <v-subheader style="margin-left: 20px; font-weight: 700"
                   >PLAN</v-subheader
                 >
                 <div v-for="(rs, i) in planner.planList" :key="i">
                   <v-list-item v-if="checkDay(rs)">
                     <v-list-item-content>
-                      <v-card elevation="5" outlined style="margin: 2px 0"
-                        ><v-list-item-title
-                          style="margin: 5px; cursor: pointer"
-                          @click="setCenter(rs)"
-                          >{{ rs.name }}</v-list-item-title
+                      <v-card elevation="5" outlined style="margin: 2px 0">
+                        <div
+                          style="
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: flex-start;
+                            border-bottom: solid 1px #e0e0e0;
+                          "
                         >
-                        <v-list-item-title style="margin: 5px">{{
-                          rs.memo
-                        }}</v-list-item-title>
-                        <v-list-item-title style="margin: 5px">{{
-                          rs.date.substring(11, 16)
-                        }}</v-list-item-title>
+                          <div class="planNumber">
+                            <h4>{{ i + 1 }}</h4>
+                          </div>
+                          <v-list-item-title
+                            style="
+                              cursor: pointer;
+                              padding: 3px 5px 2px 2px;
+                            "
+                            @click="setCenter(rs)"
+                            >{{ rs.name }}</v-list-item-title
+                          >
+                        </div>
+                        <v-list-item-title
+                          style="
+                            padding: 5px;
+                            padding-left: 14px;
+                            border-bottom: solid 1px #e0e0e0;
+                          "
+                          >{{ rs.memo }}</v-list-item-title
+                        >
+                        <v-list-item-title
+                          style="margin: 5px; margin-left: 14px"
+                          >{{ rs.date.substring(11, 16) }}</v-list-item-title
+                        >
                       </v-card>
                     </v-list-item-content>
                   </v-list-item>
@@ -317,7 +325,7 @@ export default {
 
           //responseType: "json" // [응답 데이터 : stream , json]
         })
-          .then(function (response) {
+          .then((response) => {
             console.log("RESPONSE : " + JSON.stringify(response.data));
             setTimeout(() => {
               this.$router.push({ path: "/planList" });
@@ -447,21 +455,14 @@ export default {
 }
 .searchIcon {
   position: absolute;
-  background-color: #1dbb1d;
   height: 40px;
   width: 20px;
-  color: white;
   padding-top: 10px;
   padding-left: 9px;
   z-index: 3;
   font-size: 13px;
 }
-.editIcon {
-  background-color: rgb(29, 165, 29);
-}
-.calendarIcon {
-  background-color: green;
-}
+
 .planbox {
   background-color: whitesmoke;
   padding: 8px !important;
@@ -472,5 +473,28 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+}
+.planNumber {
+  border-radius: 50%;
+  border: none;
+  background: #7c30f5e6;
+  color: white;
+  width: 1vw;
+  height: 1vw;
+  -webkit-box-pack: center;
+  justify-content: center;
+  margin-top: 3px;
+  display: flex;
+  -webkit-box-align: center;
+  margin-left: 12px;
+  padding-bottom: 1px;
+  align-items: center;
+}
+.planNumber h4 {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1vw;
+  text-align: center;
+  width: 1vw;
 }
 </style>
