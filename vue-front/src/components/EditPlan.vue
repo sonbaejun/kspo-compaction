@@ -178,6 +178,7 @@
               display: flex;
               flex-direction: row;
               justify-content: flex-start;
+              white-space: nowrap;
             "
           >
             <div
@@ -780,7 +781,7 @@ export default {
       obj.x = rs.x;
       obj.y = rs.y;
       this.planner.planList.push(obj);
-      this.sortDate1(this.planner.planList);
+      this.planner.planList = this.sortDate1(this.planner.planList);
     },
     // localhost:8080/api/v1/planner/post
     savePlan() {

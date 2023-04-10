@@ -178,6 +178,7 @@
               display: flex;
               flex-direction: row;
               justify-content: flex-start;
+              white-space: nowrap;
             "
           >
             <div
@@ -899,7 +900,7 @@ export default {
       rs.date = `${date}${this.timepickerTime}`;
       this.timepicker = null;
       this.timepickerTime = "00:00";
-      this.sortDate1(this.planner.planList);
+      this.planner.planList = this.sortDate1(this.planner.planList);
     },
     getOrderDate(idx) {
       return this.planner.planList[idx].date.substring(11, 16);
@@ -1010,7 +1011,9 @@ export default {
       this.customOverlay.setMap(this.map);
     },
     sortDate1(list) {
+      
       const sorted_list = list.sort((a, b) => {
+        console.log(a);
         return new Date(a.date).getTime() - new Date(b.date).getTime();
       });
       return sorted_list;

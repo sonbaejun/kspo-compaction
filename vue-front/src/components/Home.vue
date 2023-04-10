@@ -107,7 +107,7 @@ export default {
 <style scoped>
 .main-background {
   background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)),
-    url(../assets/mainPage.jpg);
+    url("../assets/mainPage.jpg");
   width: 100%;
   height: 470px;
   background-size: cover;

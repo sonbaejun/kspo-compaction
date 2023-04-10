@@ -27,7 +27,7 @@
                   :for="item.key"
                   class="text"
                   style="font-size: medium; font-weight: 600"
-                  >{{ item.value }}</label
+                >{{ item.value }}</label
                 >
               </div>
             </v-card-text>
@@ -68,7 +68,7 @@
                   :for="item"
                   class="text"
                   style="font-size: medium; font-weight: 600"
-                  >{{ item }}</label
+                >{{ item }}</label
                 >
               </div>
             </v-card-text>
@@ -94,7 +94,7 @@
     >
       <v-date-picker
         v-model="recommendInfo.startDate"
-        style="z-index: 1; padding-top: 100px"
+        style="z-index: 1;"
       >
         <v-btn
           @click="startDatePicker = 0"
@@ -107,7 +107,7 @@
             font-weight: 700;
             border-radius: 4px;
           "
-          >done</v-btn
+        >done</v-btn
         >
       </v-date-picker>
     </v-row>
@@ -119,7 +119,7 @@
     >
       <v-date-picker
         v-model="recommendInfo.endDate"
-        style="z-index: 1; padding-top: 100px"
+        style="z-index: 1;"
       >
         <v-btn
           @click="endDatePicker = 0"
@@ -132,7 +132,7 @@
             font-weight: 700;
             border-radius: 4px;
           "
-          >done</v-btn
+        >done</v-btn
         >
       </v-date-picker>
     </v-row>
@@ -199,7 +199,7 @@
       <v-col
         cols="12"
         sm="3"
-        style="max-width=100%; padding: 50px 0px 0px 35px;"
+        style="max-width:100%; padding: 12px 0px 0px 35px;"
         v-if="modal == 0"
       >
         <div>
@@ -212,11 +212,12 @@
                 border-radius: 10px;
                 background-color: white;
                 color: black;
+                margin-top: 25px;
               "
             >
               <div style="padding-left: 15px; padding-top: 5px">
                 <v-btn
-                  v-if="checkUser == 0"
+                  v-if="checkUser == 1"
                   class="deleteBtn"
                   @click="deletePlan"
                   elevation="1"
@@ -225,10 +226,10 @@
                     color: black;
                     border-radius: 6px;
                   "
-                  >삭제</v-btn
+                >삭제</v-btn
                 >
                 <v-btn
-                  v-if="checkUser == 0"
+                  v-if="checkUser == 1"
                   class="editBtn"
                   @click="goEdit"
                   style="
@@ -236,10 +237,10 @@
                     color: white;
                     border-radius: 6px;
                   "
-                  >수정</v-btn
+                >수정</v-btn
                 >
                 <v-btn
-                  v-else-if="checkUser == 1"
+                  v-else-if="checkUser == 0"
                   class="editBtn"
                   @click="goKakaoMap"
                   style="
@@ -247,7 +248,7 @@
                     color: white;
                     border-radius: 6px;
                   "
-                  >복사하기</v-btn
+                >복사하기</v-btn
                 >
               </div>
               <div style="overflow-x: hidden; padding-top: 7px">
@@ -256,8 +257,8 @@
                   style="float: left; margin: 8px 5px 0px 15px"
                 ></i>
                 <v-card-title style="padding: 0px; white-space: nowrap">{{
-                  planner.title
-                }}</v-card-title>
+                    planner.title
+                  }}</v-card-title>
               </div>
               <div style="overflow-x: hidden">
                 <i
@@ -265,8 +266,8 @@
                   style="float: left; margin: 3px 5px 0px 15px"
                 ></i>
                 <v-card-subtitle style="padding: 0px; white-space: nowrap">{{
-                  planner.intro
-                }}</v-card-subtitle>
+                    planner.intro
+                  }}</v-card-subtitle>
               </div>
               <div style="overflow-x: hidden; padding-top: 12px">
                 <i
@@ -274,8 +275,8 @@
                   style="float: left; margin: 3px 5px 0px 15px"
                 ></i>
                 <v-card-text style="padding: 0px; white-space: nowrap">{{
-                  planner.start_date + " - " + planner.end_date.substring(5, 10)
-                }}</v-card-text>
+                    planner.start_date + " - " + planner.end_date.substring(5, 10)
+                  }}</v-card-text>
               </div>
               <div style="overflow-x: hidden">
                 <i
@@ -283,8 +284,8 @@
                   style="float: left; margin: 3px 5px 0px 15px"
                 ></i>
                 <v-card-text style="padding: 0px; white-space: nowrap">{{
-                  planner.concept
-                }}</v-card-text>
+                    planner.concept
+                  }}</v-card-text>
               </div>
               <div style="overflow-x: hidden">
                 <i
@@ -292,8 +293,8 @@
                   style="float: left; margin: 3px 5px 0px 15px"
                 ></i>
                 <v-card-text style="padding: 0px; white-space: nowrap">{{
-                  placeString
-                }}</v-card-text>
+                    placeString
+                  }}</v-card-text>
               </div>
             </v-card>
           </div>
@@ -324,11 +325,10 @@
                 </div>
                 <v-subheader
                   style="
-                    background-color: green;
-                    color: aliceblue;
+                  font-weight: 700;
                     margin-left: 20px;
                   "
-                  >DAY</v-subheader
+                >DAY</v-subheader
                 >
                 <v-list-item-group v-model="selectedItem" color="primary">
                   <v-list-item v-for="(rs, i) in dateResult" :key="i">
@@ -347,33 +347,52 @@
               <v-list dense style="padding: 0">
                 <div
                   class="searchIcon editIcon"
-                  style="background-color: rgb(29, 165, 29)"
                 >
                   <i class="fas fa-edit"></i>
                 </div>
                 <v-subheader
                   style="
-                    background-color: rgb(29, 165, 29);
-                    color: aliceblue;
+                  font-weight: 700;
                     margin-left: 20px;
                   "
-                  >PLAN</v-subheader
+                >PLAN</v-subheader
                 >
                 <div v-for="(rs, i) in planner.planList" :key="i">
                   <v-list-item v-if="checkDay(rs)">
                     <v-list-item-content>
-                      <v-card elevation="5" outlined style="margin: 2px 0"
-                        ><v-list-item-title
-                          style="margin: 5px; cursor: pointer"
-                          @click="setCenter(rs)"
-                          >{{ rs.name }}</v-list-item-title
+                      <v-card elevation="5" outlined style="margin: 2px 0">
+                        <div
+                          style="
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: flex-start;
+                            border-bottom: solid 1px #e0e0e0;
+                          "
                         >
-                        <v-list-item-title style="margin: 5px">{{
-                          rs.memo
-                        }}</v-list-item-title>
-                        <v-list-item-title style="margin: 5px">{{
-                          rs.date.substring(11, 16)
-                        }}</v-list-item-title>
+                          <div class="planNumber">
+                            <h4>{{ i + 1 }}</h4>
+                          </div>
+                          <v-list-item-title
+                            style="
+                              cursor: pointer;
+                              padding: 3px 5px 2px 2px;
+                            "
+                            @click="setCenter(rs)"
+                          >{{ rs.name }}</v-list-item-title
+                          >
+                        </div>
+                        <v-list-item-title
+                          style="
+                            padding: 5px;
+                            padding-left: 14px;
+                            border-bottom: solid 1px #e0e0e0;
+                          "
+                        >{{ rs.memo }}</v-list-item-title
+                        >
+                        <v-list-item-title
+                          style="margin: 5px; margin-left: 14px"
+                        >{{ rs.date.substring(11, 16) }}</v-list-item-title
+                        >
                       </v-card>
                     </v-list-item-content>
                   </v-list-item>
@@ -569,7 +588,7 @@ export default {
           //responseType: "json" // [응답 데이터 : stream , json]
         })
           .then((response) => {
-            console.log(1);
+            console.log(response.data);
             //서버 사용 시 response.data.nickname
             this.nickname = response.data.nickname;
             if (this.nickname == this.$store.state.userInfo.nickname) {
@@ -590,8 +609,7 @@ export default {
               this.planner.planList.push(a);
             });
             this.setDate();
-            console.log(this.planner.planList);
-            console.log(this.planner);
+            this.placeString = this.place.substring(2, );
           })
           .catch((error) => {
             if (error.stateCode == 404) {
@@ -645,7 +663,7 @@ export default {
 
           //responseType: "json" // [응답 데이터 : stream , json]
         })
-          .then(function (response) {
+          .then((response) => {
             console.log("RESPONSE : " + JSON.stringify(response.data));
           })
           .catch(function (error) {
@@ -680,9 +698,7 @@ export default {
   height: 655px;
 }
 .maparea {
-  padding-top: 42px;
-  margin-right: 30px;
-  margin-left: 20px;
+  margin-top: 25px;
 }
 .plan {
   margin: 5px;
@@ -727,19 +743,63 @@ export default {
 }
 .searchIcon {
   position: absolute;
-  background-color: #1dbb1d;
   height: 40px;
   width: 20px;
-  color: white;
   padding-top: 10px;
   padding-left: 9px;
   z-index: 3;
   font-size: 13px;
 }
-.editIcon {
-  background-color: rgb(29, 165, 29);
+.black-bg {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 60000;
+  position: fixed;
+  padding: 20px;
 }
-.calendarIcon {
-  background-color: green;
+.white-bg {
+  width: 70%;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+
+  flex-direction: column;
+}
+
+.white-bg input {
+  width: 80%;
+  margin: 5px;
+  vertical-align: middle;
+}
+
+.white-bg button {
+  width: 81%;
+  margin: 5px;
+  vertical-align: middle;
+}
+.planNumber {
+  border-radius: 50%;
+  border: none;
+  background: #7c30f5e6;
+  color: white;
+  width: 1vw;
+  height: 1vw;
+  -webkit-box-pack: center;
+  justify-content: center;
+  margin-top: 3px;
+  display: flex;
+  -webkit-box-align: center;
+  margin-left: 12px;
+  padding-bottom: 1px;
+  align-items: center;
+}
+.planNumber h4 {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1vw;
+  text-align: center;
+  width: 1vw;
 }
 </style>

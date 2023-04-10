@@ -115,7 +115,7 @@ export default {
     //http://localhost:8080/api/v1/planner
     axios
       .get(
-        "http://localhost:8080/api/v1/planner",
+        "https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/planner",
         {
           headers: {
             "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
@@ -124,7 +124,7 @@ export default {
       )
       .then((response) => {
         /* 서버 사용 시 data.? 내가 테스트할땐 data.data로 해야 돌아감 */
-        response.data.forEach((a) => {
+        response.data.data.forEach((a) => {
           this.planner.data.push(a);
           let placeImg = a.placeList[0].place;
           let val = this.mapImg[placeImg];

@@ -24,7 +24,7 @@
             >
               <div style="padding-left: 15px; padding-top: 5px">
                 <v-btn
-                  v-if="checkUser == 0"
+                  v-if="checkUser == 1"
                   class="deleteBtn"
                   @click="deletePlan"
                   elevation="1"
@@ -36,7 +36,7 @@
                   >삭제</v-btn
                 >
                 <v-btn
-                  v-if="checkUser == 0"
+                  v-if="checkUser == 1"
                   class="editBtn"
                   @click="goEdit"
                   style="
@@ -47,7 +47,7 @@
                   >수정</v-btn
                 >
                 <v-btn
-                  v-else-if="checkUser == 1"
+                  v-else-if="checkUser == 0"
                   class="editBtn"
                   @click="goKakaoMap"
                   style="
@@ -349,6 +349,12 @@ export default {
         params: { plan: this.planner },
       });
     },
+    sortDate1(list) {
+      const sorted_list = list.sort((a, b) => {
+        return new Date(a.date.substring(0,10)).getTime() - new Date(b.date.substring(0,10)).getTime();
+      });
+      return sorted_list;
+    },
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -363,7 +369,7 @@ export default {
     this.id = this.$route.params.id;
     axios
       .get(
-        `http://localhost:8080/api/v1/planner/detail/${this.id}`,
+        `https://42b1923e-9ac4-4979-b904-912c15c18ea6.mock.pstmn.io/localhost:8080/api/v1/planner`,
         {
           headers: {
             "X-AUTH-TOKEN": `${localStorage.getItem("access_token")}`,
@@ -398,6 +404,8 @@ export default {
         console.log(err);
       });
     this.id = this.$route.params.id;
+    console.log(this.planner.planList);
+    this.planner.planList = this.sortDate1(this.planner.planList);
   },
 };
 </script>
