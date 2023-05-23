@@ -1,7 +1,5 @@
 # ✈ Click Tour
 
-## 🎨 결과화면
-
 
 ### 메인화면
 
@@ -19,6 +17,15 @@
 ### 게시판
 
 ![image](https://github.com/sonbaejun/clicktour-frontend/assets/78029066/db32913a-7ca2-4879-83d6-010d45384991)
+
+## 🎨 와이어프레임
+
+### 피그마 디자인툴을 이용해 UI와 페이지 동작 흐름을 설계
+
+<a href="https://www.figma.com/proto/l6QvrYxb71rV6yKS60WCQ3/ClickTour?type=design&node-id=1-32&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=2%3A3">
+피그마 프로토타이핑 링크</a>
+
+![image](https://github.com/sonbaejun/clicktour-frontend/assets/78029066/c6650652-e1a7-4b92-a207-64db252b024d)
 
 ## 🚀 프로젝트 소개
 클릭투어는 나만의 여행 플래너를 제작할 수 있는 웹사이트입니다.<br/>카카오맵API를 사용하여 여행 플래너를 제작할 수 있습니다. <br/>다른 사람들의 플래너를 구경하고 나만의 플래너로 커스텀 시킬 수도 있습니다!
