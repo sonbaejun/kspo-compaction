@@ -1,8 +1,24 @@
 # ✈ Click Tour
 
-![image](https://github.com/sonbaejun/clicktour-frontend/assets/78029066/fb2f89fc-2f81-461a-8f24-0e22bdaff090) | ![image](https://github.com/sonbaejun/clicktour-frontend/assets/78029066/db32913a-7ca2-4879-83d6-010d45384991)
----|---|
-![image](https://github.com/sonbaejun/clicktour-frontend/assets/78029066/4b2ef0aa-6b01-40f4-927f-e71d721d34c5) | ![image](https://github.com/sonbaejun/clicktour-frontend/assets/78029066/3ab0206d-01f9-41d8-abcf-6c7c36540356)
+## 🎨 결과화면
+
+
+### 메인화면
+
+![image](https://github.com/sonbaejun/clicktour-frontend/assets/78029066/fb2f89fc-2f81-461a-8f24-0e22bdaff090)
+
+<br/>
+
+### 플래너
+
+![image](https://github.com/sonbaejun/clicktour-frontend/assets/78029066/3ab0206d-01f9-41d8-abcf-6c7c36540356)
+![image](https://github.com/sonbaejun/clicktour-frontend/assets/78029066/4b2ef0aa-6b01-40f4-927f-e71d721d34c5)
+
+<br/>
+
+### 게시판
+
+![image](https://github.com/sonbaejun/clicktour-frontend/assets/78029066/db32913a-7ca2-4879-83d6-010d45384991)
 
 ## 🚀 프로젝트 소개
 클릭투어는 나만의 여행 플래너를 제작할 수 있는 웹사이트입니다.<br/>카카오맵API를 사용하여 여행 플래너를 제작할 수 있습니다. <br/>다른 사람들의 플래너를 구경하고 나만의 플래너로 커스텀 시킬 수도 있습니다!
