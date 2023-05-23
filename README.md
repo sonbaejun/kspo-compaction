@@ -28,3 +28,6 @@
 
 ## 📷 시연영상
 <a href="https://drive.google.com/file/d/1ducgywz9RQbz5r29hdoIV2y0VeRTOiN5/view">영상 링크</a>
+
+## 💊 프로젝트 회고
+링크 달 예정
