@@ -53,4 +53,4 @@
 <a href="https://drive.google.com/file/d/1ducgywz9RQbz5r29hdoIV2y0VeRTOiN5/view">영상 링크</a>
 
 ## 💊 프로젝트 회고
-링크 달 예정
+<a href="https://velog.io/@sonbaejun/Click-Tour-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0">프로젝트 회고 링크</a>
